@@ -1,12 +1,19 @@
 package org.firstinspires.ftc.teamcode;
+/*
 
+ftc_app/doc/tutorial/FTC_FieldCoordinateSystemDefinition.pdf
 
+*/
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.vuforia.HINT;
 import com.vuforia.Vuforia;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 public class VuforiaOp extends LinearOpMode {
@@ -19,6 +26,32 @@ public class VuforiaOp extends LinearOpMode {
         VuforiaLocalizer vuforia = ClassFactory.createVuforiaLocalizer(params);
         Vuforia.setHint(HINT.HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 4);
 
-        VuforiaTrackables beacons = vuforia.loadTrackablesFromFile()
+        VuforiaTrackables beacons = vuforia.loadTrackablesFromFile("RoverImage");
+        beacons.get(0).setName("B1_BLUE");
+
+        waitForStart();
+
+        beacons.activate();
+
+        while(opModeIsActive()){
+            for(VuforiaTrackable beac : beacons){
+                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) beac.getListener()).getPose();
+
+                if(pose != null){
+                    VectorF translation = pose.getTranslation();
+
+                    telemetry.addData(beac.getName() + " - Translation",translation);
+
+                    double degreeTurn = Math.toDegrees(Math.atan2(translation.get(1), translation.get(2)));//VERTICAL PHONE - Y AND Z AXIS, HORIZONTAL PHONE - get 0 , get 2
+
+                    telemetry.addData(beac.getName() + " -Degrees", degreeTurn);
+
+                }
+            }
+            telemetry.update();
+
+        }
+
+
     }
 }
