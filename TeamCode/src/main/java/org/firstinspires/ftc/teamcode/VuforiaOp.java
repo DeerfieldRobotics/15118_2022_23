@@ -6,6 +6,7 @@ ftc_app/doc/tutorial/FTC_FieldCoordinateSystemDefinition.pdf
 */
 import android.graphics.Bitmap;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -26,7 +27,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefau
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import java.util.Arrays;
-
+@Autonomous(name = "VUF", group = "Autonomous")
 public class VuforiaOp extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
@@ -49,10 +50,10 @@ public class VuforiaOp extends LinearOpMode {
 
         VuforiaTrackables beacons = vuforia.loadTrackablesFromFile("RoverImage");
 
-        beacons.get(0).setName("B1_BLUE");
-        beacons.get(1).setName("B1_BLUE");
-        beacons.get(2).setName("B1_BLUE");
-        beacons.get(3).setName("B1_BLUE");
+        beacons.get(0).setName("RED_E6");
+        beacons.get(1).setName("RED_E1");
+        beacons.get(2).setName("BLUE_B6");
+        beacons.get(3).setName("BLUE_B1");
 
         VuforiaTrackableDefaultListener wheels = (VuforiaTrackableDefaultListener) beacons.get(0).getListener();
 
@@ -60,75 +61,107 @@ public class VuforiaOp extends LinearOpMode {
 
         beacons.activate();
 
-        driveL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        driveR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        driveL.setPower(0.2);
-        driveR.setPower(0.2);
-
-
-        while(opModeIsActive() && wheels.getRawPose() ==null){
-            if(vuforia.rgb != null) {
-                Bitmap bm = Bitmap.createBitmap(vuforia.rgb.getWidth(), vuforia.rgb.getHeight(), Bitmap.Config.RGB_565);
-                bm.copyPixelsFromBuffer(vuforia.rgb.getPixels());
-            }
-
-            for(VuforiaTrackable beac : beacons){
-                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) beac.getListener()).getRawPose();
-                if(pose !=null){
-                    Matrix34F rawPose = new Matrix34F();
-                    float[] poseData = Arrays.copyOfRange(pose.transposed().getData(),0,12);
-                    rawPose.setData(poseData);
-
-                    Vec2F upperLeft = Tool.projectPoint(com.vuforia.CameraDevice.getInstance().getCameraCalibration(),rawPose, new Vec3F(-0.1016f,0.078448f,0));
-                    Vec2F upperRight = Tool.projectPoint(com.vuforia.CameraDevice.getInstance().getCameraCalibration(),rawPose, new Vec3F(0.1016f,0.078448f,0));
-                    Vec2F lowerRight = Tool.projectPoint(com.vuforia.CameraDevice.getInstance().getCameraCalibration(),rawPose, new Vec3F(0.1016f,0.078448f,0));
-                    Vec2F lowerLeft = Tool.projectPoint(com.vuforia.CameraDevice.getInstance().getCameraCalibration(),rawPose, new Vec3F(-0.1016f,0.078448f,0));
-
-                    // upperLeft.getData()[0]: X COORDINATE
-
-                }
-
-
-
-            }
-            telemetry.update();
-        }
+//        driveL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        driveR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//
+//        driveL.setPower(0.2);
+//        driveR.setPower(0.2);
+//
+//
+//        while(opModeIsActive() && wheels.getRawPose() ==null){
+//            if(vuforia.rgb != null) {
+//                Bitmap bm = Bitmap.createBitmap(vuforia.rgb.getWidth(), vuforia.rgb.getHeight(), Bitmap.Config.RGB_565);
+//                bm.copyPixelsFromBuffer(vuforia.rgb.getPixels());
+//            }
+//
+//            for(VuforiaTrackable beac : beacons){
+//                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) beac.getListener()).getRawPose();
+//                if(pose !=null){
+//                    Matrix34F rawPose = new Matrix34F();
+//                    float[] poseData = Arrays.copyOfRange(pose.transposed().getData(),0,12);
+//                    rawPose.setData(poseData);
+//
+//                    Vec2F upperLeft = Tool.projectPoint(com.vuforia.CameraDevice.getInstance().getCameraCalibration(),rawPose, new Vec3F(-0.1016f,0.078448f,0));
+//                    Vec2F upperRight = Tool.projectPoint(com.vuforia.CameraDevice.getInstance().getCameraCalibration(),rawPose, new Vec3F(0.1016f,0.078448f,0));
+//                    Vec2F lowerRight = Tool.projectPoint(com.vuforia.CameraDevice.getInstance().getCameraCalibration(),rawPose, new Vec3F(0.1016f,0.078448f,0));
+//                    Vec2F lowerLeft = Tool.projectPoint(com.vuforia.CameraDevice.getInstance().getCameraCalibration(),rawPose, new Vec3F(-0.1016f,0.078448f,0));
+//
+//                    // upperLeft.getData()[0]: X COORDINATE
+//
+//                }
+//
+//
+//
+//            }
+//            telemetry.update();
+//        }
+//
+//        driveL.setPower(0);
+//        driveR.setPower(0);
+//
+//        // analyze beacons
+//
+//        VectorF angles= anglesFromTarget(wheels);
+//        VectorF trans = navOffWall(wheels.getPose().getTranslation(), Math.toDegrees(angles.get(0))-90,new VectorF(500,0,0));
+//        // DIRECTLY FACING BEACON
+//        if(trans.get(0)>0){
+//            //if positive, turn to right
+//            driveL.setPower(0.02);
+//            driveR.setPower(-0.02);
+//        } else{
+//            driveL.setPower(-0.02);
+//            driveR.setPower(0.02);
+//        }
+//
+//        do{
+//            if(wheels.getPose() != null){
+//                trans = navOffWall(wheels.getPose().getTranslation(), Math.toDegrees(angles.get(0))-90,new VectorF(500,0,0));
+//            }
+//            idle();
+//        } while(opModeIsActive() && Math.abs(trans.get(0))>30);
+//
+//        driveL.setPower(0);
+//        driveR.setPower(0);
+//
+//        driveL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        driveR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//
+//        driveL.setTargetPosition((int)(driveL.getCurrentPosition() + ((Math.hypot(trans.get(0), trans.get(2))+150)/409.575 * 560)));
+//        driveR.setTargetPosition((int)(driveL.getCurrentPosition() + ((Math.hypot(trans.get(0), trans.get(2))+150)/409.575 * 560)));
+//        //150: camera is 15 cm off of center of turning, 409.575: WHEEL CIRCUMFERENCE, 560: TICKS PER ROTATION- andy mark 20's, 40's = 1120
+//
+//        driveL.setPower(0.3);
+//        driveR.setPower(0.3);
+//
+//        while(opModeIsActive() && driveL.isBusy() && driveR.isBusy()) {
+//            idle();
+//        }
+//
+//        driveL.setPower(0);
+//        driveR.setPower(0);
+//
+//        driveL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        driveR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//
+//        while(opModeIsActive() && (wheels.getPose() == null || Math.abs(wheels.getPose().getTranslation().get(0)) > 10)) {
+//            if(wheels.getPose() != null){
+//                if(wheels.getPose().getTranslation().get(0) > 0) {
+//                    driveL.setPower(-0.3);
+//                    driveR.setPower(0.3);
+//                }
+//                else {
+//                    driveL.setPower(0.3);
+//                    driveR.setPower(-0.3);
+//                }
+//            }
+//            else {
+//                driveL.setPower(-0.3);
+//                driveR.setPower(0.3);
+//            }
+//        }
 
         driveL.setPower(0);
         driveR.setPower(0);
-
-        // analyze beacons
-
-        VectorF angles= anglesFromTarget(wheels);
-        VectorF trans = navOffWall(wheels.getPose().getTranslation(), Math.toDegrees(angles.get(0))-90,new VectorF(500,0,0));
-        // DIRECTLY FACING BEACON
-        if(trans.get(0)>0){
-            //if positive, turn to right
-            driveL.setPower(0.02);
-            driveR.setPower(-0.02);
-        } else{
-            driveL.setPower(-0.02);
-            driveR.setPower(0.02);
-        }
-
-        do{
-            if(wheels.getPose() != null){
-                trans = navOffWall(wheels.getPose().getTranslation(), Math.toDegrees(angles.get(0))-90,new VectorF(500,0,0));
-            }
-            idle();
-        } while(opModeIsActive() && Math.abs(trans.get(0))>30);
-
-        driveL.setPower(0);
-        driveR.setPower(0);
-
-        driveL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        driveR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        driveL.setTargetPosition((int)(driveL.getCurrentPosition() + ((Math.hypot(trans.get(0), trans.get(2))+150)/409.575 * 560)));
-        driveR.setTargetPosition((int)(driveL.getCurrentPosition() + ((Math.hypot(trans.get(0), trans.get(2))+150)/409.575 * 560)));
-        // 150: camera is 15 cm off of center of turning, 409.575: WHEEL CIRCUMFERENCE, 560: TICKS PER ROTATION- andy mark 20's
-
 
 
     }
@@ -146,4 +179,5 @@ public class VuforiaOp extends LinearOpMode {
         double thetaZ = Math.atan2(rotation[1][0], rotation[0][0]);
         return new VectorF((float)thetaX, (float)thetaY, (float)thetaZ);
     }
+
 }
