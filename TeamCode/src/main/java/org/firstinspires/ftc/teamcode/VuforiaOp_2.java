@@ -15,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-import org.firstinspires.ftc.teamcode.R;
+
 /*
  * This OpMode was written for the VuforiaDemo Basics video. This demonstrates basic principles of
  * using VuforiaDemo in FTC.
@@ -28,9 +28,9 @@ public class VuforiaOp_2 extends LinearOpMode
     private VuforiaLocalizer.Parameters parameters;
     private VuforiaTrackables visionTargets;
     private VuforiaTrackable target0_RE6;
-//    private VuforiaTrackable target1_RE1;
-//    private VuforiaTrackable target2_BB6;
-//    private VuforiaTrackable target3_BB1;
+    private VuforiaTrackable target1_RE1;
+    private VuforiaTrackable target2_BB6;
+    private VuforiaTrackable target3_BB1;
     private VuforiaTrackableDefaultListener listener0;
 //    private VuforiaTrackableDefaultListener listener1;
 //    private VuforiaTrackableDefaultListener listener2;
@@ -94,12 +94,6 @@ public class VuforiaOp_2 extends LinearOpMode
 
     private void setupVuforia()
     {
-
-        //FIX:
-//int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-//        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-
-
         // Setup parameters to create localizer
         parameters = new VuforiaLocalizer.Parameters(R.id.cameraMonitorViewId); // To remove the camera view from the screen, remove the R.id.cameraMonitorViewId
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
