@@ -29,19 +29,19 @@ public class VuforiaOp_2 extends LinearOpMode
     private VuforiaLocalizer vuforiaLocalizer;
     private VuforiaLocalizer.Parameters parameters;
     private VuforiaTrackables visionTargets;
-    private VuforiaTrackable target0_RE6;
-    private VuforiaTrackable target1_RE1;
-    private VuforiaTrackable target2_BB6;
+    // private VuforiaTrackable target0_RE6;
+    // private VuforiaTrackable target1_RE1;
+    // private VuforiaTrackable target2_BB6;
     private VuforiaTrackable target3_BB1;
-    private VuforiaTrackableDefaultListener listener0;
+    // private VuforiaTrackableDefaultListener listener0;
 //    private VuforiaTrackableDefaultListener listener1;
 //    private VuforiaTrackableDefaultListener listener2;
-//    private VuforiaTrackableDefaultListener listener3;
+    private VuforiaTrackableDefaultListener listener3;
 
-    private OpenGLMatrix lastKnownLocation0;
+    // private OpenGLMatrix lastKnownLocation0;
 //    private OpenGLMatrix lastKnownLocation1;
 //    private OpenGLMatrix lastKnownLocation2;
-//    private OpenGLMatrix lastKnownLocation3;
+    private OpenGLMatrix lastKnownLocation3;
     private OpenGLMatrix phoneLocation;
 
     private static final String VUFORIA_KEY = "AQvzNHX/////AAABmYmmaaVNKE0Fn7ZY4Zg4l7eJVdn+R1Wo+RCHqi3CHuwhgbvGMvnGGA9o5UftX9Do65NoScmnyN76f/+SnSuJVUR6ayzxLWL6EwUb8ProA5HyULl/ZKeHhSd4rVvylPP2reeQh8FtY6+RYYG4GWkoIExqmsp9qcng5HY02Wrvj6z46LVmON1I7tacnD4XnXbNMXR6eNdEoOEmyo6N0B09kW/SwFAU0m2btefibQpISi0AUT6TrN3+sg+Jc+qbPM84AC7+Dv0CvUVn4drAqRhCP9L9kUV9FDDM8Ch/Mv1xDVcsVykSVnj0UFziJD4k6mGvSld+6Ux2wY55IWcP5VzSuuTo6nwVxIdGbLXbtPkMjFua";
@@ -56,7 +56,7 @@ public class VuforiaOp_2 extends LinearOpMode
 
         // We don't know where the robot is, so set it to the origin
         // If we don't include this, it would be null, which would cause errors later on
-        lastKnownLocation0 = createMatrix(0, 0, 0, 0, 0, 0);
+        lastKnownLocation3 = createMatrix(0, 0, 0, 0, 0, 0);
 
         waitForStart();
 
@@ -66,27 +66,27 @@ public class VuforiaOp_2 extends LinearOpMode
         while(opModeIsActive())
         {
             // Ask the listener for the latest information on where the robot is
-            OpenGLMatrix latestLocation0 = listener0.getUpdatedRobotLocation();
+            // OpenGLMatrix latestLocation0 = listener0.getUpdatedRobotLocation();
 //            OpenGLMatrix latestLocation1 = listener1.getUpdatedRobotLocation();
 //            OpenGLMatrix latestLocation2 = listener2.getUpdatedRobotLocation();
-//            OpenGLMatrix latestLocation3 = listener3.getUpdatedRobotLocation();
+            OpenGLMatrix latestLocation3 = listener3.getUpdatedRobotLocation();
 
             // The listener will sometimes return null, so we check for that to prevent errors
-            if(latestLocation0 != null) {
-                lastKnownLocation0 = latestLocation0;
+            if(latestLocation3 != null) {
+                lastKnownLocation3 = latestLocation3;
             }
-            float[] coordinates = lastKnownLocation0.getTranslation().getData();
+            float[] coordinates = lastKnownLocation3.getTranslation().getData();
 
             robotX = coordinates[0];
             robotY = coordinates[1];
-            robotAngle = Orientation.getOrientation(lastKnownLocation0, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle;
+            robotAngle = Orientation.getOrientation(lastKnownLocation3, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle;
 
             // Send information about whether the target is visible, and where the robot is
-            telemetry.addData("Tracking " + target0_RE6.getName(), listener0.isVisible());
+            // telemetry.addData("Tracking " + target0_RE6.getName(), listener0.isVisible());
 //            telemetry.addData("Tracking " + target1_RE1.getName(), listener.isVisible());
 //            telemetry.addData("Tracking " + target2_BB6.getName(), listener.isVisible());
-//            telemetry.addData("Tracking " + target3_BB1.getName(), listener.isVisible());
-            telemetry.addData("Last Known Location", formatMatrix(lastKnownLocation0));
+            telemetry.addData("Tracking " + target3_BB1.getName(), listener3.isVisible());
+            telemetry.addData("Last Known Location", formatMatrix(lastKnownLocation3));
 
             // Send telemetry and idle to let hardware catch up
             telemetry.update();
@@ -110,25 +110,25 @@ public class VuforiaOp_2 extends LinearOpMode
         Vuforia.setHint(HINT.HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 4);
 
         // Setup the target to be tracked
-        target0_RE6 = visionTargets.get(0); // 0 corresponds to the wheels target
-        target0_RE6.setName("RED_E6");
+        // target0_RE6 = visionTargets.get(0); // 0 corresponds to the wheels target
+        //    target0_RE6.setName("RED_E6");
 //        target1_RE1 = visionTargets.get(1);
 //        target1_RE1.setName("RED_E1");
 //        target2_BB6 = visionTargets.get(2);
 //        target2_BB6.setName("BLUE_B6");
-//        target3_BB1 = visionTargets.get(3);
-//        target3_BB1.setName("BLUE_B1");
-        target0_RE6.setLocation(createMatrix(0, 500, 0, 90, 0, 90));
+        target3_BB1 = visionTargets.get(3);
+        target3_BB1.setName("BLUE_B1");
+        // target0_RE6.setLocation(createMatrix(0, 500, 0, 90, 0, 90));
 //        target1_RE1.setLocation(createMatrix(0, 500, 0, 90, 0, 90));
 //        target2_BB6.setLocation(createMatrix(0, 500, 0, 90, 0, 90));
-//        target3_BB1.setLocation(createMatrix(0, 500, 0, 90, 0, 90));
+        target3_BB1.setLocation(createMatrix(0, 500, 0, 90, 0, 90));
 
         // Set phone location on robot
         phoneLocation = createMatrix(0, 225, 0, 90, 0, 0);
 
         // Setup listener and inform it of phone information
-        listener0 = (VuforiaTrackableDefaultListener) target0_RE6.getListener();
-        listener0.setPhoneInformation(phoneLocation, parameters.cameraDirection);
+        listener3 = (VuforiaTrackableDefaultListener) target3_BB1.getListener();
+        listener3.setPhoneInformation(phoneLocation, parameters.cameraDirection);
     }
 
     // Creates a matrix for determining the locations and orientations of objects
