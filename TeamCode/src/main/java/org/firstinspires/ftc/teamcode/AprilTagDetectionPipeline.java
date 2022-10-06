@@ -19,7 +19,7 @@
  * SOFTWARE.
  */
 
-package org.firstinspires.ftc.teamcode.auton;
+package org.firstinspires.ftc.teamcode;
 
 import org.opencv.calib3d.Calib3d;
 import org.opencv.core.CvType;
@@ -41,9 +41,9 @@ class AprilTagDetectionPipeline extends OpenCvPipeline
 {
     private long nativeApriltagPtr;
     private Mat grey = new Mat();
-    private ArrayList<AprilTagDetection> detections = new ArrayList<>();
+    private ArrayList<AprilTagDetection> detections = new ArrayList<AprilTagDetection>();
 
-    private ArrayList<AprilTagDetection> detectionsUpdate = new ArrayList<>();
+    private ArrayList<AprilTagDetection> detectionsUpdate = new ArrayList<AprilTagDetection>();
     private final Object detectionsUpdateSync = new Object();
 
     Mat cameraMatrix;
