@@ -1,13 +1,26 @@
 package org.firstinspires.ftc.teamcode.utils;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class Drivetrain
 {
     private DcMotor fl, fr, bl, br;
     private HardwareMap hw;
+
+    static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
+    static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // No External Gearing.
+    static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
+    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+            (WHEEL_DIAMETER_INCHES * 3.1415);
+    static final double     DRIVE_SPEED             = 0.6;
+    static final double     TURN_SPEED              = 0.5;
+
+    private ElapsedTime runtime = new ElapsedTime();
 
     private double DRIVETRAIN_SPEED_MODIFIER = 1;
     public Drivetrain (HardwareMap hardwaremap) {
@@ -81,13 +94,18 @@ public class Drivetrain
         fl.setMode(encoderMode);
         br.setMode(encoderMode);
         bl.setMode(encoderMode);
+        // Turn On RUN_TO_POSITION
+        fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
     public int[] getEncoderTicks()
     {
         return new int[]
                 {fr.getCurrentPosition(), fl.getCurrentPosition(), br.getCurrentPosition(), bl.getCurrentPosition()};
     }
-    public void forwards(boolean forward, int amount, int time_ms)
+    public void forwards(boolean forward, int amount)
     {
 
         if (!forward) {
@@ -102,7 +120,7 @@ public class Drivetrain
             bl.setTargetPosition(-amount);
         }
     }
-    public void strafe(boolean left, int amount, int time_ms)
+    public void strafe(boolean left, int amount)
     {
         if (!left) {
             fr.setTargetPosition(amount);
@@ -117,7 +135,7 @@ public class Drivetrain
         }
     }
 
-    public void turn(boolean left, int amount, int time_ms) {
+    public void turn(boolean left, int amount) {
         if (!left) {
             fr.setTargetPosition(-amount);
             fl.setTargetPosition(amount);
@@ -130,4 +148,6 @@ public class Drivetrain
             bl.setTargetPosition(-amount);
         }
     }
+
+
 }
