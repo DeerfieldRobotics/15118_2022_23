@@ -62,8 +62,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="BasicAutoLeft", group="main")
-public class BasicAuto_Right extends LinearOpMode {
+@Autonomous
+public class auton_test extends LinearOpMode {
 
     /* Declare OpMode members. */
     private DcMotor         leftDrive   = null;
@@ -77,9 +77,9 @@ public class BasicAuto_Right extends LinearOpMode {
     // For example, use a value of 2.0 for a 12-tooth spur gear driving a 24-tooth spur gear.
     // This is gearing DOWN for less speed and more torque.
     // For gearing UP, use a gear ratio less than 1.0. Note this will affect the direction of wheel rotation.
-    static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // CHANGE
+    static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // No External Gearing.
-    static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // CHANGE
+    static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
     static final double     DRIVE_SPEED             = 0.6;
@@ -89,8 +89,8 @@ public class BasicAuto_Right extends LinearOpMode {
     public void runOpMode() {
 
         // Initialize the drive system variables.
-        leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
-        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
+        leftDrive  = hardwareMap.get(DcMotor.class, "fl");
+        rightDrive = hardwareMap.get(DcMotor.class, "fr");
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
@@ -115,9 +115,8 @@ public class BasicAuto_Right extends LinearOpMode {
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  48,  48, 5.0);  // CHANGE, S1: Forward 47 Inches with 5 Sec timeout
-        encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
-        encoderDrive(DRIVE_SPEED, -24, -24, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
+        encoderDrive(DRIVE_SPEED,  30,  30, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
+          // S3: Reverse 24 Inches with 4 Sec timeout
 
         telemetry.addData("Path", "Complete");
         telemetry.update();

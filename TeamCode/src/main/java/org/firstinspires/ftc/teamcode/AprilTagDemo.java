@@ -27,6 +27,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraException;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
@@ -39,6 +40,7 @@ public class AprilTagDemo extends LinearOpMode
 {
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
+
 
     static final double FEET_PER_METER = 3.28084;
 
@@ -62,7 +64,7 @@ public class AprilTagDemo extends LinearOpMode
     final int THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION = 4;
 
     @Override
-    public void runOpMode()
+    public void runOpMode() throws OpenCvCameraException
     {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
@@ -74,7 +76,7 @@ public class AprilTagDemo extends LinearOpMode
             @Override
             public void onOpened()
             {
-                camera.startStreaming(800,448, OpenCvCameraRotation.UPRIGHT);
+                camera.startStreaming(640,360, OpenCvCameraRotation.SIDEWAYS_LEFT);
             }
 
             @Override
@@ -122,8 +124,7 @@ public class AprilTagDemo extends LinearOpMode
 
                     // If the target is within 1 meter, turn on high decimation to
                     // increase the frame rate
-                    if(detections.get(0).pose.z < THRESHOLD_HIGH_DECIMATION_RANGE_METERS)
-                    {
+                    if(detections.get(0).pose.z < THRESHOLD_HIGH_DECIMATION_RANGE_METERS) {
                         aprilTagDetectionPipeline.setDecimation(DECIMATION_HIGH);
                     }
 
@@ -137,6 +138,7 @@ public class AprilTagDemo extends LinearOpMode
                         telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", Math.toDegrees(detection.pose.pitch)));
                         telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.roll)));
                     }
+
                 }
 
                 telemetry.update();
