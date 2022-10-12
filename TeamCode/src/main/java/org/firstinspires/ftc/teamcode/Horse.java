@@ -39,8 +39,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@Autonomous(name="Vuforia3", group = "Concept")
-public class VufOp_3 extends LinearOpMode
+
+@Autonomous(name="Vuforia Basic Test", group = "auto")
+public class Horse extends LinearOpMode
 {
     // Adjust these numbers to suit your robot.
     final double DESIRED_DISTANCE = 8.0; //  this is how close the camera should get to the target (inches)
@@ -116,6 +117,7 @@ public class VufOp_3 extends LinearOpMode
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
+
 //        leftDrive.setDirection(DcMotor.Direction.REVERSE);
 //        rightDrive.setDirection(DcMotor.Direction.FORWARD);
 

@@ -7,6 +7,7 @@ ftc_app/doc/tutorial/FTC_FieldCoordinateSystemDefinition.pdf
 import android.graphics.Bitmap;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -68,33 +69,33 @@ public class VuforiaOp extends LinearOpMode {
 //        driveR.setPower(0.2);
 //
 //
-//        while(opModeIsActive() && wheels.getRawPose() ==null){
-//            if(vuforia.rgb != null) {
-//                Bitmap bm = Bitmap.createBitmap(vuforia.rgb.getWidth(), vuforia.rgb.getHeight(), Bitmap.Config.RGB_565);
-//                bm.copyPixelsFromBuffer(vuforia.rgb.getPixels());
-//            }
-//
-//            for(VuforiaTrackable beac : beacons){
-//                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) beac.getListener()).getRawPose();
-//                if(pose !=null){
-//                    Matrix34F rawPose = new Matrix34F();
-//                    float[] poseData = Arrays.copyOfRange(pose.transposed().getData(),0,12);
-//                    rawPose.setData(poseData);
-//
-//                    Vec2F upperLeft = Tool.projectPoint(com.vuforia.CameraDevice.getInstance().getCameraCalibration(),rawPose, new Vec3F(-0.1016f,0.078448f,0));
-//                    Vec2F upperRight = Tool.projectPoint(com.vuforia.CameraDevice.getInstance().getCameraCalibration(),rawPose, new Vec3F(0.1016f,0.078448f,0));
-//                    Vec2F lowerRight = Tool.projectPoint(com.vuforia.CameraDevice.getInstance().getCameraCalibration(),rawPose, new Vec3F(0.1016f,0.078448f,0));
-//                    Vec2F lowerLeft = Tool.projectPoint(com.vuforia.CameraDevice.getInstance().getCameraCalibration(),rawPose, new Vec3F(-0.1016f,0.078448f,0));
-//
-//                    // upperLeft.getData()[0]: X COORDINATE
-//
-//                }
-//
-//
-//
-//            }
-//            telemetry.update();
-//        }
+        while(opModeIsActive() && wheels.getRawPose() ==null){
+            if(vuforia.rgb != null) {
+                Bitmap bm = Bitmap.createBitmap(vuforia.rgb.getWidth(), vuforia.rgb.getHeight(), Bitmap.Config.RGB_565);
+                bm.copyPixelsFromBuffer(vuforia.rgb.getPixels());
+            }
+
+            for(VuforiaTrackable beac : beacons){
+                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) beac.getListener()).getRawPose();
+                if(pose !=null){
+                    Matrix34F rawPose = new Matrix34F();
+                    float[] poseData = Arrays.copyOfRange(pose.transposed().getData(),0,12);
+                    rawPose.setData(poseData);
+
+                    Vec2F upperLeft = Tool.projectPoint(com.vuforia.CameraDevice.getInstance().getCameraCalibration(),rawPose, new Vec3F(-0.1016f,0.078448f,0));
+                    Vec2F upperRight = Tool.projectPoint(com.vuforia.CameraDevice.getInstance().getCameraCalibration(),rawPose, new Vec3F(0.1016f,0.078448f,0));
+                    Vec2F lowerRight = Tool.projectPoint(com.vuforia.CameraDevice.getInstance().getCameraCalibration(),rawPose, new Vec3F(0.1016f,0.078448f,0));
+                    Vec2F lowerLeft = Tool.projectPoint(com.vuforia.CameraDevice.getInstance().getCameraCalibration(),rawPose, new Vec3F(-0.1016f,0.078448f,0));
+
+                    // upperLeft.getData()[0]: X COORDINATE
+
+                }
+
+
+
+            }
+            telemetry.update();
+        }
 //
 //        driveL.setPower(0);
 //        driveR.setPower(0);

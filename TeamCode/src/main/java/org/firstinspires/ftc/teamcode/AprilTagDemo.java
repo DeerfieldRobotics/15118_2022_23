@@ -177,8 +177,8 @@ public class AprilTagDemo extends LinearOpMode
             }
 
             drive(detections.get(0).id);
+            break;
 
-            sleep(20);
         }
     }
 

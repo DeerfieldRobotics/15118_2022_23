@@ -4,6 +4,7 @@ repositories {
     flatDir {
         dirs rootProject.file('libs')
     }
+    maven { url = 'https://maven.brott.dev/' }
 }
 
 dependencies {
@@ -19,5 +20,6 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'org.firstinspires.ftc:gameAssets-PowerPlay:1.0.0'
     implementation 'org.openftc:opencv-repackaged:4.5.3-B'
+    implementation 'com.acmerobotics.dashboard:dashboard:0.4.6'
 }
 

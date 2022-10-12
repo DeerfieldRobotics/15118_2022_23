@@ -26,8 +26,9 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -46,27 +47,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-
-/**
- * This OpMode illustrates the basics of using the Vuforia engine to determine
- * the identity of Vuforia VuMarks encountered on the field. The code is structured as
- * a LinearOpMode. It shares much structure with {@link ConceptVuforiaFieldNavigationWebcam}; we do not here
- * duplicate the core Vuforia documentation found there, but rather instead focus on the
- * differences between the use of Vuforia for navigation vs VuMark identification.
- *
- * @see ConceptVuforiaFieldNavigationWebcam
- * @see VuforiaLocalizer
- * @see VuforiaTrackableDefaultListener
- * see  ftc_app/doc/tutorial/FTC_FieldCoordinateSystemDefinition.pdf
- *
- * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
- *
- * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
- * is explained below
- */
-
-@TeleOp(name="VuforiaTest", group ="auto")
+@Disabled
+@Autonomous(name="VuforiaTest", group ="auto")
 
 public class VufTest extends LinearOpMode {
     OpenGLMatrix lastLocation = null;
@@ -133,13 +115,12 @@ public class VufTest extends LinearOpMode {
         VuforiaTrackable CHIP_BLUE_B6 = trackables.get(1);
         VuforiaTrackable ENGINE_RED_E1 = trackables.get(2);
         VuforiaTrackable TOWERS_RED_E6 = trackables.get(3);
-        //relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
+        CHIP_BLUE_B6.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
+        trackables.activate();
 
         telemetry.addData(">", "Press Play to start");
         telemetry.update();
         waitForStart();
-
-        relicTrackables.activate();
 
         while (opModeIsActive()) {
 
@@ -149,7 +130,9 @@ public class VufTest extends LinearOpMode {
              * UNKNOWN, LEFT, CENTER, and RIGHT. When a VuMark is visible, something other than
              * UNKNOWN will be returned by {@link RelicRecoveryVuMark#from(VuforiaTrackable)}.
              */
-            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(CHIP_BLUE_B6);
+            telemetry.addData(">:", CHIP_BLUE_B6.getListener());
+            telemetry.update();
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
 
                 /* Found an instance of the template. In the actual game, you will probably
@@ -160,7 +143,7 @@ public class VufTest extends LinearOpMode {
                 /* For fun, we also exhibit the navigational pose. In the Relic Recovery game,
                  * it is perhaps unlikely that you will actually need to act on this pose information, but
                  * we illustrate it nevertheless, for completeness. */
-                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener)relicTemplate.getListener()).getFtcCameraFromTarget();
+                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener)CHIP_BLUE_B6.getListener()).getFtcCameraFromTarget();
                 telemetry.addData("Pose", format(pose));
 
                 /* We further illustrate how to decompose the pose into useful rotational and

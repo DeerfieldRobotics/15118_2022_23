@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import android.content.Context;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.vuforia.HINT;
 import com.vuforia.Vuforia;
@@ -22,7 +23,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * This OpMode was written for the VuforiaDemo Basics video. This demonstrates basic principles of
  * using VuforiaDemo in FTC.
  */
-@Autonomous(name = "Vuforia", group = "Auto")
+
+@Autonomous(name = "Vuforia2", group = "Auto")
 public class VuforiaOp_2 extends LinearOpMode
 {
     // Variables to be used for later

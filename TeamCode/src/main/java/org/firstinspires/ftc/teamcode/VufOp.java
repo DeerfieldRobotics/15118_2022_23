@@ -50,6 +50,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
+@Disabled
 @Autonomous(name = "TF_VUF_Auto", group = "main")
 public class VufOp extends LinearOpMode {
 
