@@ -48,8 +48,6 @@ public class AprilTagDemo extends LinearOpMode
 
     static final double FEET_PER_METER = 3.28084;
 
-    private HardwareMap hmap;
-
     // Lens intrinsics
     // UNITS ARE PIXELS
     // NOTE: this calibration is for the C920 webcam at 800x448.
@@ -74,7 +72,7 @@ public class AprilTagDemo extends LinearOpMode
     private DcMotor         bl   = null;
     private DcMotor         br  = null;
 
-    private Drivetrain drivetrain = new Drivetrain(hmap);
+    private Drivetrain drivetrain = new Drivetrain(hardwareMap);
 
     // Calculate the COUNTS_PER_INCH for your specific drive train.
     // Go to your motor vendor website to determine your motor's COUNTS_PER_MOTOR_REV
