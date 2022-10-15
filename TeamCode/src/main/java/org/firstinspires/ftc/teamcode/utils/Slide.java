@@ -11,7 +11,10 @@ public class Slide {
 
     private DcMotor s;
     private HardwareMap hw;
+
     private final float speed = 1;
+
+    private final int low, medium, high;
 
     public Slide (HardwareMap hardwaremap) {
         hw = hardwaremap;
@@ -19,6 +22,19 @@ public class Slide {
     }
 
     public void initialize() {
+        
+        /*
+
+        for preset levels:
+
+        low = x;
+        medium = y;
+        high = z;
+        
+         */
+
+
+
         s = hw.get(DcMotor.class, "s");
 
         s.setMode(DcMotor.Runmode.STOP_AND_RESET_ENCODERS); //sets current encoder position to zero
