@@ -58,7 +58,7 @@ public class teleop extends LinearOpMode {
                 //right trigger closes 
             }
             else {
-                
+                //claw open
             }
 
         }
