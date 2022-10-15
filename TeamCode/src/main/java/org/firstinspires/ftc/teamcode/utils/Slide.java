@@ -19,6 +19,7 @@ public class Slide {
     public Slide (HardwareMap hardwaremap) {
         hw = hardwaremap;
 
+        initialize();
     }
 
     public void initialize() {
@@ -30,7 +31,7 @@ public class Slide {
         low = x;
         medium = y;
         high = z;
-        
+
          */
 
 
