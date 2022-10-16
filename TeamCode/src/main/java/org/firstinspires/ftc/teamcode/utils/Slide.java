@@ -14,7 +14,7 @@ public class Slide {
 
     private final float speed = 1;
 
-    private final int low, medium, high;
+    public final static int low, medium, high;
 
     public Slide (HardwareMap hardwaremap) {
         hw = hardwaremap;
@@ -34,14 +34,16 @@ public class Slide {
 
          */
 
-
-
-        s = hw.get(DcMotor.class, "s");
+         s = hw.get(DcMotor.class, "s");
 
         s.setMode(DcMotor.Runmode.STOP_AND_RESET_ENCODERS); //sets current encoder position to zero
         s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         s.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.Brake); //static power
+    }
+
+    public int getPosition() {
+        return s.getCurrentPosition();
     }
 
     public void toPosition(int target) {
