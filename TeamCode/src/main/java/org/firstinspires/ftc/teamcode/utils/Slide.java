@@ -14,7 +14,7 @@ public class Slide {
 
     private final float speed = 1;
 
-    public final static int low, medium, high;
+    public final static int low, medium, high, slideMin;
 
     public Slide (HardwareMap hardwaremap) {
         hw = hardwaremap;
@@ -23,16 +23,15 @@ public class Slide {
     }
 
     public void initialize() {
-        
-        /*
 
-        for preset levels:
+        //for preset levels:
 
-        low = x;
-        medium = y;
-        high = z;
+        low = 100;
+        medium = 200;
+        high = 300;
 
-         */
+        //minimum height for arm to pass under
+        slideMin = 100;
 
          s = hw.get(DcMotor.class, "s");
 

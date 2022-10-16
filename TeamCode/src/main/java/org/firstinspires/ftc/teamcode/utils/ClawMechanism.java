@@ -4,7 +4,6 @@ public class ClawMechanism {
 
     private boolean flip;
 
-    private int slideMin;
     private int slideTarget;
     
     public ClawMechanism(HardwareMap hw) {
@@ -12,8 +11,6 @@ public class ClawMechanism {
         slide = new Slide(hw);
         
         flip = true; //starts in flipped position
-
-        slideMin = 100; //minimum value for arm to be able to flip under
     }
     
     public void closeClaw(double position) {
@@ -46,27 +43,36 @@ public class ClawMechanism {
         else
             claw.moveRoll(1);
     }
-    
+    //wacky shit if press flip twice cuz of threads, maybe synchronize or have a cancel button
     public void flipArm() {
-        if(slide.getCurrentPosition >= slideMin) {
+        if(slide.getCurrentPosition >= Slide.slideMin) {
             if(flip)
                 claw.moveArm(0);
             else
                 claw.moveArm(1);
         }
         else {
-            if (slideTarget >= slideMin) {
+            if (slideTarget >= Slide.slideMin) {
                 //start thread to check if slide goes up and then flip the arm
-                SlideCheck sc = new SlideCheck(slide);
+                SlideCheck sc = new SlideCheck(slide, claw);
                 sc.start();
             }
             else {
                 int oldPos = slide.getPosition();
-                slide.setPosition(slideMin);
+                slide.setPosition(Slide.slideMin);
                 //start thread to check if slide goes up and then flip the arm, then go back to old position
-                SlideCheck sc = new SlideCheck(slide, oldPos);
+                SlideCheck sc = new SlideCheck(slide, claw, oldPos);
                 sc.start();
             }
         }
+    }
+
+    public void flip() {
+        flipArm();
+        flipRoll();
+    }
+
+    public void setPitch(double position) {
+        claw.movePitch(position);
     }
 }
