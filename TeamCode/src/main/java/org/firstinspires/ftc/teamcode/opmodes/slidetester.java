@@ -21,13 +21,13 @@ public class slidetester extends LinearOpMode{
         waitForStart();
         runtime.reset();
         while(opModeIsActive()) {
-            telemetry.addLine("Encoder Ticks: "+s.getEncoderTicks);
+            telemetry.addLine("Encoder Ticks: "+s.getCurrentPosition());
         }
     }
 
     public void initialize() {
         s = hardwareMap.get(DcMotor.class, "s");
         s.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        s.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODERS);
+        s.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 }

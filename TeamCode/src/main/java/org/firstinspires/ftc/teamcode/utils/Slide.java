@@ -1,11 +1,7 @@
 package org.firstinspires.ftc.teamcode.utils;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class Slide {
 
@@ -14,7 +10,10 @@ public class Slide {
 
     private final float speed = 1;
 
-    public final static int low, medium, high, slideMin;
+    public final static int low = 100;
+    public final static int medium = 200;
+    public final static int high = 300;
+    public final static int slideMin = 150;
 
     public Slide (HardwareMap hardwaremap) {
         hw = hardwaremap;
@@ -23,29 +22,23 @@ public class Slide {
     }
 
     public void initialize() {
-
-        //for preset levels:
-
-        low = 100;
-        medium = 200;
-        high = 300;
-
-        //minimum height for arm to pass under
-        slideMin = 100;
-
          s = hw.get(DcMotor.class, "s");
 
-        s.setMode(DcMotor.Runmode.STOP_AND_RESET_ENCODERS); //sets current encoder position to zero
+        s.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //sets current encoder position to zero
         s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        s.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.Brake); //static power
+        s.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE); //static power
     }
 
-    public int getPosition() {
+    public int getCurrentPosition() {
         return s.getCurrentPosition();
     }
 
-    public void toPosition(int target) {
+    public int getTargetPosition() {
+        return s.getTargetPosition();
+    }
+
+    public void setPosition(int target) {
         s.setTargetPosition(target);
         s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         s.setPower(speed);
@@ -61,7 +54,7 @@ public class Slide {
     }
 
     public void resetEncoder() {
-        s.setMode(DcMotor.Runmode.STOP_AND_RESET_ENCODERS); //sets current encoder position to zero
+        s.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //sets current encoder position to zero
         s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 }
