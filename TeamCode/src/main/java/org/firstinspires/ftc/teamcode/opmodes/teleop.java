@@ -122,7 +122,7 @@ public class teleop extends LinearOpMode {
 
             claw.closeClaw(gamepad2.right_trigger);
 
-            if(gamepad2.left_bumper&&!lb) {
+            if(gamepad2.left_bumper&&!lb&&!claw.getSlideCheck().isAlive()) {
                 claw.flip();
                 lb = true;
             }
