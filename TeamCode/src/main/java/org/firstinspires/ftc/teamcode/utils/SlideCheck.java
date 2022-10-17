@@ -6,6 +6,8 @@ public class SlideCheck extends Thread {
     private Slide slide;
     private Claw claw;
 
+    private final int armDelay = 1000;
+
     private boolean targetLow = false;
 
     private boolean flip;
@@ -39,6 +41,11 @@ public class SlideCheck extends Thread {
         else
             claw.moveArm(1);
         if(targetLow) {
+            try {
+                Thread.sleep(armDelay);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             slide.setPosition(oldPos);
         }
     }

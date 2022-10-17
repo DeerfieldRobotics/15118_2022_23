@@ -6,7 +6,7 @@ public class ClawMechanism {
     private Claw claw;
     private Slide slide;
 
-    private boolean flip;
+    public boolean flip;
 
     private int slideTarget;
     
@@ -74,6 +74,14 @@ public class ClawMechanism {
     public void flip() {
         flipArm();
         flipRoll();
+    }
+
+    public void setArm(double position) {
+        claw.moveArm(position);
+    }
+
+    public void setRoll(double position) {
+        claw.moveRoll(position);
     }
 
     public void setPitch(double position) {
