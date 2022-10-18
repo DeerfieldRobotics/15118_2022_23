@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -33,9 +34,10 @@ public class Robot_OmniDrive
     // Private Members
     private LinearOpMode myOpMode;
 
-    private DcMotor  leftDrive      = null;
-    private DcMotor  rightDrive     = null;
-    private DcMotor  backDrive      = null;
+    private DcMotor  fl      = null;
+    private DcMotor  fr     = null;
+    private DcMotor  bl      = null;
+    private DcMotor  br      = null;
 
     private double  driveAxial      = 0 ;   // Positive is forward
     private double  driveLateral    = 0 ;   // Positive is right
@@ -54,14 +56,15 @@ public class Robot_OmniDrive
         myOpMode = opMode;
 
         // Define and Initialize Motors
-        leftDrive        = myOpMode.hardwareMap.get(DcMotor.class, "left drive");
-        rightDrive       = myOpMode.hardwareMap.get(DcMotor.class, "right drive");
-        backDrive        = myOpMode.hardwareMap.get(DcMotor.class, "back drive");
+        fl        = myOpMode.hardwareMap.get(DcMotor.class, "fl");
+        fr       = myOpMode.hardwareMap.get(DcMotor.class, "fr");
+        bl        = myOpMode.hardwareMap.get(DcMotor.class, "bl");
+        br        = myOpMode.hardwareMap.get(DcMotor.class, "bl");
 
-        leftDrive.setDirection(DcMotor.Direction.FORWARD); // Positive input rotates counter clockwise
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);// Positive input rotates counter clockwise
-        backDrive.setDirection(DcMotor.Direction.FORWARD); // Positive input rotates counter clockwise
-
+        fl.setDirection(DcMotor.Direction.FORWARD); // Positive input rotates counter clockwise
+        fr.setDirection(DcMotor.Direction.FORWARD);// Positive input rotates counter clockwise
+        bl.setDirection(DcMotor.Direction.REVERSE); // Positive input rotates counter clockwise
+        br.setDirection(DcMotor.Direction.REVERSE);
         //use RUN_USING_ENCODERS because encoders are installed.
         setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
@@ -124,9 +127,10 @@ public class Robot_OmniDrive
         }
 
         // Set drive motor power levels.
-        backDrive.setPower(back);
-        leftDrive.setPower(left);
-        rightDrive.setPower(right);
+        fl.setPower(left);
+        fr.setPower(right);
+        bl.setPower(back);
+        br.setPower(back);
 
         // Display Telemetry
         myOpMode.telemetry.addData("Axes  ", "A[%+5.2f], L[%+5.2f], Y[%+5.2f]", driveAxial, driveLateral, driveYaw);
@@ -144,8 +148,9 @@ public class Robot_OmniDrive
      * @param mode    Desired Motor mode.
      */
     public void setMode(DcMotor.RunMode mode ) {
-        leftDrive.setMode(mode);
-        rightDrive.setMode(mode);
-        backDrive.setMode(mode);
+        fl.setMode(mode);
+        fr.setMode(mode);
+        bl.setMode(mode);
+        br.setMode(mode);
     }
 }
