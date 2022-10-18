@@ -79,7 +79,6 @@ public class VuforiaDetection extends LinearOpMode {
 
     /* Declare OpMode members. */
     Robot_OmniDrive     robot    = new Robot_OmniDrive();   // Use Omni-Directional drive system
-    Robot_Navigation    nav      = new Robot_Navigation();  // Use Image Tracking library
     // Constants
     private static final int     MAX_TARGETS    =   4;
     private static final double  ON_AXIS        =  10;      // Within 1.0 cm of target center-line
@@ -116,7 +115,7 @@ public class VuforiaDetection extends LinearOpMode {
         initVuforia(this, robot);
 
         // Activate Vuforia (this takes a few seconds)
-        nav.activateTracking();
+        activateTracking();
 
         // Wait for the game to start (driver presses PLAY)
         while (!isStarted()) {
@@ -139,7 +138,7 @@ public class VuforiaDetection extends LinearOpMode {
             // In manual drive the robot responds to the Joystick.
             if (targetsAreVisible() && gamepad1.left_bumper) {
                 // Calculate automatic target approach
-                nav.cruiseControl(TARGET_DISTANCE);
+                cruiseControl(TARGET_DISTANCE);
 
             } else {
                 // Drive the robot using the joysticks
