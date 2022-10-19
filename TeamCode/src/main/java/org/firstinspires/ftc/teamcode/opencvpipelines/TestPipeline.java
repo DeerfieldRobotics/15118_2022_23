@@ -10,7 +10,6 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-import javafx.scene.shape.Rectangle;
 
 public class TestPipeline extends OpenCvPipeline {
     Mat workingMatrix = new Mat();
