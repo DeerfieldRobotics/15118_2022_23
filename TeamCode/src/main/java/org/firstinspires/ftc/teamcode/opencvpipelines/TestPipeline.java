@@ -6,6 +6,8 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
+import javafx.scene.shape.Rectangle;
+
 public class TestPipeline extends OpenCvPipeline {
     Mat workingMatrix = new Mat();
 
@@ -23,6 +25,12 @@ public class TestPipeline extends OpenCvPipeline {
         Scalar high = new Scalar(255, 150, 255);
 
         Core.inRange(workingMatrix, low, high, workingMatrix);
+
+        for(int x = 0; x<1920;x++) {
+            
+        }
+
+        Imgproc.rectangle(workingMatrix, new Rectangle(), new Scalar(0,255,0));
 
         return workingMatrix;
     }
