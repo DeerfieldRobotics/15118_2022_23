@@ -5,6 +5,7 @@ import java.lang.FdLibm.Cbrt;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.Range;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
@@ -27,20 +28,20 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
             return input;
         }
 
-        Imgproc.cvtColor(workingMatrix, workingMatrix, Imgproc.COLOR_RGB2YCrCb); //converts to ycrcb colorspace
+        Imgproc.cvtColor(workingMatrix, workingMatrix, Imgproc.COLOR_BGR2HSV); //converts to ycrcb colorspace
 
         //create rectangles, for loop
         double[][][] initial = new double[54][96][2] ;
-        double cbTotal = 0;
-        double crTotal = 0;
-        double cbStandardDev = 0;
-        double crStandardDev = 0;
+        double hueTotal = 0;
+
+        double hueStDev = 0;
+
+
         for(int i = 0; i<initial.length;i++) { //collects all cr cb values values
             for(int j = 0; j<initial[0].length;j++) {
-                initial[i][j][0]=Core.sumElems(workingMatrix.submat(j*1920/initial[0].length,(j+1)*1920/initial[0].length),i*1080/initial.length,(i+1)*1080/initial.length).val[2]; //finds sum of submat and gets cb value
-                cbTotal+=initial[i][j][0];
-                initial[i][j][1]=Core.sumElems(workingMatrix.submat(j*1920/initial[0].length,(j+1)*1920/initial[0].length),i*1080/initial.length,(i+1)*1080/initial.length).val[1]; //finds sum of submat and gets cr value
-                crTotal+=initial[i][j][1];
+                initial[i][j][0]=Core.sumElems(workingMatrix.submat(new Range(j*1920/initial[0].length,(j+1)*1920/initial[0].length)),new Range(i*1080/initial.length,(i+1)*1080/initial.length)).val[0]; //finds sum of submat and gets cb value
+                hueTotal+=initial[i][j][0];
+
             }
         }
 
@@ -48,8 +49,6 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
         
        
 
-        cbStandardDev=Math.sqrt(cbStandardDev/(initial.length*initial[0].length));
-        crStandardDev=Math.sqrt(crStandardDev/(initial.length*initial[0].length));
         double cr_sum = 0;
         double cb_sum = 0;
         for(int i = 0; i<initial.length;i++) {
@@ -62,7 +61,7 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
         }
         final double total_value = 0;
         final double cr_mean = cr_sum/total_value;
-        final double cb_mean = cb_mean/total_value;
+        final double cb_mean = cb_sum/total_value;
         for(int i = 0; i<initial.length;i++) {
             for(int j = 0;j<initial[0].length;j++) {
                 cbStandardDev+=Math.pow((initial[i][j][0]-cbmean),2);
