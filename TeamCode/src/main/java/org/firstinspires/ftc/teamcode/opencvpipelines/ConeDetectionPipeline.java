@@ -39,7 +39,7 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
 
         for(int i = 0; i<initial.length;i++) { //collects all cr cb values values
             for(int j = 0; j<initial[0].length;j++) {
-                initial[i][j][0]=Core.sumElems(workingMatrix.submat(new Range(j*1920/initial[0].length,(j+1)*1920/initial[0].length)),new Range(i*1080/initial.length,(i+1)*1080/initial.length)).val[0]; //finds sum of submat and gets cb value
+                initial[i][j][0]=Core.sumElems(workingMatrix.submat(new Range(j*1920/initial[0].length,(j+1)*1920/initial[0].length),new Range(i*1080/initial.length,(i+1)*1080/initial.length))).val[0]; //finds sum of submat and gets cb value
                 hueTotal+=initial[i][j][0];
 
             }
@@ -163,34 +163,6 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
         //identify outliers with mean and threshold for standard deviation thing
         //store outlier location somehow, maybe boolean array, or just array of points
         //iterate using squares found with above
-
-
-
-
-        Mat matLeft = workingMatrix.submat(120, 150, 10, 50);
-        Mat matCenter = workingMatrix.submat(120, 150, 80, 120);
-        Mat matRight = workingMatrix.submat(120, 150, 150, 190);
-
-        Imgproc.rectangle(workingMatrix, new Rect(10,120,40,30), new Scalar(255,255,255));
-
-        double leftTotal = Core.sumElems(matLeft).val[2];
-        double centerTotal = Core.sumElems(matCenter).val[2];
-        double rightTotal = Core.sumElems(matRight).val[2];
-
-        if(leftTotal > centerTotal) {
-            if(leftTotal > rightTotal) {
-                //left is skystone
-            }
-            else {
-                //right is skystone
-            }
-        }
-        else if(centerTotal>rightTotal) {
-            //center is skystone
-        }
-        else {
-            //right is skystone
-        }
 
 
         return workingMatrix;
