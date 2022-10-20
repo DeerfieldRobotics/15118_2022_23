@@ -10,7 +10,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
-@Autonomous(name = "bruh")
+@Autonomous(name = "conetest")
 public class ConeTest extends LinearOpMode {
     private OpenCvInternalCamera phoneCam;
     private TestPipeline detector = new TestPipeline();
@@ -29,7 +29,9 @@ public class ConeTest extends LinearOpMode {
         waitForStart();
         while(opModeIsActive())
         {
-            telemetry.addData("poop",1);
+            telemetry.addData("height",detector.height());
+            telemetry.addData("width",detector.width());
+            telemetry.update();
         }
     }
 }
