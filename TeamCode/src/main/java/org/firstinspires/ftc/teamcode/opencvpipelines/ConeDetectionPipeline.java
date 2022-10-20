@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.opencvpipelines;
 
-import java.lang.FdLibm.Cbrt;
+//import java.lang.FdLibm.Cbrt;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.opencv.core.Core;
@@ -11,7 +11,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-import javafx.util.Pair;
+//import javafx.util.Pair;
 
 public class ConeDetectionPipeline extends OpenCvPipeline {
 
@@ -47,7 +47,7 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
 
         //standard deviation:
         
-       
+
 
         double cr_sum = 0;
         double cb_sum = 0;
