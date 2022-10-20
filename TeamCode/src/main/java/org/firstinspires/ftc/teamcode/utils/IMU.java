@@ -10,9 +10,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU.accelerationIntegrationAlgorithm;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-public class IMU implements BNO055IMU.accelerationIntegrationAlgorithm{
-    private BNO055IMU imu;
-
+public class IMU implements BNO055IMU{
     private Orientation lastAngles;
     //this is the temporary orientation used for comparison aganinst intended/previous orientation
     private Orientation temp;
@@ -20,6 +18,9 @@ public class IMU implements BNO055IMU.accelerationIntegrationAlgorithm{
 
     private double distanceTraveled;
     BNO055IMU.Parameters parameters;
+
+    private PID pid;
+
     public IMU(){
         currentAngle = 0.0;
         distanceTraveled = 0.0;
@@ -34,8 +35,12 @@ public class IMU implements BNO055IMU.accelerationIntegrationAlgorithm{
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
     }
 
-    public void initialize(){
-        imu.initialize(parameters);
+    public void initializeIMU(){
+        imu.initializeIMU(parameters);
+    }
+
+    public void initializeAcc(double pos, double v){
+        pid.initializePID(parameters, pos, v);
     }
 
     public double getAngle(){
@@ -56,14 +61,6 @@ public class IMU implements BNO055IMU.accelerationIntegrationAlgorithm{
 
         return currentAngle;
     }
-
-    public void trackDistance(){
-        
-    }
-
-    // public double acc(){
-    //     return imu.getAc
-    // }
 
     public Orientation getTemp(){
         //get the CURRENT orientation
@@ -93,8 +90,6 @@ public class IMU implements BNO055IMU.accelerationIntegrationAlgorithm{
         lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         currentAngle = 0.0;
     }
-
-
 
     public float getHeading(){
         return lastAngles.firstAngle;
