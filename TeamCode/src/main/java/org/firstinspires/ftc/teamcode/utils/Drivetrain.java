@@ -12,7 +12,7 @@ public class Drivetrain
     private DcMotor fl, fr, bl, br;
     private HardwareMap hw;
 
-    static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
+    static final double     COUNTS_PER_MOTOR_REV    = 384.5 ;    // eg: TETRIX Motor Encoder
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // No External Gearing.
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
@@ -60,6 +60,13 @@ public class Drivetrain
         bl.setPower(forward + turn - strafe);
         br.setPower(forward - turn + strafe);
     }
+
+    public void move(double flpow, double frpow, double blpow, double brpow){
+        fl.setPower(flpow);
+        fr.setPower(frpow);
+        bl.setPower(blpow);
+        br.setPower(brpow);
+    }
     public void stop() {
         fl.setPower(0);
         fr.setPower(0);
@@ -69,18 +76,11 @@ public class Drivetrain
     }
     public void setMode(String newMode)
     {
-        if(newMode.equals("AUTO"))
-        {
-
+        if(newMode.equals("AUTO")){
             setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        } else if(newMode.equals("TELEOP"))
-        {
-
+        } else if(newMode.equals("TELEOP")) {
             setEncoderMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        } else
-        {
-
-        }
+        } else {}
     }
 
     public void setSpeed(double newSpeed)
