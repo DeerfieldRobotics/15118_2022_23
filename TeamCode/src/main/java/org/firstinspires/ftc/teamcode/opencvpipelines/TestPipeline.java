@@ -29,40 +29,66 @@ public class TestPipeline extends OpenCvPipeline {
 
         Core.inRange(workingMatrix, low, high, workingMatrix);
 
-        int lowx = 0;
+        int lowx = 319;
         int highx = 0;
-        int x = 0;
-        while (x<1920) {
-            while (Core.sumElems(workingMatrix.submat(new Range(x, x + 1), new Range(0, 1079))).val[2] == 0) {
+        int lowy = 239;
+        int highy = 0;
+
+        for(int i = 0; i < workingMatrix.height();i++) {
+            for(int j = 0; j<workingMatrix.width();j++) {
+                if(workingMatrix.get(i,j)[0]==255) {
+                    if(i>highy)
+                        highy=i;
+                    if(i<lowy)
+                        lowy=i;
+                    if(j>highx)
+                        highx=j;
+                    if(j<lowx)
+                        lowx=j;
+                };
+            }
+        }
+        /*
+        int x = 1;
+        while (x<240) {
+            while (Core.sumElems(workingMatrix.submat(new Range(x, x + 1), new Range(0, 319))).val[2] == 0) {
                 x++;
                 lowx = x;
             }
-            while(Core.sumElems(workingMatrix.submat(new Range(x, x + 1), new Range(0, 1079))).val[2] > 0) {
+            /*
+            while(Core.sumElems(workingMatrix.submat(new Range(x, x + 1), new Range(0, 319))).val[2] > 0) {
                 x++;
                 highx = x;
             }
-        }
 
+             */
+/*
         int lowy = 0;
         int highy = 0;
-        int y = 0;
-        while (y<1080) {
-            while (Core.sumElems(workingMatrix.submat(new Range(y, y + 1), new Range(0, 1919))).val[2] == 0) {
+        int y = 1;
+        while (y<1919) {
+            while (Core.sumElems(workingMatrix.submat(new Range(0,1079), new Range(y, y + 1))).val[2] == 0) {
                 y++;
                 lowy = y;
             }
-            while(Core.sumElems(workingMatrix.submat(new Range(y, y + 1), new Range(0, 1919))).val[2] > 0) {
+            while(Core.sumElems(workingMatrix.submat(new Range(0,1079), new Range(y, y + 1))).val[2] > 0) {
                 y++;
                 highx = y;
             }
         }
 
+*/
+        Imgproc.rectangle(input, new Rect(lowx, lowy, highx-lowx, highy-lowy), new Scalar(0,255,0));
 
 
-        Imgproc.rectangle(workingMatrix, new Rect(lowx, highx, lowy, highy), new Scalar(0,255,0));
 
+        return input;
+    }
 
-
-        return workingMatrix;
+    public int height() {
+        return workingMatrix.height();
+    }
+    public int width() {
+        return workingMatrix.width();
     }
 }
