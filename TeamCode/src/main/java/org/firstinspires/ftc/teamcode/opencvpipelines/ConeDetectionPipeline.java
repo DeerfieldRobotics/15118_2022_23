@@ -28,7 +28,7 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
             return input;
         }
 
-        Imgproc.cvtColor(workingMatrix, workingMatrix, Imgproc.COLOR_BGR2HSV); //converts to ycrcb colorspace
+        Imgproc.cvtColor(workingMatrix, workingMatrix, Imgproc.COLOR_BGR2HSV); //converts to hsv
 
         //create rectangles, for loop
         double[][][] initial = new double[54][96][2] ;
@@ -112,10 +112,10 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
                 }
             }
         }
-        Pair[][] cb_hori_array = new int[2][math.max(cb_left_outliers, cb_right_outliers)];
-        Pair[][] cb_vert_array = new int[2][math.max(cb_up_outliers, cb_down_outliers)];
-        Pair[][] cr_hori_array = new int[2][math.max(cr_left_outliers, cr_right_outliers)];
-        Pair[][] cr_vert_array = new int[2][math.max(cr_up_outliers, cr_down_outliers)];
+        Pair[][] cb_hori_array = new int[2][Math.max(cb_left_outliers, cb_right_outliers)];
+        Pair[][] cb_vert_array = new int[2][Math.max(cb_up_outliers, cb_down_outliers)];
+        Pair[][] cr_hori_array = new int[2][Math.max(cr_left_outliers, cr_right_outliers)];
+        Pair[][] cr_vert_array = new int[2][Math.max(cr_up_outliers, cr_down_outliers)];
         cb_left_outliers = 0;
         cb_right_outliers = 0;
         cb_up_outliers = 0;
