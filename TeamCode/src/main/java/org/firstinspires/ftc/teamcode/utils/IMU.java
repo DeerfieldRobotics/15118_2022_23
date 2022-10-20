@@ -4,20 +4,26 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.hardware.bosch.BNO055IMU.accelerationIntegrationAlgorithm;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-public class IMU {
+public class IMU implements BNO055IMU.accelerationIntegrationAlgorithm{
     private BNO055IMU imu;
+
     private Orientation lastAngles;
     //this is the temporary orientation used for comparison aganinst intended/previous orientation
     private Orientation temp;
     private double currentAngle;
+
+    private double distanceTraveled;
     BNO055IMU.Parameters parameters;
     public IMU(){
         currentAngle = 0.0;
+        distanceTraveled = 0.0;
+
         parameters = new BNO055IMU.Parameters();
 
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -50,6 +56,14 @@ public class IMU {
 
         return currentAngle;
     }
+
+    public void trackDistance(){
+        
+    }
+
+    // public double acc(){
+    //     return imu.getAc
+    // }
 
     public Orientation getTemp(){
         //get the CURRENT orientation
