@@ -29,20 +29,17 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
             return input;
         }
 
-        Imgproc.cvtColor(workingMatrix, workingMatrix, Imgproc.COLOR_BGR2HSV); //converts to hsv
+        Imgproc.cvtColor(workingMatrix, workingMatrix, Imgproc.COLOR_RGB2YCrCb); //
 
         //create rectangles, for loop
         double[][][] initial = new double[54][96][2] ;
-        double hueTotal = 0;
-
-        double hueStDev = 0;
 
 
         for(int i = 0; i<initial.length;i++) { //collects all cr cb values values
             for(int j = 0; j<initial[0].length;j++) {
-                initial[i][j][0]=Core.sumElems(workingMatrix.submat(new Range(j*1920/initial[0].length,(j+1)*1920/initial[0].length),new Range(i*1080/initial.length,(i+1)*1080/initial.length))).val[0]; //finds sum of submat and gets cb value
-                hueTotal+=initial[i][j][0];
+                initial[i][j][0]=Core.sumElems(workingMatrix.submat(new Range(j*1920/initial[0].length,(j+1)*1920/initial[0].length),new Range(i*1080/initial.length,(i+1)*1080/initial.length))).val[2]; //finds sum of submat and gets cb value
 
+                initial[i][j][1]=Core.sumElems(workingMatrix.submat(new Range(j*1920/initial[0].length,(j+1)*1920/initial[0].length),new Range(i*1080/initial.length,(i+1)*1080/initial.length))).val[1]; //finds sum of submat and gets cr value
             }
         }
 
