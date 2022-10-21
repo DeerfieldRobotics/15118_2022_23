@@ -32,14 +32,14 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
         Imgproc.cvtColor(workingMatrix, workingMatrix, Imgproc.COLOR_RGB2YCrCb); //
 
         //create rectangles, for loop
-        double[][][] initial = new double[54][96][2] ;
+        double[][][] initial = new double[48][64][2] ;
 
 
-        for(int i = 0; i<initial.length;i++) { //collects all cr cb values values
-            for(int j = 0; j<initial[0].length;j++) {
-                initial[i][j][0]=Core.sumElems(workingMatrix.submat(new Range(j*1920/initial[0].length,(j+1)*1920/initial[0].length),new Range(i*1080/initial.length,(i+1)*1080/initial.length))).val[2]; //finds sum of submat and gets cb value
+        for(int i = 0; i<initial.length-1;i++) { //collects all cr cb values values
+            for(int j = 0; j<initial[0].length-1;j++) {
+                initial[i][j][0]=Core.sumElems(workingMatrix.submat(new Range(j*input.height()/initial[0].length,(j+1)*input.height()/initial[0].length), new Range(i*input.width()/initial.length,(i+1)*input.width()/initial.length))).val[2]; //finds sum of submat and gets cb value
 
-                initial[i][j][1]=Core.sumElems(workingMatrix.submat(new Range(j*1920/initial[0].length,(j+1)*1920/initial[0].length),new Range(i*1080/initial.length,(i+1)*1080/initial.length))).val[1]; //finds sum of submat and gets cr value
+                initial[i][j][1]=Core.sumElems(workingMatrix.submat(new Range(j*input.height()/initial[0].length,(j+1)*input.height()/initial[0].length),new Range(i*input.width()/initial.length,(i+1)*input.width()/initial.length))).val[1]; //finds sum of submat and gets cr value
             }
         }
 
@@ -49,21 +49,22 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
 
         double cr_sum = 0;
         double cb_sum = 0;
-        for(int i = 0; i<initial.length;i++) {
-            for(int j = 0;j<initial[0].length;j++) {
+        for(int i = 0; i<initial.length-1;i++) {
+            for(int j = 0;j<initial[0].length-1;j++) {
                 cr_sum +=Math.abs(initial[i][j][1]-initial[i+1][j][1]);
                 cr_sum+=Math.abs(initial[i][j][1]-initial[i][j+1][1]);
                 cb_sum +=Math.abs(initial[i][j][0]-initial[i+1][j][0]);
                 cb_sum+=Math.abs(initial[i][j][0]-initial[i][j+1][0]);
             }
         }
+
         double cbStandardDev = 0;
         double crStandardDev = 0;
         final double total_value = 0;
         final double cr_mean = cr_sum/total_value;
         final double cb_mean = cb_sum/total_value;
-        for(int i = 0; i<initial.length;i++) {
-            for(int j = 0;j<initial[0].length;j++) {
+        for(int i = 0; i<initial.length-1;i++) {
+            for(int j = 0;j<initial[0].length-1;j++) {
                 cbStandardDev+=Math.pow((initial[i][j][0]-cb_mean),2);
                 crStandardDev+=Math.pow((initial[i][j][1]-cr_mean),2);
             }
@@ -84,34 +85,35 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
         //left outliers are from low saturation -> high saturation
         //down otliers are low saturation
         //                  high saturation
-        for(int i = 0; i<initial.length;i++) {
-            for(int j = 0;j<initial[0].length;j++) {
+        for(int i = 0; i<initial.length-1;i++) {
+            for(int j = 0;j<initial[0].length-1;j++) {
                 if(initial[i+1][j][1]-initial[i][j][1]>crStandardDev){
                     cr_left_outliers++;
                 }
-                if(initial[initial.length-i][initial.length-j][1]-initial[initial.length-i-1][j][1]>crStandardDev){
+                if(initial[initial.length-1-i][initial.length-j][0]-initial[initial.length-1-i-1][j][0]>crStandardDev){
                     cr_right_outliers++;
                 }
                 if(initial[i+1][j][1]-initial[i][j][1]>crStandardDev){
                     cb_left_outliers++;
                 }
-                if(initial[initial.length-i][initial.length-j][2]-initial[initial.length-i-1][initial.length-j][2]>cbStandardDev){
+                if(initial[initial.length-1-i][initial.length-j][1]-initial[initial.length-1-i-1][initial.length-j][1]>cbStandardDev){
                     cb_right_outliers++;
                 }
-                if(initial[i][j+1][1]-initial[i][j][1]>crStandardDev){
+                if(initial[i][j+1][0]-initial[i][j][0]>crStandardDev){
                     cr_down_outliers++;
                 }
-                if(initial[initial.length-i][initial.length-j-1][1]>crStandardDev){
+                if(initial[initial.length-1-i][initial.length-j-1][0]>crStandardDev){
                     cr_up_outliers++;
                 }
                 if(initial[i][j+1][1]-initial[i][j][1]>cbStandardDev){
                     cb_down_outliers++;
                 }
-                if(initial[initial.length-i][initial.length-j-1][1]>cbStandardDev){
+                if(initial[initial.length-1-i][initial.length-j-1][1]>cbStandardDev){
                     cb_up_outliers++;
                 }
             }
         }
+        /*
         //stores the left and right outliers, the amount of left and right outliers, and the place of them.
         int[][][] cb_hori_array = new int[2][Math.max(cb_left_outliers, cb_right_outliers)][2];
         int[][][] cb_vert_array = new int[2][Math.max(cb_up_outliers, cb_down_outliers)][2];
@@ -125,34 +127,44 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
         cr_right_outliers = 0;
         cr_up_outliers = 0;
         cr_down_outliers = 0;
-        for(int i = 0; i<initial.length;i++) {
-            for(int j = 0;j<initial[0].length;j++) {
+        int lowx = Integer.MAX_VALUE;
+        int highx = Integer.MIN_VALUE;
+        int lowy = Integer.MAX_VALUE;
+        int highy = Integer.MIN_VALUE;
+
+
+        for(int i = 0; i<initial.length-1;i++) {
+            for(int j = 0;j<initial[0].length-1;j++) {
                 if(initial[i+1][j][1]-initial[i][j][1]>crStandardDev){
                     cr_hori_array[0][cr_left_outliers][0] = i;
                     cr_hori_array[0][cr_left_outliers][1] = j;
                     cr_left_outliers++;
+
                 }
-                if(initial[initial.length-i][initial.length-j][1]-initial[initial.length-i-1][j][1]>crStandardDev){
+                if(initial[initial.length-1-i][initial.length-j][1]-initial[initial.length-1-i-1][j][1]>crStandardDev){
                     cr_hori_array[1][cr_right_outliers][0] = i;
                     cr_hori_array[1][cr_right_outliers][1] = j;
                     cr_right_outliers++;
+
                 }
                 if(initial[i+1][j][1]-initial[i][j][1]>crStandardDev){
                     cb_hori_array[0][cb_left_outliers][0] = i;
                     cb_hori_array[0][cb_left_outliers][1] = j;
                     cb_left_outliers++;
+                    lowx = Math.min(lowx,i);
                 }
-                if(initial[initial.length-i][initial.length-j][2]-initial[initial.length-i-1][initial.length-j][2]>cbStandardDev){
+                if(initial[initial.length-1-i][initial.length-j][2]-initial[initial.length-1-i-1][initial.length-j][2]>cbStandardDev){
                     cb_hori_array[1][cb_right_outliers][0] = i;
                     cb_hori_array[1][cb_right_outliers][1] = j;
                     cb_right_outliers++;
+                    highx = Math.max(highx, i);
                 }
                 if(initial[i][j+1][1]-initial[i][j][1]>crStandardDev){
                     cr_vert_array[0][cr_down_outliers][0] = i;
                     cr_vert_array[0][cr_down_outliers][1] = j;
                     cr_down_outliers++;
                 }
-                if(initial[initial.length-i][initial.length-j-1][1]>crStandardDev){
+                if(initial[initial.length-1-i][initial.length-j-1][1]>crStandardDev){
                     cr_vert_array[1][cr_up_outliers][0] = i;
                     cr_vert_array[1][cr_up_outliers][1] = j;
                     cr_up_outliers++;
@@ -161,11 +173,13 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
                     cb_vert_array[0][cb_down_outliers][0] = i;
                     cb_vert_array[0][cb_down_outliers][1] = j;
                     cb_down_outliers++;
+                    lowy = Math.min(lowy,j);
                 }
-                if(initial[initial.length-i][initial.length-j-1][1]>cbStandardDev){
+                if(initial[initial.length-1-i][initial.length-j-1][1]>cbStandardDev){
                     cb_vert_array[1][cb_up_outliers][0] = i;
                     cb_vert_array[1][cb_up_outliers][1] = j;
                     cb_up_outliers++;
+                    highy = Math.max(highy,j);
                 }
             }
         }
@@ -174,6 +188,10 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
         //iterate using squares found with above
 
 
-        return workingMatrix;
+        Imgproc.rectangle(input, new Rect(lowx, lowy, highx-lowx, highy-lowy), new Scalar(0,255,0));
+*/
+
+
+        return input;
     }
 }

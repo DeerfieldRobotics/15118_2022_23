@@ -5,15 +5,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.opencvpipelines.ConeDetectionPipeline;
 import org.firstinspires.ftc.teamcode.opencvpipelines.TestPipeline;
-import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
-@Autonomous(name = "conetest")
-public class ConeTest extends LinearOpMode {
+@Autonomous(name = "conetestjank")
+public class ConeTest2 extends LinearOpMode {
     private OpenCvInternalCamera phoneCam;
-    private ConeDetectionPipeline detector = new ConeDetectionPipeline();
+    private TestPipeline detector = new TestPipeline();
 
 
     @Override
