@@ -131,12 +131,10 @@ public class VuforiaDetection extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            telemetry.addData(">", "Press Left Bumper to track target");
-
             // auto drive or manual drive?
             // In auto drive, the robot will approach any target it can see and then press against it
             // In manual drive the robot responds to the Joystick.
-            if (targetsAreVisible() && gamepad1.left_bumper) {
+            if (targetsAreVisible()) {
                 // Calculate automatic target approach
                 cruiseControl(TARGET_DISTANCE);
 

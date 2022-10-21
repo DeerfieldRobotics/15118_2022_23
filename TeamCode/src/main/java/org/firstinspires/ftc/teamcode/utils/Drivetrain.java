@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.utils;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -14,13 +13,13 @@ public class Drivetrain
 
     private IMU imu;
 
-    static final double     COUNTS_PER_MOTOR_REV    = 384.5 ;    // eg: TETRIX Motor Encoder
+    static final double     COUNTS_PER_MOTOR_REV    = 384.5 ;
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // No External Gearing.
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
-    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+    public static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
-    static final double     DRIVE_SPEED             = 0.6;
-    static final double     TURN_SPEED              = 0.5;
+    public static final double     DRIVE_SPEED             = 0.6;
+    public static final double     TURN_SPEED              = 0.5;
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -38,7 +37,7 @@ public class Drivetrain
         br = hw.get(DcMotor.class, "br");
         bl = hw.get(DcMotor.class, "bl");
 
-        imu = hw.get(BNO055IMU.class, "imu");
+        imu = (IMU) hw.get(BNO055IMU.class, "imu");
 
         fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -87,6 +86,13 @@ public class Drivetrain
         } else {}
     }
 
+    public void reset(){
+        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
     public void setSpeed(double newSpeed)
     {
         DRIVETRAIN_SPEED_MODIFIER = newSpeed;
@@ -107,21 +113,21 @@ public class Drivetrain
     public int[] getEncoderTicks()
     {
         return new int[]
-                {fr.getCurrentPosition(), fl.getCurrentPosition(), br.getCurrentPosition(), bl.getCurrentPosition()};
+                {fl.getCurrentPosition(), fr.getCurrentPosition(), bl.getCurrentPosition(), br.getCurrentPosition()};
     }
-    public void forwards(boolean forward, int amount)
+    public void forwards(boolean forward, int LTarget, int RTarget)
     {
 
         if (!forward) {
-            fr.setTargetPosition(amount);
-            fl.setTargetPosition(amount);
-            br.setTargetPosition(amount);
-            bl.setTargetPosition(amount);
+            fr.setTargetPosition(RTarget);
+            fl.setTargetPosition(LTarget);
+            br.setTargetPosition(RTarget);
+            bl.setTargetPosition(LTarget);
         } else {
-            fr.setTargetPosition(-amount);
-            fl.setTargetPosition(-amount);
-            br.setTargetPosition(-amount);
-            bl.setTargetPosition(-amount);
+            fr.setTargetPosition(-RTarget);
+            fl.setTargetPosition(-LTarget);
+            br.setTargetPosition(-RTarget);
+            bl.setTargetPosition(-LTarget);
         }
     }
     public void strafe(boolean left, int amount)
@@ -152,6 +158,11 @@ public class Drivetrain
             bl.setTargetPosition(-amount);
         }
     }
+
+    public boolean isBusy(){
+        return fl.isBusy() && fr.isBusy();
+    }
+
 
 
 }
