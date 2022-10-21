@@ -17,7 +17,8 @@ public class auto extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        imu.initialize();
+        imu.initializeIMU();
+        imu.initializeAcc();
 
         drivetrain.setMode("AUTO");
     }
@@ -61,6 +62,10 @@ public class auto extends LinearOpMode {
         }
 
         drivetrain.stop();
+    }
+
+    public double acc(){
+        return imu.getAc;
     }
 
 
