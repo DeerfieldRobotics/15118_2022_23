@@ -12,6 +12,8 @@ public class Drivetrain
     private DcMotor fl, fr, bl, br;
     private HardwareMap hw;
 
+    private IMU imu;
+
     static final double     COUNTS_PER_MOTOR_REV    = 384.5 ;    // eg: TETRIX Motor Encoder
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // No External Gearing.
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
@@ -35,6 +37,8 @@ public class Drivetrain
         fl = hw.get(DcMotor.class, "fl");
         br = hw.get(DcMotor.class, "br");
         bl = hw.get(DcMotor.class, "bl");
+
+        imu = hw.get(BNO055IMU.class, "imu");
 
         fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
