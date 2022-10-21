@@ -23,15 +23,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.utils.Drivetrain;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCameraException;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
@@ -44,7 +39,6 @@ public class AprilTagDemo extends LinearOpMode
 {
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
-
 
     static final double FEET_PER_METER = 3.28084;
 
@@ -67,32 +61,11 @@ public class AprilTagDemo extends LinearOpMode
     final float THRESHOLD_HIGH_DECIMATION_RANGE_METERS = 1.0f;
     final int THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION = 4;
 
-    private DcMotor         fl   = null;
-    private DcMotor         fr  = null;
-    private DcMotor         bl   = null;
-    private DcMotor         br  = null;
-
-    private Drivetrain drivetrain = new Drivetrain(hardwareMap);
-
-    // Calculate the COUNTS_PER_INCH for your specific drive train.
-    // Go to your motor vendor website to determine your motor's COUNTS_PER_MOTOR_REV
-    // For external drive gearing, set DRIVE_GEAR_REDUCTION as needed.
-    // For example, use a value of 2.0 for a 12-tooth spur gear driving a 24-tooth spur gear.
-    // This is gearing DOWN for less speed and more torque.
-    // For gearing UP, use a gear ratio less than 1.0. Note this will affect the direction of wheel rotation.
-    static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
-    static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // No External Gearing.
-    static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
-    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * 3.1415);
-    static final double     DRIVE_SPEED             = 0.6;
-    static final double     TURN_SPEED              = 0.5;
-
     @Override
-    public void runOpMode() throws OpenCvCameraException
+    public void runOpMode()
     {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "w1"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
 
         camera.setPipeline(aprilTagDetectionPipeline);
@@ -101,7 +74,7 @@ public class AprilTagDemo extends LinearOpMode
             @Override
             public void onOpened()
             {
-                camera.startStreaming(640,360, OpenCvCameraRotation.SIDEWAYS_LEFT);
+                camera.startStreaming(800,448, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
@@ -110,11 +83,6 @@ public class AprilTagDemo extends LinearOpMode
 
             }
         });
-
-        drivetrain.setMode("AUTO");
-
-        // Wait for the game to start (driver presses PLAY)
-
 
         waitForStart();
 
@@ -154,7 +122,8 @@ public class AprilTagDemo extends LinearOpMode
 
                     // If the target is within 1 meter, turn on high decimation to
                     // increase the frame rate
-                    if(detections.get(0).pose.z < THRESHOLD_HIGH_DECIMATION_RANGE_METERS) {
+                    if(detections.get(0).pose.z < THRESHOLD_HIGH_DECIMATION_RANGE_METERS)
+                    {
                         aprilTagDetectionPipeline.setDecimation(DECIMATION_HIGH);
                     }
 
@@ -168,34 +137,12 @@ public class AprilTagDemo extends LinearOpMode
                         telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", Math.toDegrees(detection.pose.pitch)));
                         telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.roll)));
                     }
-
                 }
 
                 telemetry.update();
             }
 
-            drive(detections.get(0).id);
-            break;
-
-        }
-    }
-
-    public void drive(int parkingSpace){
-        switch(parkingSpace){
-            case 1:
-                //first spot, to the left
-                drivetrain.strafe(true, 20);
-                drivetrain.forwards(true, 30);
-                break;
-            case 2:
-                //middle spot, forward
-                drivetrain.forwards(true, 30);
-                break;
-            case 3:
-                //3rd spot, to the right
-                drivetrain.strafe(false, 20);
-                drivetrain.forwards(true, 30);
-                break;
+            sleep(20);
         }
     }
 }

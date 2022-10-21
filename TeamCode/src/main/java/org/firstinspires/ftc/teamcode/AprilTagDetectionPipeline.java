@@ -41,9 +41,9 @@ class AprilTagDetectionPipeline extends OpenCvPipeline
 {
     private long nativeApriltagPtr;
     private Mat grey = new Mat();
-    private ArrayList<AprilTagDetection> detections = new ArrayList<AprilTagDetection>();
+    private ArrayList<AprilTagDetection> detections = new ArrayList<>();
 
-    private ArrayList<AprilTagDetection> detectionsUpdate = new ArrayList<AprilTagDetection>();
+    private ArrayList<AprilTagDetection> detectionsUpdate = new ArrayList<>();
     private final Object detectionsUpdateSync = new Object();
 
     Mat cameraMatrix;
