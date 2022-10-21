@@ -32,6 +32,8 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvInternalCamera2;
 
+import org.firstinspires.ftc.teamcode.utils.Drivetrain;
+
 import java.util.ArrayList;
 
 @Autonomous
@@ -62,10 +64,16 @@ public class AprilTagDemo extends LinearOpMode
     final float DECIMATION_LOW = 2;
     final float THRESHOLD_HIGH_DECIMATION_RANGE_METERS = 1.0f;
     final int THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION = 4;
+    
+    //Drivetrain drivetrain = new Drivetrain(hardwareMap);
 
     @Override
     public void runOpMode()
     {
+        //drivetrain.setMode("AUTO");
+        
+    
+        
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "w1"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
@@ -142,6 +150,7 @@ public class AprilTagDemo extends LinearOpMode
                         detectedID = detection.id;
                     }
                 }
+                //drive(detectedID);
                
 
                 telemetry.update();
@@ -150,4 +159,25 @@ public class AprilTagDemo extends LinearOpMode
             sleep(20);
         }
     }
+    
+    /*
+    public void drive(int parkingSpace){
+        switch(parkingSpace){
+            case 1:
+                //first spot, to the left
+                drivetrain.strafe(true, 20);
+                drivetrain.forwards(true, 30);
+                break;
+            case 2:
+                //middle spot, forward
+                drivetrain.forwards(true, 30);
+                break;
+            case 3:
+                //3rd spot, to the right
+                drivetrain.strafe(false, 20);
+                drivetrain.forwards(true, 30);
+                break;
+        }
+    }
+    */
 }
