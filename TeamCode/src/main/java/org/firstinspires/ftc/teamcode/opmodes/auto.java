@@ -88,7 +88,7 @@ public class auto extends LinearOpMode {
 
             // reset the timeout time and start motion.
             runtime.reset();
-            drivetrain.forwards(true, newTarget);
+            drivetrain.forwards(true, newTarget, newTarget);
 
             // keep looping while we are still active, and there is time left, and both motors are running.
             // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
