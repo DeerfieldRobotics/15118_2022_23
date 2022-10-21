@@ -50,7 +50,9 @@ public class AprilTagDemo extends LinearOpMode
     double fy = 578.272;
     double cx = 402.145;
     double cy = 221.506;
-
+    
+    int detectedID;
+    
     // UNITS ARE METERS
     double tagsize = 0.173;
 
@@ -136,8 +138,11 @@ public class AprilTagDemo extends LinearOpMode
                         telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", Math.toDegrees(detection.pose.yaw)));
                         telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", Math.toDegrees(detection.pose.pitch)));
                         telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.roll)));
+                        
+                        detectedID = detection.id;
                     }
                 }
+               
 
                 telemetry.update();
             }
