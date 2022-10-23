@@ -11,7 +11,6 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-
 //import javafx.util.Pair;
 
 public class ConeDetectionPipeline extends OpenCvPipeline {
@@ -33,7 +32,6 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
 
         //create rectangles, for loop
         double[][][] initial = new double[48][64][2] ;
-
 
         for(int i = 0; i<initial.length-1;i++) { //collects all cr cb values values
             for(int j = 0; j<initial[0].length-1;j++) {
@@ -85,30 +83,30 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
         //left outliers are from low saturation -> high saturation
         //down otliers are low saturation
         //                  high saturation
-        for(int i = 0; i<initial.length-1;i++) {
-            for(int j = 0;j<initial[0].length-1;j++) {
+        for(int i = 0; i<initial.length;i++) {
+            for(int j = 0;j<initial[0].length;j++) {
                 if(initial[i+1][j][1]-initial[i][j][1]>crStandardDev){
                     cr_left_outliers++;
                 }
-                if(initial[initial.length-1-i][initial.length-j][0]-initial[initial.length-1-i-1][j][0]>crStandardDev){
+                if(initial[initial.length-i][initial.length-j][1]-initial[initial.length-i-1][j][1]>crStandardDev){
                     cr_right_outliers++;
                 }
                 if(initial[i+1][j][1]-initial[i][j][1]>crStandardDev){
                     cb_left_outliers++;
                 }
-                if(initial[initial.length-1-i][initial.length-j][1]-initial[initial.length-1-i-1][initial.length-j][1]>cbStandardDev){
+                if(initial[initial.length-i][initial.length-j][2]-initial[initial.length-i-1][initial.length-j][2]>cbStandardDev){
                     cb_right_outliers++;
                 }
-                if(initial[i][j+1][0]-initial[i][j][0]>crStandardDev){
+                if(initial[i][j+1][1]-initial[i][j][1]>crStandardDev){
                     cr_down_outliers++;
                 }
-                if(initial[initial.length-1-i][initial.length-j-1][0]>crStandardDev){
+                if(initial[initial.length-i][initial.length-j-1][1]>crStandardDev){
                     cr_up_outliers++;
                 }
                 if(initial[i][j+1][1]-initial[i][j][1]>cbStandardDev){
                     cb_down_outliers++;
                 }
-                if(initial[initial.length-1-i][initial.length-j-1][1]>cbStandardDev){
+                if(initial[initial.length-i][initial.length-j-1][1]>cbStandardDev){
                     cb_up_outliers++;
                 }
             }

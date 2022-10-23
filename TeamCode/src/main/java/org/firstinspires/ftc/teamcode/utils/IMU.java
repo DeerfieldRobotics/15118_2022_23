@@ -6,17 +6,19 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.BNO055IMU.accelerationIntegrationAlgorithm;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-public class IMU implements BNO055IMU{
+public class IMU{
     private Orientation lastAngles;
     //this is the temporary orientation used for comparison aganinst intended/previous orientation
     private Orientation temp;
     private double currentAngle;
 
     private double distanceTraveled;
+
+    BNO055IMU imu;
     BNO055IMU.Parameters parameters;
 
     private PID pid;
@@ -33,14 +35,8 @@ public class IMU implements BNO055IMU{
         parameters.loggingEnabled = true;
         parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-    }
 
-    public void initializeIMU(){
-        imu.initializeIMU(parameters);
-    }
-
-    public void initializeAcc(double pos, double v){
-        pid.initializePID(parameters, pos, v);
+        imu.initialize(parameters);
     }
 
     public double getAngle(){
