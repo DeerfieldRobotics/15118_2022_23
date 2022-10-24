@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.opencvpipelines.ConeDetectionPipeline;
 import org.firstinspires.ftc.teamcode.opencvpipelines.TestPipeline;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -27,6 +28,10 @@ public class ConeTest extends LinearOpMode {
         waitForStart();
         while(opModeIsActive())
         {
+            telemetry.addData("pipeline","conedetector");
+            telemetry.addData("height",detector.height());
+            telemetry.addData("width",detector.width());
+            telemetry.update();
         }
     }
 }

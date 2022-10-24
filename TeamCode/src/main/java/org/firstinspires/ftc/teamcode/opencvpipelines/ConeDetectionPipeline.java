@@ -1,26 +1,40 @@
 package org.firstinspires.ftc.teamcode.opencvpipelines;
 
-//import java.lang.FdLibm.Cbrt;
-
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
 import org.opencv.core.Range;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-//import javafx.util.Pair;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConeDetectionPipeline extends OpenCvPipeline {
+
+    private int CrSens = 1;
+    private int CbSens = 1;
+    private double crThreshold = 50;
+
 
     Mat workingMatrix = new Mat();
     public ConeDetectionPipeline() {
     }
 
+    public int height() {
+        return workingMatrix.height();
+    }
+
+    public int width() {
+        return workingMatrix.width();
+    }
+
     @Override
     public Mat processFrame(Mat input) {
+
+
         input.copyTo(workingMatrix);
 
         if(workingMatrix.empty()) {
@@ -32,24 +46,27 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
         //create rectangles, for loop
         double[][][] initial = new double[48][64][2] ;
 
+        int heightMult = input.height()/initial.length;
+        int widthMult = input.height()/initial[0].length;
+
         for(int i = 0; i<initial.length-1;i++) { //collects all cr cb values values
             for(int j = 0; j<initial[0].length-1;j++) {
-                initial[i][j][0]=Core.sumElems(workingMatrix.submat(new Range(j*input.height()/initial[0].length,(j+1)*input.height()/initial[0].length), new Range(i*input.width()/initial.length,(i+1)*input.width()/initial.length))).val[2]; //finds sum of submat and gets cb value
+                initial[i][j][0]=Core.sumElems(workingMatrix.submat(new Range(i*widthMult,(i+1)*widthMult), new Range(j*heightMult,(j+1)*heightMult))).val[1]; //finds sum of submat and gets cb value
 
-                initial[i][j][1]=Core.sumElems(workingMatrix.submat(new Range(j*input.height()/initial[0].length,(j+1)*input.height()/initial[0].length),new Range(i*input.width()/initial.length,(i+1)*input.width()/initial.length))).val[1]; //finds sum of submat and gets cr value
+                initial[i][j][1]=Core.sumElems(workingMatrix.submat(new Range(i*widthMult,(i+1)*widthMult),new Range(j*heightMult,(j+1)*heightMult))).val[2]; //finds sum of submat and gets cr value
             }
         }
 
         //standard deviation:
         
 
-
+/*
         double cr_sum = 0;
         double cb_sum = 0;
         for(int i = 0; i<initial.length-1;i++) {
             for(int j = 0;j<initial[0].length-1;j++) {
-                cr_sum +=Math.abs(initial[i][j][1]-initial[i+1][j][1]);
-                cr_sum+=Math.abs(initial[i][j][1]-initial[i][j+1][1]);
+                cr_sum +=Math.abs(initial[i][j][1]-initial[i+1][j][1]); //adds lefts up
+                cr_sum+=Math.abs(initial[i][j][1]-initial[i][j+1][1]); //adds ups up or smth
                 cb_sum +=Math.abs(initial[i][j][0]-initial[i+1][j][0]);
                 cb_sum+=Math.abs(initial[i][j][0]-initial[i][j+1][0]);
             }
@@ -57,7 +74,7 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
 
         double cbStandardDev = 0;
         double crStandardDev = 0;
-        final double total_value = 0;
+        final double total_value = ;
         final double cr_mean = cr_sum/total_value;
         final double cb_mean = cb_sum/total_value;
         for(int i = 0; i<initial.length-1;i++) {
@@ -69,117 +86,118 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
 
         cbStandardDev=Math.sqrt(cbStandardDev/(initial.length*initial[0].length));
         crStandardDev=Math.sqrt(crStandardDev/(initial.length*initial[0].length));
-        // 3-d array (num of x outliers, num of y outliers, four(each direction))
-        int cr_left_outliers = 0;
-        int cr_right_outliers = 0;
-        int cr_up_outliers = 0;
-        int cr_down_outliers = 0;
-        int cb_left_outliers = 0;
-        int cb_right_outliers = 0;
-        int cb_up_outliers = 0;
-        int cb_down_outliers = 0;
+*/
         //counts outliers from each side
         //left outliers are from low saturation -> high saturation
         //down otliers are low saturation
         //                  high saturation
-        for(int i = 0; i<initial.length;i++) {
-            for(int j = 0;j<initial[0].length;j++) {
-                if(initial[i+1][j][1]-initial[i][j][1]>crStandardDev){
-                    cr_left_outliers++;
+
+        //stores coords, values
+        //index 0 is for x coord, 1 is for y coord, 2 for val, x is rightward, y is downward
+        List<int[]> CrXArray = new ArrayList<int[]>();
+        List<int[]> CrYArray = new ArrayList<int[]>();
+        List<int[]> CbXArray = new ArrayList<int[]>();
+        List<int[]> CbYArray = new ArrayList<int[]>();
+
+
+
+        for(int i = 0; i<initial.length;i+=2) {
+            for(int j = 1;j<initial[0].length;j+=2) {
+                int CrL = 0;
+                int CrR = 0;
+                int CrU = 0;
+                int CrD = 0;
+
+                double temp = 0;
+
+                if(i!=0) {
+                    temp = initial[i][j][0]-initial[i-1][j][0];
+                    if(i!=0&&Math.abs(temp)>crThreshold*CrSens) //Cr Left, should set the right value for the square next to it as -CrL
+                        CrL = (int)(temp);
                 }
-                if(initial[initial.length-i][initial.length-j][1]-initial[initial.length-i-1][j][1]>crStandardDev){
-                    cr_right_outliers++;
+
+                if(i!= initial.length-1) {
+                    temp = initial[i][j][0]-initial[i+1][j][0];
+                    if(i!=initial.length-1&&Math.abs(temp)>crThreshold*CrSens) //Cr right, should set right value for this square to CrR
+                        CrR = (int)(temp);
                 }
-                if(initial[i+1][j][1]-initial[i][j][1]>crStandardDev){
-                    cb_left_outliers++;
+
+                if(j!=0) {
+                    temp = initial[i][j][0]-initial[i][j-1][0];
+                    if(j!=0&&Math.abs(temp)>crThreshold*CrSens)  //Cr up
+                        CrU = (int)(temp);
                 }
-                if(initial[initial.length-i][initial.length-j][2]-initial[initial.length-i-1][initial.length-j][2]>cbStandardDev){
-                    cb_right_outliers++;
+
+                if(j!=initial[0].length) {
+                    temp = initial[i][j][0]-initial[j+1][j][0];
+                    if(j!=initial[0].length-1&&Math.abs(temp)>crThreshold*CrSens)  //Cr down
+                        CrD = (int)(temp);
                 }
-                if(initial[i][j+1][1]-initial[i][j][1]>crStandardDev){
-                    cr_down_outliers++;
+
+                //maybe filter things with all outliers here , probably arent significant
+
+                if(CrL!=0) {
+                    CrXArray.add(new int[]{i-1,j,-1*CrL});
                 }
-                if(initial[initial.length-i][initial.length-j-1][1]>crStandardDev){
-                    cr_up_outliers++;
+                if(CrR!=0) {
+                    CrXArray.add(new int[]{i,j,CrR});
                 }
-                if(initial[i][j+1][1]-initial[i][j][1]>cbStandardDev){
-                    cb_down_outliers++;
+                if(CrU!=0) {
+                    CrXArray.add(new int[]{i,j-1,-1*CrU});
                 }
-                if(initial[initial.length-i][initial.length-j-1][1]>cbStandardDev){
-                    cb_up_outliers++;
+                if(CrD!=0) {
+                    CrXArray.add(new int[]{i,j,CrD});
                 }
             }
         }
-        /*
-        //stores the left and right outliers, the amount of left and right outliers, and the place of them.
-        int[][][] cb_hori_array = new int[2][Math.max(cb_left_outliers, cb_right_outliers)][2];
-        int[][][] cb_vert_array = new int[2][Math.max(cb_up_outliers, cb_down_outliers)][2];
-        int[][][] cr_hori_array = new int[2][Math.max(cr_left_outliers, cr_right_outliers)][2];
-        int[][][] cr_vert_array = new int[2][Math.max(cr_up_outliers, cr_down_outliers)][2];
-        cb_left_outliers = 0;
-        cb_right_outliers = 0;
-        cb_up_outliers = 0;
-        cb_down_outliers = 0;
-        cr_left_outliers = 0;
-        cr_right_outliers = 0;
-        cr_up_outliers = 0;
-        cr_down_outliers = 0;
-        int lowx = Integer.MAX_VALUE;
-        int highx = Integer.MIN_VALUE;
-        int lowy = Integer.MAX_VALUE;
-        int highy = Integer.MIN_VALUE;
+        for(int i = 1; i<initial.length;i+=2) {
+            for(int j = 0;j<initial[0].length;j+=2) {
+                int CrL = 0;
+                int CrR = 0;
+                int CrU = 0;
+                int CrD = 0;
 
+                double temp = 0;
 
-        for(int i = 0; i<initial.length-1;i++) {
-            for(int j = 0;j<initial[0].length-1;j++) {
-                if(initial[i+1][j][1]-initial[i][j][1]>crStandardDev){
-                    cr_hori_array[0][cr_left_outliers][0] = i;
-                    cr_hori_array[0][cr_left_outliers][1] = j;
-                    cr_left_outliers++;
+                temp = initial[i][j][0]-initial[i-1][j][0];
+                if(i!=0&&Math.abs(temp)>crThreshold*CrSens) { //Cr Left, should set the right value for the square next to it as -CrL
+                    CrL = (int)(temp);
+                }
 
+                temp = initial[i][j][0]-initial[i+1][j][0];
+                if(i!=initial.length-1&&Math.abs(temp)>crThreshold*CrSens) { //Cr right, should set right value for this square to CrR
+                    CrR = (int)(temp);
                 }
-                if(initial[initial.length-1-i][initial.length-j][1]-initial[initial.length-1-i-1][j][1]>crStandardDev){
-                    cr_hori_array[1][cr_right_outliers][0] = i;
-                    cr_hori_array[1][cr_right_outliers][1] = j;
-                    cr_right_outliers++;
 
+                temp = initial[i][j][0]-initial[i][j-1][0];
+                if(j!=0&&Math.abs(temp)>crThreshold*CrSens) { //Cr up
+                    CrU = (int)(temp);
                 }
-                if(initial[i+1][j][1]-initial[i][j][1]>crStandardDev){
-                    cb_hori_array[0][cb_left_outliers][0] = i;
-                    cb_hori_array[0][cb_left_outliers][1] = j;
-                    cb_left_outliers++;
-                    lowx = Math.min(lowx,i);
+
+                temp = initial[i][j][0]-initial[j+1][j][0];
+                if(j!=initial[0].length-1&&Math.abs(temp)>crThreshold*CrSens) { //Cr down
+                    CrD = (int)(temp);
                 }
-                if(initial[initial.length-1-i][initial.length-j][2]-initial[initial.length-1-i-1][initial.length-j][2]>cbStandardDev){
-                    cb_hori_array[1][cb_right_outliers][0] = i;
-                    cb_hori_array[1][cb_right_outliers][1] = j;
-                    cb_right_outliers++;
-                    highx = Math.max(highx, i);
+
+                //maybe filter things with all outliers here , probably arent significant
+
+                if(CrL!=0) {
+                    CrXArray.add(new int[]{i-1,j,-1*CrL});
                 }
-                if(initial[i][j+1][1]-initial[i][j][1]>crStandardDev){
-                    cr_vert_array[0][cr_down_outliers][0] = i;
-                    cr_vert_array[0][cr_down_outliers][1] = j;
-                    cr_down_outliers++;
+                if(CrR!=0) {
+                    CrXArray.add(new int[]{i,j,CrR});
                 }
-                if(initial[initial.length-1-i][initial.length-j-1][1]>crStandardDev){
-                    cr_vert_array[1][cr_up_outliers][0] = i;
-                    cr_vert_array[1][cr_up_outliers][1] = j;
-                    cr_up_outliers++;
+                if(CrU!=0) {
+                    CrXArray.add(new int[]{i,j-1,-1*CrU});
                 }
-                if(initial[i][j+1][1]-initial[i][j][1]>cbStandardDev){
-                    cb_vert_array[0][cb_down_outliers][0] = i;
-                    cb_vert_array[0][cb_down_outliers][1] = j;
-                    cb_down_outliers++;
-                    lowy = Math.min(lowy,j);
-                }
-                if(initial[initial.length-1-i][initial.length-j-1][1]>cbStandardDev){
-                    cb_vert_array[1][cb_up_outliers][0] = i;
-                    cb_vert_array[1][cb_up_outliers][1] = j;
-                    cb_up_outliers++;
-                    highy = Math.max(highy,j);
+                if(CrD!=0) {
+                    CrXArray.add(new int[]{i,j,CrD});
                 }
             }
         }
+
+
+/*
         //identify outliers with mean and threshold for standard deviation thing
         //store outlier location somehow, maybe boolean array, or just array of points
         //iterate using squares found with above
@@ -188,6 +206,18 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
         Imgproc.rectangle(input, new Rect(lowx, lowy, highx-lowx, highy-lowy), new Scalar(0,255,0));
 */
 
+        for(int[] p: CrXArray) {
+            if(p[2]<0)
+                Imgproc.drawMarker(input, new Point(p[1]*widthMult,p[0]*heightMult), new Scalar(0,255,0));
+            else
+                Imgproc.drawMarker(input, new Point(p[1]*widthMult,p[0]*heightMult), new Scalar(255,0,0));
+        }
+        for(int[] p: CrYArray) {
+            if(p[2]<0)
+                Imgproc.drawMarker(input, new Point(p[1]*widthMult,p[0]*heightMult), new Scalar(0,0,255));
+            else
+                Imgproc.drawMarker(input, new Point(p[1]*widthMult,p[0]*heightMult), new Scalar(255,255,0));
+        }
 
         return input;
     }
