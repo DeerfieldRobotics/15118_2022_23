@@ -159,26 +159,30 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
 
                 double temp = 0;
 
-                temp = initial[i][j][0]-initial[i-1][j][0];
-                if(i!=0&&Math.abs(temp)>crThreshold*CrSens) { //Cr Left, should set the right value for the square next to it as -CrL
-                    CrL = (int)(temp);
+
+                if(i!=0) {
+                    temp = initial[i][j][0]-initial[i-1][j][0];
+                    if(i!=0&&Math.abs(temp)>crThreshold*CrSens) //Cr Left, should set the right value for the square next to it as -CrL
+                        CrL = (int)(temp);
                 }
 
-                temp = initial[i][j][0]-initial[i+1][j][0];
-                if(i!=initial.length-1&&Math.abs(temp)>crThreshold*CrSens) { //Cr right, should set right value for this square to CrR
-                    CrR = (int)(temp);
+                if(i!= initial.length-1) {
+                    temp = initial[i][j][0]-initial[i+1][j][0];
+                    if(i!=initial.length-1&&Math.abs(temp)>crThreshold*CrSens) //Cr right, should set right value for this square to CrR
+                        CrR = (int)(temp);
                 }
 
-                temp = initial[i][j][0]-initial[i][j-1][0];
-                if(j!=0&&Math.abs(temp)>crThreshold*CrSens) { //Cr up
-                    CrU = (int)(temp);
+                if(j!=0) {
+                    temp = initial[i][j][0]-initial[i][j-1][0];
+                    if(j!=0&&Math.abs(temp)>crThreshold*CrSens)  //Cr up
+                        CrU = (int)(temp);
                 }
 
-                temp = initial[i][j][0]-initial[j+1][j][0];
-                if(j!=initial[0].length-1&&Math.abs(temp)>crThreshold*CrSens) { //Cr down
-                    CrD = (int)(temp);
+                if(j!=initial[0].length) {
+                    temp = initial[i][j][0]-initial[j+1][j][0];
+                    if(j!=initial[0].length-1&&Math.abs(temp)>crThreshold*CrSens)  //Cr down
+                        CrD = (int)(temp);
                 }
-
                 //maybe filter things with all outliers here , probably arent significant
 
                 if(CrL!=0) {
