@@ -212,15 +212,15 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
 
         for(int[] p: CrXArray) {
             if(p[2]<0)
-                Imgproc.drawMarker(input, new Point(p[1]*widthMult,p[0]*heightMult), new Scalar(0,255,0));
+                Imgproc.drawMarker(input, new Point(p[1]*widthMult,p[0]*heightMult-1), new Scalar(0,255,0));
             else
-                Imgproc.drawMarker(input, new Point(p[1]*widthMult,p[0]*heightMult), new Scalar(255,0,0));
+                Imgproc.drawMarker(input, new Point(p[1]*widthMult,p[0]*heightMult-1), new Scalar(255,0,0));
         }
         for(int[] p: CrYArray) {
             if(p[2]<0)
-                Imgproc.drawMarker(input, new Point(p[1]*widthMult,p[0]*heightMult), new Scalar(0,0,255));
+                Imgproc.drawMarker(input, new Point(p[1]*widthMult,p[0]*heightMult-1), new Scalar(0,0,255));
             else
-                Imgproc.drawMarker(input, new Point(p[1]*widthMult,p[0]*heightMult), new Scalar(255,255,0));
+                Imgproc.drawMarker(input, new Point(p[1]*widthMult,p[0]*heightMult-1), new Scalar(255,255,0));
         }
 
         return input;
