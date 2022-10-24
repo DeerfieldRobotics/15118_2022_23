@@ -24,7 +24,7 @@ public class Claw {
         arm.scaleRange(0, 1); //range of motion for arm
         roll.scaleRange(0, 1); //range of motion for the roll servo
         pitch.scaleRange(0, 1); //range of motion for the pitch servo
-        claw.scaleRange(0, 1); //range of motion for the claw servo
+        claw.scaleRange(.2, .43); //range of motion for the claw servo
     }
 
     public void moveClaw(double position) {
