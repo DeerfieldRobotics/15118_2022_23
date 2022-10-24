@@ -12,7 +12,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 @Autonomous(name = "conetest")
 public class ConeTest extends LinearOpMode {
     private OpenCvInternalCamera phoneCam;
-    private ConeDetectionPipeline detector = new ConeDetectionPipeline();
+    private ConeDetectionPipeline detector = new ConeDetectionPipeline(telemetry);
 
 
     @Override
@@ -31,6 +31,7 @@ public class ConeTest extends LinearOpMode {
             telemetry.addData("pipeline","conedetector");
             telemetry.addData("height",detector.height());
             telemetry.addData("width",detector.width());
+            telemetry.addData("test",detector.tester());
             telemetry.update();
         }
     }

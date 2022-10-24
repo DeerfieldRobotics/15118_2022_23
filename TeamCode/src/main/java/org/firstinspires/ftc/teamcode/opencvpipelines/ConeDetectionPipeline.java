@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opencvpipelines;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -18,9 +19,12 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
     private int CbSens = 1;
     private double crThreshold = 50;
 
+    private Telemetry t;
+
 
     Mat workingMatrix = new Mat();
-    public ConeDetectionPipeline() {
+    public ConeDetectionPipeline(Telemetry telemetry) {
+        t = telemetry;
     }
 
     public int height() {
@@ -30,6 +34,8 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
     public int width() {
         return workingMatrix.width();
     }
+
+    public String tester() {return "crup";};
 
     @Override
     public Mat processFrame(Mat input) {
@@ -101,8 +107,8 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
 
 
 
-        for(int i = 0; i<initial.length;i+=2) {
-            for(int j = 1;j<initial[0].length;j+=2) {
+        for(int i = 0; i<initial.length;i++) {
+            for(int j = 1;j<initial[0].length&&((j%2==1&&i%2==0)||(j%2==0&&i%2==1));j+=2) {
                 int CrL = 0;
                 int CrR = 0;
                 int CrU = 0;
@@ -110,27 +116,30 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
 
                 double temp = 0;
 
-                if(i!=0) {
+
+                if(i>0) {
                     temp = initial[i][j][0]-initial[i-1][j][0];
                     if(i!=0&&Math.abs(temp)>crThreshold*CrSens) //Cr Left, should set the right value for the square next to it as -CrL
                         CrL = (int)(temp);
                 }
 
-                if(i!= initial.length-1) {
+
+                if(i< initial.length-1) {
                     temp = initial[i][j][0]-initial[i+1][j][0];
-                    if(i!=initial.length-1&&Math.abs(temp)>crThreshold*CrSens) //Cr right, should set right value for this square to CrR
+                    if(Math.abs(temp)>crThreshold*CrSens) //Cr right, should set right value for this square to CrR
                         CrR = (int)(temp);
                 }
 
-                if(j!=0) {
+                if(j>0) {
                     temp = initial[i][j][0]-initial[i][j-1][0];
-                    if(j!=0&&Math.abs(temp)>crThreshold*CrSens)  //Cr up
+                    if(Math.abs(temp)>crThreshold*CrSens)  //Cr up
                         CrU = (int)(temp);
                 }
 
-                if(j!=initial[0].length) {
+                /*
+                if(j<initial[0].length-1) {
                     temp = initial[i][j][0]-initial[j+1][j][0];
-                    if(j!=initial[0].length-1&&Math.abs(temp)>crThreshold*CrSens)  //Cr down
+                    if(Math.abs(temp)>crThreshold*CrSens)  //Cr down
                         CrD = (int)(temp);
                 }
 
@@ -148,55 +157,10 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
                 if(CrD!=0) {
                     CrXArray.add(new int[]{i,j,CrD});
                 }
-            }
-        }
-        for(int i = 1; i<initial.length;i+=2) {
-            for(int j = 0;j<initial[0].length;j+=2) {
-                int CrL = 0;
-                int CrR = 0;
-                int CrU = 0;
-                int CrD = 0;
-
-                double temp = 0;
 
 
-                if(i!=0) {
-                    temp = initial[i][j][0]-initial[i-1][j][0];
-                    if(i!=0&&Math.abs(temp)>crThreshold*CrSens) //Cr Left, should set the right value for the square next to it as -CrL
-                        CrL = (int)(temp);
-                }
+                 */
 
-                if(i!= initial.length-1) {
-                    temp = initial[i][j][0]-initial[i+1][j][0];
-                    if(i!=initial.length-1&&Math.abs(temp)>crThreshold*CrSens) //Cr right, should set right value for this square to CrR
-                        CrR = (int)(temp);
-                }
-
-                if(j!=0) {
-                    temp = initial[i][j][0]-initial[i][j-1][0];
-                    if(j!=0&&Math.abs(temp)>crThreshold*CrSens)  //Cr up
-                        CrU = (int)(temp);
-                }
-
-                if(j!=initial[0].length) {
-                    temp = initial[i][j][0]-initial[j+1][j][0];
-                    if(j!=initial[0].length-1&&Math.abs(temp)>crThreshold*CrSens)  //Cr down
-                        CrD = (int)(temp);
-                }
-                //maybe filter things with all outliers here , probably arent significant
-
-                if(CrL!=0) {
-                    CrXArray.add(new int[]{i-1,j,-1*CrL});
-                }
-                if(CrR!=0) {
-                    CrXArray.add(new int[]{i,j,CrR});
-                }
-                if(CrU!=0) {
-                    CrXArray.add(new int[]{i,j-1,-1*CrU});
-                }
-                if(CrD!=0) {
-                    CrXArray.add(new int[]{i,j,CrD});
-                }
             }
         }
 
@@ -209,7 +173,7 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
 
         Imgproc.rectangle(input, new Rect(lowx, lowy, highx-lowx, highy-lowy), new Scalar(0,255,0));
 */
-
+/*
         for(int[] p: CrXArray) {
             if(p[2]<0) {
                 int y = p[0]*heightMult;
@@ -259,7 +223,7 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
                 Imgproc.drawMarker(input, new Point(x, y), new Scalar(255, 255, 0));
             }
         }
-
+*/
         return input;
     }
 }
