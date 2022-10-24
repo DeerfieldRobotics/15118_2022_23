@@ -47,13 +47,13 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
         double[][][] initial = new double[48][64][2] ;
 
         int heightMult = input.height()/initial.length;
-        int widthMult = input.height()/initial[0].length;
+        int widthMult = input.width()/initial[0].length;
 
         for(int i = 0; i<initial.length-1;i++) { //collects all cr cb values values
             for(int j = 0; j<initial[0].length-1;j++) {
-                initial[i][j][0]=Core.sumElems(workingMatrix.submat(new Range(i*widthMult,(i+1)*widthMult), new Range(j*heightMult,(j+1)*heightMult))).val[1]; //finds sum of submat and gets cb value
+                initial[i][j][0]=Core.sumElems(workingMatrix.submat(new Range(i*heightMult,(i+1)*heightMult-1), new Range(j*widthMult,(j+1)*widthMult-1))).val[1]; //finds sum of submat and gets cb value
 
-                initial[i][j][1]=Core.sumElems(workingMatrix.submat(new Range(i*widthMult,(i+1)*widthMult),new Range(j*heightMult,(j+1)*heightMult))).val[2]; //finds sum of submat and gets cr value
+                initial[i][j][1]=Core.sumElems(workingMatrix.submat(new Range(i*heightMult,(i+1)*heightMult-1),new Range(j*widthMult,(j+1)*widthMult-1))).val[2]; //finds sum of submat and gets cr value
             }
         }
 
@@ -93,7 +93,7 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
         //                  high saturation
 
         //stores coords, values
-        //index 0 is for x coord, 1 is for y coord, 2 for val, x is rightward, y is downward
+        //index 0 is for row coord, 1 is for col coord, 2 for val, x is rightward, y is downward
         List<int[]> CrXArray = new ArrayList<int[]>();
         List<int[]> CrYArray = new ArrayList<int[]>();
         List<int[]> CbXArray = new ArrayList<int[]>();
@@ -211,16 +211,53 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
 */
 
         for(int[] p: CrXArray) {
-            if(p[2]<0)
-                Imgproc.drawMarker(input, new Point(p[1]*widthMult,p[0]*heightMult-1), new Scalar(0,255,0));
-            else
-                Imgproc.drawMarker(input, new Point(p[1]*widthMult,p[0]*heightMult-1), new Scalar(255,0,0));
+            if(p[2]<0) {
+                int y = p[0]*heightMult;
+                int x = p[1]*widthMult;
+
+                if(y==input.height())
+                    y-=1;
+                if(x==input.width())
+                    x-=1;
+
+                Imgproc.drawMarker(input, new Point(x, y), new Scalar(0, 255, 0));
+            }
+            else {
+                int y = p[0] * heightMult;
+                int x = p[1] * widthMult;
+
+                if (y == input.height())
+                    y -= 1;
+                if (x == input.width())
+                    x -= 1;
+
+                Imgproc.drawMarker(input, new Point(x, y), new Scalar(255, 0, 0));
+            }
         }
+
         for(int[] p: CrYArray) {
-            if(p[2]<0)
-                Imgproc.drawMarker(input, new Point(p[1]*widthMult,p[0]*heightMult-1), new Scalar(0,0,255));
-            else
-                Imgproc.drawMarker(input, new Point(p[1]*widthMult,p[0]*heightMult-1), new Scalar(255,255,0));
+            if(p[2]<0) {
+                int y = p[0]*heightMult;
+                int x = p[1]*widthMult;
+
+                if(y==input.height())
+                    y-=1;
+                if(x==input.width())
+                    x-=1;
+
+                Imgproc.drawMarker(input, new Point(x, y), new Scalar(0, 0, 255));
+            }
+            else {
+                int y = p[0] * heightMult;
+                int x = p[1] * widthMult;
+
+                if (y == input.height())
+                    y -= 1;
+                if (x == input.width())
+                    x -= 1;
+
+                Imgproc.drawMarker(input, new Point(x, y), new Scalar(255, 255, 0));
+            }
         }
 
         return input;
