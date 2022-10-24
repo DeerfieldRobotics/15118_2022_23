@@ -15,7 +15,6 @@ import org.openftc.easyopencv.OpenCvPipeline;
 
 public class ConeDetectionPipeline extends OpenCvPipeline {
 
-
     Mat workingMatrix = new Mat();
     public ConeDetectionPipeline() {
     }
