@@ -36,14 +36,14 @@ public class Drivetrain
         br = hw.get(DcMotor.class, "br");
         bl = hw.get(DcMotor.class, "bl");
 
-        BNO055IMU imu = hw.get(BNO055IMU.class, "imu");
+        //BNO055IMU imu = hw.get(BNO055IMU.class, "imu");
 
         fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        bl.setDirection(DcMotorSimple.Direction.REVERSE);
-        fr.setDirection(DcMotorSimple.Direction.REVERSE);
+        br.setDirection(DcMotorSimple.Direction.REVERSE);
+        fl.setDirection(DcMotorSimple.Direction.REVERSE);
     }
     /**
      * Moves drivetrain

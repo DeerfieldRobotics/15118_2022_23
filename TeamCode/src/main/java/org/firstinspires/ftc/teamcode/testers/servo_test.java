@@ -1,29 +1,23 @@
-package org.firstinspires.ftc.teamcode.opmodes;
+package org.firstinspires.ftc.teamcode.testers;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.opencvpipelines.ConeDetectionPipeline;
-import org.firstinspires.ftc.teamcode.opencvpipelines.TestPipeline;
-import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvInternalCamera;
-
 
 @Autonomous(name = "servotester")
-public class servotest extends LinearOpMode {
+public class servo_test extends LinearOpMode {
     private Servo s;
+    private boolean open, close;
     @Override
     public void runOpMode() throws InterruptedException {
         initialize();
-        s = hardwareMap.get(Servo.class, "claw");
+        s = hardwareMap.get(Servo.class, "pitch");
 
         waitForStart();
         while(opModeIsActive()) {
-            s.setPosition(0);
+            s.setPosition(1.1);
             Thread.sleep(1000);
             s.setPosition(0.2);
             Thread.sleep(1000);
