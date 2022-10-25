@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmodes;
+package org.firstinspires.ftc.teamcode.testers;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -10,7 +10,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
 @Autonomous(name = "conetest")
-public class ConeTest extends LinearOpMode {
+public class cone_test extends LinearOpMode {
     private OpenCvInternalCamera phoneCam;
     private ConeDetectionPipeline detector = new ConeDetectionPipeline(telemetry);
 

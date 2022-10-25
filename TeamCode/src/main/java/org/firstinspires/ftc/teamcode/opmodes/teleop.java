@@ -146,7 +146,7 @@ public class teleop extends LinearOpMode {
 
     public void initialize() {
         drivetrain = new Drivetrain(hardwareMap);
-        claw = new ClawMechanism(hardwareMap);
+        //claw = new ClawMechanism(hardwareMap);
 
         ledB =new LedEffect.Builder();
         ledB.addStep(1,0,0,100);
@@ -158,6 +158,6 @@ public class teleop extends LinearOpMode {
         rumbleB.addStep(1,1, 100);
         for(int i = 1; i<50;i++)
             rumbleB.addStep(1-(double)i/50,1-(double)i/50,i*10 );
-        warning= rumbleB.build();
+        warning = rumbleB.build();
     }
 }
