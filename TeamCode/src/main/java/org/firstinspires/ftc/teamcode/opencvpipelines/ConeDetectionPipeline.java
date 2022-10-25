@@ -46,7 +46,9 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
 
     public double crThreshold() {return crThreshold;}
 
-    public int outliersCr() {return CrXArray.size();}
+    public int outliersCrX() {return CrXArray.size();}
+    
+    public int outliersCrY() {return CrYArray.size();}
 
     @Override
     public Mat processFrame(Mat input) {
@@ -125,10 +127,10 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
                         CrXArray.add(new int[]{x1, y1, CrR});
                     }
                     if (CrU != 0) {
-                        CrXArray.add(new int[]{x1, y1 - 1, -1 * CrU});
+                        CrYArray.add(new int[]{x1, y1 - 1, -1 * CrU});
                     }
                     if (CrD != 0) {
-                        CrXArray.add(new int[]{x1, y1, CrD});
+                        CrYArray.add(new int[]{x1, y1, CrD});
                     }
 
                 }
@@ -137,12 +139,7 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
 
 
 /*
-        //identify outliers with mean and threshold for standard deviation thing
-        //store outlier location somehow, maybe boolean array, or just array of points
-        //iterate using squares found with above
-
-
-        Imgproc.rectangle(input, new Rect(lowx, lowy, highx-lowx, highy-lowy), new Scalar(0,255,0));
+        Visualization
 */
         for(int[] p: CrXArray) {
             if(p[2]<0) {
@@ -168,7 +165,7 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
                 Imgproc.rectangle(input, new Point(x+widthMult-1, y), new Point(x+widthMult,y+heightMult), new Scalar(255, 0, 0), -1);
             }
         }
-
+        
         for(int[] p: CrYArray) {
             if(p[2]<0) {
                 int y = p[1]*heightMult;
