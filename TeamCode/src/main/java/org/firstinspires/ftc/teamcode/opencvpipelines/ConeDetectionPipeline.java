@@ -17,6 +17,13 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
 
     private int CrSens = 1;
     private int CbSens = 1;
+
+
+    List<int[]> CrXArray = new ArrayList<int[]>();
+    List<int[]> CrYArray = new ArrayList<int[]>();
+    List<int[]> CbXArray = new ArrayList<int[]>();
+    List<int[]> CbYArray = new ArrayList<int[]>();
+
     private final double crThreshold = 80;
 
     private Telemetry t;
@@ -35,13 +42,18 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
         return workingMatrix.width();
     }
 
-    public String tester() {return "col row 5??";};
+    public String tester() {return "col row 15 ig??";};
 
     public double crThreshold() {return crThreshold;}
 
+    public int outliersCr() {return CrXArray.size();}
+
     @Override
     public Mat processFrame(Mat input) {
-
+        CrXArray.clear();
+        CrYArray.clear();
+        CbXArray.clear();
+        CbYArray.clear();
 
         input.copyTo(workingMatrix);
 
@@ -66,52 +78,14 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
             }
         }
 
-        //standard deviation:
-        
-
-/*
-        double cr_sum = 0;
-        double cb_sum = 0;
-        for(int i = 0; i<initial.length-1;i++) {
-            for(int j = 0;j<initial[0].length-1;j++) {
-                cr_sum +=Math.abs(initial[i][j][1]-initial[i+1][j][1]); //adds lefts up
-                cr_sum+=Math.abs(initial[i][j][1]-initial[i][j+1][1]); //adds ups up or smth
-                cb_sum +=Math.abs(initial[i][j][0]-initial[i+1][j][0]);
-                cb_sum+=Math.abs(initial[i][j][0]-initial[i][j+1][0]);
-            }
-        }
-
-        double cbStandardDev = 0;
-        double crStandardDev = 0;
-        final double total_value = ;
-        final double cr_mean = cr_sum/total_value;
-        final double cb_mean = cb_sum/total_value;
-        for(int i = 0; i<initial.length-1;i++) {
-            for(int j = 0;j<initial[0].length-1;j++) {
-                cbStandardDev+=Math.pow((initial[i][j][0]-cb_mean),2);
-                crStandardDev+=Math.pow((initial[i][j][1]-cr_mean),2);
-            }
-        }
-
-        cbStandardDev=Math.sqrt(cbStandardDev/(initial.length*initial[0].length));
-        crStandardDev=Math.sqrt(crStandardDev/(initial.length*initial[0].length));
-*/
-        //counts outliers from each side
-        //left outliers are from low saturation -> high saturation
-        //down otliers are low saturation
-        //                  high saturation
-
         //stores coords, values
         //index 0 is for row coord, 1 is for col coord, 2 for val, x is rightward, y is downward
-        List<int[]> CrXArray = new ArrayList<int[]>();
-        List<int[]> CrYArray = new ArrayList<int[]>();
-        List<int[]> CbXArray = new ArrayList<int[]>();
-        List<int[]> CbYArray = new ArrayList<int[]>();
 
 
-
-        for(int x = 0; x<initial.length&&((x%2==1&&x%2==0)||(x%2==0&&x%2==1));x+=2) {
-            for(int y = 1;y<initial[0].length;y++) {
+        int x1 = 0;
+        int y1 = 0;
+        for(x1 = 1; x1<initial.length&&((x1%2==1&&y1%2==0)||(x1%2==0&&y1%2==1));x1++) {
+            for(y1 = 0;y1<initial[0].length;y1++) {
                 int CrL = 0;
                 int CrR = 0;
                 int CrU = 0;
@@ -120,28 +94,28 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
                 double temp = 0;
 
 
-                if(x>0) {
-                    temp = initial[x][y][0]-initial[x-1][y][0];
-                    if(x!=0&&Math.abs(temp)>crThreshold*CrSens) //Cr Left, should set the right value for the square next to it as -CrL
+                if(x1>0) {
+                    temp = initial[x1][y1][0]-initial[x1-1][y1][0];
+                    if(x1!=0&&Math.abs(temp)>crThreshold*CrSens) //Cr Left, should set the right value for the square next to it as -CrL
                         CrL = (int)(temp);
                 }
 
 
-                if(x< initial.length-1) {
-                    temp = initial[x][y][0]-initial[x+1][y][0];
+                if(x1< initial.length-1) {
+                    temp = initial[x1][y1][0]-initial[x1+1][y1][0];
                     if(Math.abs(temp)>crThreshold*CrSens) //Cr right, should set right value for this square to CrR
                         CrR = (int)(temp);
                 }
 
-                if(y>0) {
-                    temp = initial[x][y][0]-initial[x][y-1][0];
+                if(y1>0) {
+                    temp = initial[x1][y1][0]-initial[x1][y1-1][0];
                     if(Math.abs(temp)>crThreshold*CrSens)  //Cr up
                         CrU = (int)(temp);
                 }
 
 
-                if(y<initial[0].length-1) {
-                    temp = initial[x][y][0]-initial[x][y+1][0];
+                if(y1<initial[0].length-1) {
+                    temp = initial[x1][y1][0]-initial[x1][y1+1][0];
                     if(Math.abs(temp)>crThreshold*CrSens)  //Cr down
                         CrD = (int)(temp);
                 }
@@ -150,17 +124,30 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
 
 
                     if (CrL != 0) {
-                        CrXArray.add(new int[]{x - 1, y, -1 * CrL});
+                        CrXArray.add(new int[]{x1 - 1, y1, -1 * CrL});
                     }
                     if (CrR != 0) {
-                        CrXArray.add(new int[]{x, y, CrR});
+                        CrXArray.add(new int[]{x1, y1, CrR});
                     }
                     if (CrU != 0) {
-                        CrXArray.add(new int[]{x, y - 1, -1 * CrU});
+                        CrXArray.add(new int[]{x1, y1 - 1, -1 * CrU});
                     }
                     if (CrD != 0) {
-                        CrXArray.add(new int[]{x, y, CrD});
+                        CrXArray.add(new int[]{x1, y1, CrD});
                     }
+                }
+
+                if (CrL != 0) {
+                    CrXArray.add(new int[]{x1 - 1, y1, -1 * CrL});
+                }
+                if (CrR != 0) {
+                    CrXArray.add(new int[]{x1, y1, CrR});
+                }
+                if (CrU != 0) {
+                    CrXArray.add(new int[]{x1, y1 - 1, -1 * CrU});
+                }
+                if (CrD != 0) {
+                    CrXArray.add(new int[]{x1, y1, CrD});
                 }
 
 
@@ -186,7 +173,7 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
                 if(x==input.width())
                     x-=1;
 
-                Imgproc.rectangle(input, new Point(x, y), new Point(x+5,y+heightMult), new Scalar(0, 255, 0));
+                Imgproc.rectangle(input, new Point(x, y), new Point(x+1,y+heightMult), new Scalar(0, 255, 0), -1);
             }
             else {
                 int y = p[1] * heightMult;
@@ -197,7 +184,7 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
                 if (x == input.width())
                     x -= 1;
 
-                Imgproc.rectangle(input, new Point(x+widthMult-5, y), new Point(x+widthMult,y+heightMult), new Scalar(255, 0, 0));
+                Imgproc.rectangle(input, new Point(x+widthMult-1, y), new Point(x+widthMult,y+heightMult), new Scalar(255, 0, 0), -1);
             }
         }
 
@@ -211,7 +198,7 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
                 if(x==input.width())
                     x-=1;
 
-                Imgproc.rectangle(input, new Point(x, y), new Point(x+widthMult,y+5), new Scalar(0, 0, 255));
+                Imgproc.rectangle(input, new Point(x, y), new Point(x+widthMult,y+1), new Scalar(0, 0, 255), -1);
             }
             else {
                 int y = p[1] * heightMult;
@@ -222,7 +209,7 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
                 if (x == input.width())
                     x -= 1;
 
-                Imgproc.rectangle(input, new Point(x, y+heightMult-5), new Point(x+widthMult,y+heightMult), new Scalar(255, 255, 0));
+                Imgproc.rectangle(input, new Point(x, y+heightMult-1), new Point(x+widthMult,y+heightMult), new Scalar(255, 255, 0), -1);
             }
         }
         return input;
