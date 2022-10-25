@@ -42,7 +42,7 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
         return workingMatrix.width();
     }
 
-    public String tester() {return "col row 15 ig??";};
+    public String tester() {return "1";};
 
     public double crThreshold() {return crThreshold;}
 
@@ -78,49 +78,44 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
             }
         }
 
-        //stores coords, values
-        //index 0 is for row coord, 1 is for col coord, 2 for val, x is rightward, y is downward
-
-
         int x1 = 0;
         int y1 = 0;
-        for(x1 = 1; x1<initial.length&&((x1%2==1&&y1%2==0)||(x1%2==0&&y1%2==1));x1++) {
+        for(x1 = 1; x1<initial.length;x1++) {
             for(y1 = 0;y1<initial[0].length;y1++) {
-                int CrL = 0;
-                int CrR = 0;
-                int CrU = 0;
-                int CrD = 0;
+                if((x1%2==1&&y1%2==0)||(x1%2==0&&y1%2==1)) {
+                    int CrL = 0;
+                    int CrR = 0;
+                    int CrU = 0;
+                    int CrD = 0;
 
-                double temp = 0;
-
-
-                if(x1>0) {
-                    temp = initial[x1][y1][0]-initial[x1-1][y1][0];
-                    if(x1!=0&&Math.abs(temp)>crThreshold*CrSens) //Cr Left, should set the right value for the square next to it as -CrL
-                        CrL = (int)(temp);
-                }
+                    double temp = 0;
 
 
-                if(x1< initial.length-1) {
-                    temp = initial[x1][y1][0]-initial[x1+1][y1][0];
-                    if(Math.abs(temp)>crThreshold*CrSens) //Cr right, should set right value for this square to CrR
-                        CrR = (int)(temp);
-                }
-
-                if(y1>0) {
-                    temp = initial[x1][y1][0]-initial[x1][y1-1][0];
-                    if(Math.abs(temp)>crThreshold*CrSens)  //Cr up
-                        CrU = (int)(temp);
-                }
+                    if (x1 > 0) {
+                        temp = initial[x1][y1][0] - initial[x1 - 1][y1][0];
+                        if (x1 != 0 && Math.abs(temp) > crThreshold * CrSens) //Cr Left, should set the right value for the square next to it as -CrL
+                            CrL = (int) (temp);
+                    }
 
 
-                if(y1<initial[0].length-1) {
-                    temp = initial[x1][y1][0]-initial[x1][y1+1][0];
-                    if(Math.abs(temp)>crThreshold*CrSens)  //Cr down
-                        CrD = (int)(temp);
-                }
+                    if (x1 < initial.length - 1) {
+                        temp = initial[x1][y1][0] - initial[x1 + 1][y1][0];
+                        if (Math.abs(temp) > crThreshold * CrSens) //Cr right, should set right value for this square to CrR
+                            CrR = (int) (temp);
+                    }
 
-                if(CrL!=0&&CrR!=0&&CrU!=0&&CrD!=0) { //removes all with all directions as outlier
+                    if (y1 > 0) {
+                        temp = initial[x1][y1][0] - initial[x1][y1 - 1][0];
+                        if (Math.abs(temp) > crThreshold * CrSens)  //Cr up
+                            CrU = (int) (temp);
+                    }
+
+
+                    if (y1 < initial[0].length - 1) {
+                        temp = initial[x1][y1][0] - initial[x1][y1 + 1][0];
+                        if (Math.abs(temp) > crThreshold * CrSens)  //Cr down
+                            CrD = (int) (temp);
+                    }
 
 
                     if (CrL != 0) {
@@ -135,22 +130,8 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
                     if (CrD != 0) {
                         CrXArray.add(new int[]{x1, y1, CrD});
                     }
-                }
 
-                if (CrL != 0) {
-                    CrXArray.add(new int[]{x1 - 1, y1, -1 * CrL});
                 }
-                if (CrR != 0) {
-                    CrXArray.add(new int[]{x1, y1, CrR});
-                }
-                if (CrU != 0) {
-                    CrXArray.add(new int[]{x1, y1 - 1, -1 * CrU});
-                }
-                if (CrD != 0) {
-                    CrXArray.add(new int[]{x1, y1, CrD});
-                }
-
-
             }
         }
 
