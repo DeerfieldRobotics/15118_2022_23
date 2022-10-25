@@ -32,7 +32,8 @@ public class cone_test extends LinearOpMode {
             telemetry.addData("height",detector.height());
             telemetry.addData("width",detector.width());
             telemetry.addData("Cr threshold",detector.crThreshold());
-            telemetry.addData("Cr outliers",detector.outliersCr());
+            telemetry.addData("CrX outliers",detector.outliersCrX());
+            telemetry.addData("CrY outliers",detector.outliersCrY());
             telemetry.addData("test",detector.tester());
             telemetry.update();
         }
