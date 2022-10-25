@@ -31,6 +31,7 @@ public class ConeTest extends LinearOpMode {
             telemetry.addData("pipeline","conedetector");
             telemetry.addData("height",detector.height());
             telemetry.addData("width",detector.width());
+            telemetry.addData("Cr threshold",detector.crThreshold());
             telemetry.addData("test",detector.tester());
             telemetry.update();
         }
