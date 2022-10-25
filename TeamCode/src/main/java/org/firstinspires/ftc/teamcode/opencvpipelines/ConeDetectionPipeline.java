@@ -82,7 +82,7 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
 
         int x1 = 0;
         int y1 = 0;
-        for(x1 = 1; x1<initial.length;x1++) {
+        for(x1 = 0; x1<initial.length;x1++) {
             for(y1 = 0;y1<initial[0].length;y1++) {
                 if((x1%2==1&&y1%2==0)||(x1%2==0&&y1%2==1)) {
                     int CrL = 0;
