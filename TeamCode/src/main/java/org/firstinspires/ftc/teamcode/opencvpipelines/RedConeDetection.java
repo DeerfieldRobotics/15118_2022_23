@@ -25,7 +25,7 @@ public class RedConeDetection extends OpenCvPipeline {
     Mat workingMatrix = new Mat();
 
     @Override
-    public Mat processFrame() {
+    public Mat processFrame(Mat input) {
         CrXArray.clear();
 
         input.copyTo(workingMatrix);
@@ -59,14 +59,14 @@ public class RedConeDetection extends OpenCvPipeline {
 
                 if (x1 > 0) {
                     temp = initial[x1][y1][0] - initial[x1 - 1][y1][0];
-                    if (x1 != 0 && Math.abs(temp) > crThreshold * CrSens) //Cr Left, should set the right value for the square next to it as -CrL
+                    if (x1 != 0 && Math.abs(temp) > crThreshold) //Cr Left, should set the right value for the square next to it as -CrL
                         CrL = (int) (temp);
                 }
 
 
                 if (x1 < initial.length - 1) {
                     temp = initial[x1][y1][0] - initial[x1 + 1][y1][0];
-                    if (Math.abs(temp) > crThreshold * CrSens) //Cr right, should set right value for this square to CrR
+                    if (Math.abs(temp) > crThreshold) //Cr right, should set right value for this square to CrR
                         CrR = (int) (temp);
                 }
 

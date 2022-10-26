@@ -57,6 +57,7 @@ public class teleop extends LinearOpMode {
             //drivetrain movement
             if(gamepad2.left_trigger < leftTriggerSens&&(gamepad1.left_stick_x != 0 || gamepad1.right_stick_x != 0 || gamepad1.left_stick_y != 0 || gamepad2.left_stick_x != 0))
             {
+
                 drivetrain.move(gamepad1.left_stick_x, gamepad1.right_stick_x+gamepad2.left_stick_x*leftXSens, gamepad1.left_stick_y);
             }
             else if(gamepad2.left_trigger >= leftTriggerSens&&(gamepad1.left_stick_x != 0 || gamepad1.right_stick_x != 0 || gamepad1.left_stick_y != 0 || gamepad2.left_stick_x != 0)) {
@@ -65,7 +66,7 @@ public class teleop extends LinearOpMode {
             else {
                 drivetrain.stop();
             }
-
+/*
             //manual slide movement
             if(gamepad1.left_trigger != 0 || gamepad1.right_trigger != 0) {
                 //(right_trigger)-(left_trigger) for slide movement + limits, maybe add separate thread for evaluating limits with limit switch
@@ -141,7 +142,11 @@ public class teleop extends LinearOpMode {
             else if (gamepad2.circle) {
                 claw.setSlideLevel(3);
             }
+
+ */
         }
+
+
     }
 
     public void initialize() {

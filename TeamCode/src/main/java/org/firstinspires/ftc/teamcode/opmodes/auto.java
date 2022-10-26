@@ -151,9 +151,6 @@ public class auto extends LinearOpMode {
 
             telemetry.update();
 
-            encoderDrive(0.5,-10);
-
-
             drive(detectedID);
 
             drivetrain.stop();
@@ -162,21 +159,15 @@ public class auto extends LinearOpMode {
 
 
     public void drive(int tag){
+        drivetrain.forwards(false, 30,30);
         switch(tag){
             case 1:
-                turn(-90);
-                encoderDrive(0.5,30);
-                turn(90);
-                encoderDrive(0.5,-20);
+                drivetrain.strafe(true, 30);
                 break;
             case 2:
-                encoderDrive(0.5,-20);
                 break;
             case 3:
-                turn(90);
-                encoderDrive(0.5,30);
-                turn(-90);
-                encoderDrive(0.5,-20);
+                drivetrain.strafe(false, 30);
                 break;
             default:
                 break;
@@ -222,43 +213,6 @@ public class auto extends LinearOpMode {
         }
 
         drivetrain.stop();
-    }
-
-
-    public void encoderDrive(double speed,
-                             double inches) {
-        int newTarget;
-
-        // Ensure that the opmode is still active
-        if (opModeIsActive()) {
-
-            // Determine new target position, and pass to motor controller
-            newTarget = drivetrain.getEncoderTicks()[0] + (int)(inches * COUNTS_PER_INCH);
-
-            // reset the timeout time and start motion.
-            runtime.reset();
-            drivetrain.forwards(true, newTarget, newTarget);
-            drivetrain.setEncoderMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            // keep looping while we are still active, and there is time left, and both motors are running.
-            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
-            // its target position, the motion will stop.  This is "safer" in the event that the robot will
-            // always end the motion as soon as possible.
-            // However, if you require that BOTH motors have finished their moves before the robot continues
-            // onto the next step, use (isBusy() || isBusy()) in the loop test.
-            while (opModeIsActive() &&
-                    (drivetrain.isBusy())) {
-
-                // Display it for the driver.
-                telemetry.addData("Running to",  " %7d :%7d", newTarget,  newTarget);
-                telemetry.addData("Currently at",  " at %7d :%7d",
-                        drivetrain.getEncoderTicks()[0], drivetrain.getEncoderTicks()[1]);
-                telemetry.update();
-            }
-
-            // Stop all motion;
-            drivetrain.stop();
-        }
     }
 
 
