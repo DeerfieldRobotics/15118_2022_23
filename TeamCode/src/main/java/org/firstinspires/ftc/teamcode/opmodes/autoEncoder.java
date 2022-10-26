@@ -75,7 +75,6 @@ public class autoEncoder extends LinearOpMode {
         drivetrain.initialize();
         drivetrain.reset();
 
-        drivetrain.setMode("AUTO");
 
         // Send telemetry message to indicate successful Encoder reset
         telemetry.addData("Starting at",  "%7d :%7d",

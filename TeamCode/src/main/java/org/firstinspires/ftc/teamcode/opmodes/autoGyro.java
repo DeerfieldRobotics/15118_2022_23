@@ -147,7 +147,6 @@ public class autoGyro extends LinearOpMode {
         }
 
         // Set the encoders for closed loop speed control, and reset the heading.
-        drivetrain.setMode("AUTO");
         resetHeading();
 
         // Step through each leg of the path,

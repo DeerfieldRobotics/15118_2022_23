@@ -50,6 +50,35 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
     
     public int outliersCrY() {return CrYArray.size();}
 
+    public int[] getAlignment() {
+        int LDist1 = Integer.MAX_VALUE;
+        int LDist2 = Integer.MAX_VALUE;
+        int RDist1 = 0;
+        int RDist2 = 0;
+        int Ly = 0;
+        int Ry = 0;
+
+        for(int[] p : CrXArray) {
+            if(p[0]<LDist1){ //finds minimum x value
+                LDist1=p[0];
+                Ly=p[1];
+            }
+            if(p[0]>RDist1) { //finds maximum x value
+                RDist1=p[0];
+                Ry=p[1];
+            }
+        }
+
+        for(int[] p : CrXArray) {
+            if(p[1]==Ry&&p[0]<LDist2)  //finds corresponding left x value to the y value of max x
+                LDist2=p[0];
+            if(p[1]==Ly&&p[0]>RDist2)
+                RDist2=p[0];
+        }
+
+        return new int[]{LDist1, LDist1, RDist1, RDist2};
+    }
+
     @Override
     public Mat processFrame(Mat input) {
         CrXArray.clear();
