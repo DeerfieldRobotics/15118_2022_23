@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.utils;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -35,8 +34,6 @@ public class Drivetrain
         fl = hw.get(DcMotor.class, "fl");
         br = hw.get(DcMotor.class, "br");
         bl = hw.get(DcMotor.class, "bl");
-
-        //BNO055IMU imu = hw.get(BNO055IMU.class, "imu");
 
         fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -76,14 +73,6 @@ public class Drivetrain
         br.setPower(0);
 
     }
-    public void setMode(String newMode)
-    {
-        if(newMode.equals("AUTO")){
-            setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        } else if(newMode.equals("TELEOP")) {
-            setEncoderMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        } else {}
-    }
 
     public void reset(){
         fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -103,11 +92,6 @@ public class Drivetrain
         fl.setMode(encoderMode);
         br.setMode(encoderMode);
         bl.setMode(encoderMode);
-        // Turn On RUN_TO_POSITION
-        fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
     public int[] getEncoderTicks()
     {
