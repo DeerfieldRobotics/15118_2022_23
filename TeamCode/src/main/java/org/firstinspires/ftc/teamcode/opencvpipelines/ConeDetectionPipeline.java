@@ -26,6 +26,8 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
 
     private final double crThreshold = 80;
 
+    private double[][][] initial;
+
     private Telemetry t;
 
 
@@ -42,6 +44,13 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
         return workingMatrix.width();
     }
 
+    public int arrayWidth() {
+        return initial.length;
+    }
+    public int arrayHeight() {
+        return initial[0].length;
+    }
+
     public String tester() {return "1";};
 
     public double crThreshold() {return crThreshold;}
@@ -49,6 +58,64 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
     public int outliersCrX() {return CrXArray.size();}
     
     public int outliersCrY() {return CrYArray.size();}
+
+    public int[] getAlignment() {
+        int LDist1 = Integer.MAX_VALUE;
+        int LDist2 = Integer.MAX_VALUE;
+        int RDist1 = 0;
+        int RDist2 = 0;
+        int Ly = 0;
+        int Ry = 0;
+
+        for(int[] p : CrXArray) {
+            if(p[0]<LDist1){ //finds minimum x value
+                LDist1=p[0];
+                Ly=p[1];
+            }
+            if(p[0]>RDist1) { //finds maximum x value
+                RDist1=p[0];
+                Ry=p[1];
+            }
+        }
+
+        for(int[] p : CrXArray) {
+            if(p[1]==Ry&&p[0]<LDist2)  //finds corresponding left x value to the y value of max x
+                LDist2=p[0];
+            if(p[1]==Ly&&p[0]>RDist2)
+                RDist2=p[0];
+        }
+
+        return new int[]{LDist1, LDist1, Ly, RDist1, RDist2, Ry};
+    }
+
+    public int[] getMaxWidth() { //use this to align with cone, when maxwidth reaches certain threshold after centered to reasonable threshold of accuracy based on the difference of the average of LDist1 and RDist 2 and the average of LDist2 and RDist 1
+        List<Integer> checkedVals = new ArrayList<Integer>();
+        int maxWidth = 0;
+        int Min = 0;
+        int Max = 0;
+        int y = 0;
+        for(int[] p : CrXArray) {
+            if(!checkedVals.contains(p[1])) { //if not yet checked
+                checkedVals.add(p[1]); //add to list of checked y values
+                int min = Integer.MAX_VALUE;
+                int max = 0;
+                for(int[] q : CrXArray) {
+                    if(q[1]==p[1]) { //if y values match
+                        min = Math.min(min, q[0]); //get min x value
+                        max = Math.max(max, q[0]); //get max x value
+                    }
+                }
+                if(max-min>maxWidth) {
+                    maxWidth = max - min;
+                    y = p[1];
+                    Min = min;
+                    Max = max;
+                }
+            }
+        }
+
+        return new int[]{maxWidth, Min, Max, y};
+    }
 
     @Override
     public Mat processFrame(Mat input) {
@@ -66,7 +133,7 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
         Imgproc.cvtColor(workingMatrix, workingMatrix, Imgproc.COLOR_RGB2YCrCb); //
 
         //create rectangles, for loop
-        double[][][] initial = new double[input.width()/5][input.height()/5][2] ;
+        initial = new double[input.width()/5][input.height()/5][2] ;
 
         int widthMult = input.width()/initial.length;
         int heightMult = input.height()/initial[0].length;
@@ -82,7 +149,7 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
 
         int x1 = 0;
         int y1 = 0;
-        for(x1 = 1; x1<initial.length;x1++) {
+        for(x1 = 0; x1<initial.length;x1++) {
             for(y1 = 0;y1<initial[0].length;y1++) {
                 if((x1%2==1&&y1%2==0)||(x1%2==0&&y1%2==1)) {
                     int CrL = 0;

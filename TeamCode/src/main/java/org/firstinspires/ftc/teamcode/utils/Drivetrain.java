@@ -112,6 +112,11 @@ public class Drivetrain
             br.setTargetPosition(-RTarget);
             bl.setTargetPosition(-LTarget);
         }
+
+        fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
     public void strafe(boolean left, int amount)
     {
@@ -126,6 +131,11 @@ public class Drivetrain
             br.setTargetPosition(amount);
             bl.setTargetPosition(-amount);
         }
+
+        fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     public void turn(boolean left, int amount) {
@@ -140,6 +150,11 @@ public class Drivetrain
             br.setTargetPosition(amount);
             bl.setTargetPosition(-amount);
         }
+
+        fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     public boolean isBusy(){
