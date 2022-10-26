@@ -21,7 +21,7 @@ public class Drivetrain
 
     private ElapsedTime runtime = new ElapsedTime();
 
-    private double DRIVETRAIN_SPEED_MODIFIER = 1;
+    private double DRIVETRAIN_SPEED_MODIFIER = 0.8;
     public Drivetrain (HardwareMap hardwaremap) {
         hw = hardwaremap;
 
@@ -39,8 +39,8 @@ public class Drivetrain
         fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        bl.setDirection(DcMotorSimple.Direction.REVERSE);
-        fl.setDirection(DcMotorSimple.Direction.REVERSE);
+        br.setDirection(DcMotorSimple.Direction.REVERSE);
+        fr.setDirection(DcMotorSimple.Direction.REVERSE);
     }
     /**
      * Moves drivetrain
@@ -100,8 +100,11 @@ public class Drivetrain
     }
     public void forwards(boolean forward, int LTarget, int RTarget)
     {
-
+        LTarget = (int) (LTarget * COUNTS_PER_INCH);
+        RTarget = (int) (RTarget * COUNTS_PER_INCH);
+        double pow = 0.0;
         if (!forward) {
+            pow = DRIVETRAIN_SPEED_MODIFIER * -1;
             fr.setTargetPosition(RTarget);
             fl.setTargetPosition(LTarget);
             br.setTargetPosition(RTarget);
@@ -113,18 +116,26 @@ public class Drivetrain
             bl.setTargetPosition(-LTarget);
         }
 
-        fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        setEncoderMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        move(pow, pow, pow, pow);
+
+        setEncoderMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
+
     }
     public void strafe(boolean left, int amount)
     {
+        amount = (int) (amount * COUNTS_PER_INCH);
+        reset();
+        double pow= 0.0;
         if (!left) {
             fr.setTargetPosition(amount);
             fl.setTargetPosition(-amount);
             br.setTargetPosition(-amount);
             bl.setTargetPosition(amount);
+            pow = DRIVETRAIN_SPEED_MODIFIER * -1;
         } else {
             fr.setTargetPosition(-amount);
             fl.setTargetPosition(amount);
@@ -132,10 +143,12 @@ public class Drivetrain
             bl.setTargetPosition(-amount);
         }
 
-        fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        setEncoderMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        move(-pow, -pow, pow, pow);
+
+        setEncoderMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
     }
 
     public void turn(boolean left, int amount) {
