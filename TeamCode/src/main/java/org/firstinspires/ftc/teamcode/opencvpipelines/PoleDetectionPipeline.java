@@ -1,7 +1,4 @@
-package org.firstinspires.ftc.teamcode.opencvpipelines;
 
-public class PoleDetectionPipeline {
-}
 package org.firstinspires.ftc.teamcode.opencvpipelines;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -17,7 +14,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConeDetectionPipeline extends OpenCvPipeline {
+public class PoleDetectionPipeline extends OpenCvPipeline {
 
     private int yellowSens = 1;
 
@@ -32,7 +29,7 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
 
 
     Mat workingMatrix = new Mat();
-    public ConeDetectionPipeline(Telemetry telemetry) {
+    public PoleDetectionPipeline(Telemetry telemetry) {
         t = telemetry;
     }
 
@@ -46,7 +43,7 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
 
     public String tester() {return "1";};
 
-    public double yThreshold() {return yThreshold;}
+    public double getLow_yThreshold() {return low_yThreshold;}
 
     public int outliersyX() {return yXArray.size();}
     
