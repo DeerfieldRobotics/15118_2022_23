@@ -24,7 +24,7 @@ public class ConeDetectionPipeline extends OpenCvPipeline {
     List<int[]> CbXArray = new ArrayList<int[]>();
     List<int[]> CbYArray = new ArrayList<int[]>();
 
-    private final double crThreshold = 80;
+    private final double crThreshold = 100;
 
     private double[][][] initial;
 
