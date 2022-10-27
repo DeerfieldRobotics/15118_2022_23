@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.opencvpipelines.RedConeDetection;
 import org.firstinspires.ftc.teamcode.utils.IMU;
 import org.firstinspires.ftc.teamcode.utils.Drivetrain;
 import org.firstinspires.ftc.teamcode.utils.ClawMechanism;
@@ -26,9 +27,12 @@ public class auto extends LinearOpMode {
     private IMU imu;
 
     // APRILTAGS
-    OpenCvCamera camera;
+    OpenCvCamera frontCamera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
     RedConeDetection redConeDetection;
+
+    //OTHER CAMERA
+    OpenCvCamera backCamera;
 
     static final double FEET_PER_METER = 3.28084;
 
@@ -72,18 +76,19 @@ public class auto extends LinearOpMode {
         //APRILTAGS
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "w1"), cameraMonitorViewId);
+        frontCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "backWeb"), cameraMonitorViewId);
+        backCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "frontWeb"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
 
         redConeDetection = new RedConeDetection();
 
-        camera.setPipeline(aprilTagDetectionPipeline);
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        backCamera.setPipeline(aprilTagDetectionPipeline);
+        backCamera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
             @Override
             public void onOpened()
             {
-                camera.startStreaming(800,448, OpenCvCameraRotation.UPRIGHT);
+                backCamera.startStreaming(800,448, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
@@ -112,9 +117,9 @@ public class auto extends LinearOpMode {
 
                 // If there's been a new frame...
                 if (detections != null) {
-                    telemetry.addData("FPS", camera.getFps());
-                    telemetry.addData("Overhead ms", camera.getOverheadTimeMs());
-                    telemetry.addData("Pipeline ms", camera.getPipelineTimeMs());
+                    telemetry.addData("FPS", backCamera.getFps());
+                    telemetry.addData("Overhead ms", backCamera.getOverheadTimeMs());
+                    telemetry.addData("Pipeline ms", backCamera.getPipelineTimeMs());
 
                     // If we don't see any tags
                     if (detections.size() == 0) {

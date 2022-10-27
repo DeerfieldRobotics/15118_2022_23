@@ -1,10 +1,22 @@
+package org.firstinspires.ftc.teamcode.utils;
+
+import com.qualcomm.robotcore.hardware.DcMotor;
+
+import org.firstinspires.ftc.teamcode.opencvpipelines.RedConeDetection;
+import org.firstinspires.ftc.teamcode.utils.Drivetrain;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraRotation;
+
 public class RedConeScanner {
 
     private OpenCvCamera camera;
     private RedConeDetection redConeDetection;
 
-    public RedConeScanner(OpenCvCamera c) {
+    private Drivetrain drivetrain;
+
+    public RedConeScanner(OpenCvCamera c, Drivetrain d) {
         camera = c;
+        drivetrain = d;
         redConeDetection = new RedConeDetection();
 
         camera.setPipeline(redConeDetection);
@@ -50,10 +62,10 @@ public class RedConeScanner {
 
             double strafe = 0;
             double forward = 0;
-            double turn = 0;
+            double rotate = 0;
 
-            loError = Math.abs(loD2-loD1);
-            hiError = Math.abs(hiD2-hiD1);
+            int loError = Math.abs(loD2-loD1);
+            int hiError = Math.abs(hiD2-hiD1);
 
             //TODO
             int threshold1 = 5;
@@ -147,10 +159,10 @@ public class RedConeScanner {
     public void alignCone() {
         int grabThreshold = 80; //TODO width to grab
         while(redConeDetection.getMaxWidth()[0]<grabThreshold) {
-            coneAlign[] = redConeDetection.getMaxWidth();
+            int [] coneAlign = redConeDetection.getMaxWidth();
 
-            leftWidth = coneAlign[1];
-            rightWidth = redConeDetection.arrayWidth()-coneAlign[2];
+            int leftWidth = coneAlign[1];
+            int rightWidth = redConeDetection.arrayWidth()-coneAlign[2];
 
             double forward = 0;
             double rotate = 0;
