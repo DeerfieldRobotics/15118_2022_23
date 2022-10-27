@@ -13,13 +13,53 @@ public class servo_test extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         initialize();
-        s = hardwareMap.get(Servo.class, "pitch");
+        s = hardwareMap.get(Servo.class, "roll");
 
         waitForStart();
         while(opModeIsActive()) {
-            s.setPosition(1.1);
+            s.setPosition(1);
+            telemetry.addLine("1");
+            telemetry.update();
             Thread.sleep(1000);
-            s.setPosition(0.2);
+            s.setPosition(.9);
+            telemetry.addLine(".9");
+            telemetry.update();
+            Thread.sleep(1000);
+            s.setPosition(.8);
+            telemetry.addLine(".8");
+            telemetry.update();
+            Thread.sleep(1000);
+            s.setPosition(.7);
+            telemetry.addLine(".7");
+            telemetry.update();
+            Thread.sleep(1000);
+            s.setPosition(.6);
+            telemetry.addLine(".6");
+            telemetry.update();
+            Thread.sleep(1000);
+            s.setPosition(.5);
+            telemetry.addLine(".5");
+            telemetry.update();
+            Thread.sleep(1000);
+            s.setPosition(.4);
+            telemetry.addLine(".4");
+            telemetry.update();
+            Thread.sleep(1000);
+            s.setPosition(.3);
+            telemetry.addLine(".3");
+            telemetry.update();
+            Thread.sleep(1000);
+            s.setPosition(.2);
+            telemetry.addLine(".2");
+            telemetry.update();
+            Thread.sleep(1000);
+            s.setPosition(.1);
+            telemetry.addLine(".1");
+            telemetry.update();
+            Thread.sleep(1000);
+            s.setPosition(0);
+            telemetry.addLine("0");
+            telemetry.update();
             Thread.sleep(1000);
         }
     }

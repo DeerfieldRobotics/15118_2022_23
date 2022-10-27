@@ -22,8 +22,8 @@ public class Claw {
         claw = hw.get(Servo.class, "claw");
 
         arm.scaleRange(0, 1); //range of motion for arm TODO
-        roll.scaleRange(0, 1); //range of motion for the roll servo DONE
-        pitch.scaleRange(0, 1); //range of motion for the pitch servo TODO
+        roll.scaleRange(0, 1); //range of motion for the roll servo TODO
+        pitch.scaleRange(.7, .36); //range of motion for the pitch servo DONE
         claw.scaleRange(.25, .45); //range of motion for the claw servo DONE
     }
 
