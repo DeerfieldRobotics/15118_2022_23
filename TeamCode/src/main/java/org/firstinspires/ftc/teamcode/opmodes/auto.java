@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.utils.IMU;
 import org.firstinspires.ftc.teamcode.utils.Drivetrain;
+import org.firstinspires.ftc.teamcode.utils.ClawMechanism;
 import org.firstinspires.ftc.teamcode.utils.PID;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -21,11 +22,13 @@ import java.util.ArrayList;
 public class auto extends LinearOpMode {
 
     private Drivetrain drivetrain;
+    private ClawMechanism claw;
     private IMU imu;
 
     // APRILTAGS
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
+    RedConeDetection redConeDetection;
 
     static final double FEET_PER_METER = 3.28084;
 
@@ -71,6 +74,8 @@ public class auto extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "w1"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
+
+        redConeDetection = new RedConeDetection();
 
         camera.setPipeline(aprilTagDetectionPipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
@@ -158,7 +163,7 @@ public class auto extends LinearOpMode {
     }
 
 
-    public void drive(int tag){
+    public void drive(int tag){ //TODO change this name its not descriptive
         drivetrain.forwards(false, 30,30);
         switch(tag){
             case 1:
@@ -214,7 +219,6 @@ public class auto extends LinearOpMode {
 
         drivetrain.stop();
     }
-
 
 
 }

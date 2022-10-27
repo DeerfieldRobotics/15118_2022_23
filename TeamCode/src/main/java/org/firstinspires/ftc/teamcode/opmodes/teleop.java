@@ -29,6 +29,8 @@ public class teleop extends LinearOpMode {
     private final double pitchNeutral = 0.1;
     private final double rollNeutral = 0.1;
 
+    private final double armMin = 0.6;
+
     private final double leftXSens = 0.5;
     private final double leftYSens = 1;
     private final double rightXSens = 1;
@@ -78,8 +80,8 @@ public class teleop extends LinearOpMode {
             //Driver 2
             if(!claw.flip&&(gamepad2.left_stick_y != 0 || gamepad2.right_stick_y != 0 || gamepad2.right_stick_x != 0))
             {
-                if(armNeutral+gamepad2.left_stick_y*leftYSens<0) { //add limits with slide height
-                    claw.setArm(0);
+                if(armNeutral+gamepad2.left_stick_y*leftYSens<armMin) { //add limits with slide height
+                    claw.setArm(armMin);
 
                     gamepad2.ledQueue.clear();
                     gamepad2.rumbleQueue.clear();
@@ -155,14 +157,10 @@ public class teleop extends LinearOpMode {
 
         ledB =new LedEffect.Builder();
         ledB.addStep(1,0,0,100);
-        for(int i = 1; i<100;i++)
-            ledB.addStep(1-(double)i/100,0,0,100-i );
         red= ledB.build();
 
         rumbleB = new RumbleEffect.Builder();
         rumbleB.addStep(1,1, 100);
-        for(int i = 1; i<50;i++)
-            rumbleB.addStep(1-(double)i/50,1-(double)i/50,i*10 );
         warning = rumbleB.build();
     }
 }

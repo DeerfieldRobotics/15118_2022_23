@@ -126,7 +126,7 @@ public class RedConeDetection extends OpenCvPipeline {
                 RDist2=p[0];
         }
 
-        return new int[]{LDist1, LDist1, Ly, RDist1, RDist2, Ry};
+        return new int[]{LDist1, LDist2, Ly, RDist1, RDist2, Ry};
     }
 
     public int[] getMaxWidth() { //use this to align with cone, when maxwidth reaches certain threshold after centered to reasonable threshold of accuracy based on the difference of the average of LDist1 and RDist 2 and the average of LDist2 and RDist 1

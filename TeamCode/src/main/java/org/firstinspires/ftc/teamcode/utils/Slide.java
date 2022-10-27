@@ -10,9 +10,9 @@ public class Slide {
 
     private final float speed = 1;
 
-    public final static int low = 100;
-    public final static int medium = 200;
-    public final static int high = 300;
+    public final static int low = 1000;
+    public final static int medium = 1600;
+    public final static int high = 2200;
     public final static int slideMin = 150;
 
     public Slide (HardwareMap hardwaremap) {
