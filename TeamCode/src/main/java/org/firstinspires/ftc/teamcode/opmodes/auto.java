@@ -26,6 +26,7 @@ public class auto extends LinearOpMode {
     // APRILTAGS
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
+    RedConeDetection redConeDetection;
 
     static final double FEET_PER_METER = 3.28084;
 
@@ -71,6 +72,8 @@ public class auto extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "w1"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
+
+        redConeDetection = new RedConeDetection();
 
         camera.setPipeline(aprilTagDetectionPipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
@@ -215,6 +218,45 @@ public class auto extends LinearOpMode {
         drivetrain.stop();
     }
 
+    public void alignStripe() {
+        camera.setPipeline(redConeDetection);
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        {
+            @Override
+            public void onOpened()
+            {
+                camera.startStreaming(320,240, OpenCvCameraRotation.UPRIGHT);
+            }
 
+            @Override
+            public void onError(int errorCode)
+            {
+
+            }
+        });
+        //change to if statement here
+        //Left low distance
+        int loD1 = (redConeDetection.getAlignment[2]<redConeDetection.getAlignment[5]?redConeDetection.getAlignment[0]:redConeDetection.getAlignment[1]);
+        //Right low distance
+        int loD2 = (redConeDetection.getAlignment[2]<redConeDetection.getAlignment[5]?redConeDetection.getAlignment[4]:redConeDetection.getAlignment[3]);;
+        //left high distance
+        int hiD1 = (redConeDetection.getAlignment[2]<redConeDetection.getAlignment[5]?redConeDetection.getAlignment[1]:redConeDetection.getAlignment[0]);;
+        //right high distance
+        int hiD2 = (redConeDetection.getAlignment[2]<redConeDetection.getAlignment[5]?redConeDetection.getAlignment[3]:redConeDetection.getAlignment[4]);;
+
+        //guard clauses for threshold
+        if(loD1<loD2) {
+            //strafe right
+        }
+
+    }
+
+    public boolean coneInView() {
+
+    }
+
+    public void alignCone() {
+
+    }
 
 }
