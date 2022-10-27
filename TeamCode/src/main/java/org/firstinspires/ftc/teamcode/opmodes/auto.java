@@ -27,12 +27,12 @@ public class auto extends LinearOpMode {
     private IMU imu;
 
     // APRILTAGS
-    OpenCvCamera frontCamera;
+    OpenCvCamera backCamera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
     RedConeDetection redConeDetection;
 
     //OTHER CAMERA
-    OpenCvCamera backCamera;
+    //OpenCvCamera frontCamera;
 
     static final double FEET_PER_METER = 3.28084;
 
@@ -76,8 +76,8 @@ public class auto extends LinearOpMode {
         //APRILTAGS
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        frontCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "backWeb"), cameraMonitorViewId);
-        backCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "frontWeb"), cameraMonitorViewId);
+        //frontCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "frontWeb"), cameraMonitorViewId);
+        backCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "backWeb"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
 
         redConeDetection = new RedConeDetection();
@@ -101,6 +101,9 @@ public class auto extends LinearOpMode {
         waitForStart();
 
         ElapsedTime runtime = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+
+        telemetry.addLine("INIT");
+        telemetry.update();
 
         telemetry.setMsTransmissionInterval(50);
 
@@ -172,11 +175,16 @@ public class auto extends LinearOpMode {
         drivetrain.forwards(false, 30,30);
         switch(tag){
             case 1:
+                telemetry.addLine("DRIVE 1");
                 drivetrain.strafe(true, 30);
+                drivetrain.setEncoderMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
                 break;
             case 2:
+                telemetry.addLine("DRIVE 1");
                 break;
             case 3:
+                telemetry.addLine("DRIVE 3");
                 drivetrain.strafe(false, 30);
                 break;
             default:

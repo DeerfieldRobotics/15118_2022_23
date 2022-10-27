@@ -123,9 +123,7 @@ public class Drivetrain
 
         setEncoderMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        move(pow, pow, pow, pow);
-
-        setEncoderMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        move(0,0,pow);
 
 
 
@@ -150,9 +148,7 @@ public class Drivetrain
 
         setEncoderMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        move(-pow, -pow, pow, pow);
-
-        setEncoderMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        move(pow, 0, 0);
 
     }
 
