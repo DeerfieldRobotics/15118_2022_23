@@ -93,6 +93,11 @@ public class Drivetrain
         br.setMode(encoderMode);
         bl.setMode(encoderMode);
     }
+
+    public void setDrivetrainSpeed(double speed) {
+        DRIVETRAIN_SPEED_MODIFIER=speed;
+    }
+
     public int[] getEncoderTicks()
     {
         return new int[]
