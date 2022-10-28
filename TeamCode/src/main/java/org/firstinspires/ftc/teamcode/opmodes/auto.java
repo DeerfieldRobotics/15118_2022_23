@@ -72,7 +72,6 @@ public class auto extends LinearOpMode {
         drivetrain = new Drivetrain(hardwareMap);
         imu = new IMU(hardwareMap);
 
-
         //APRILTAGS
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -98,12 +97,16 @@ public class auto extends LinearOpMode {
             }
         });
 
+        drivetrain.reset();
+        drivetrain.setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        // Send telemetry message to indicate successful Encoder reset
+        telemetry.addData("Starting at",  "%7d :%7d",
+                drivetrain.getEncoderTicks()[0], drivetrain.getEncoderTicks()[1]);
+
         waitForStart();
 
         ElapsedTime runtime = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
-
-        telemetry.addLine("INIT");
-        telemetry.update();
 
         telemetry.setMsTransmissionInterval(50);
 
@@ -164,6 +167,9 @@ public class auto extends LinearOpMode {
 
             telemetry.update();
 
+            drivetrain.reset();
+            drivetrain.setEncoderMode(DcMotor.RunMode.RUN_TO_POSITION);
+
             drive(detectedID);
 
             drivetrain.stop();
@@ -172,12 +178,12 @@ public class auto extends LinearOpMode {
 
 
     public void drive(int tag){ //TODO change this name its not descriptive
+
         drivetrain.forwards(false, 30,30);
         switch(tag){
             case 1:
                 telemetry.addLine("DRIVE 1");
-                drivetrain.strafe(true, 30);
-                drivetrain.setEncoderMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                drivetrain.strafe(true, 30,30);
 
                 break;
             case 2:
@@ -185,7 +191,7 @@ public class auto extends LinearOpMode {
                 break;
             case 3:
                 telemetry.addLine("DRIVE 3");
-                drivetrain.strafe(false, 30);
+                drivetrain.strafe(false, 30,30);
                 break;
             default:
                 break;
