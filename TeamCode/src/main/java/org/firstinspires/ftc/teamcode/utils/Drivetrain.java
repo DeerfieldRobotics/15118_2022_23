@@ -58,6 +58,7 @@ public class Drivetrain
         fr.setPower(forward - turn - strafe);
         bl.setPower(forward + turn - strafe);
         br.setPower(forward - turn + strafe);
+        stop();
     }
 
     public void move(double flpow, double frpow, double blpow, double brpow){
@@ -105,54 +106,53 @@ public class Drivetrain
     }
     public void forwards(boolean forward, int LTarget, int RTarget)
     {
-        LTarget = (int) (LTarget * COUNTS_PER_INCH);
-        RTarget = (int) (RTarget * COUNTS_PER_INCH);
+        int FLTarget = fl.getCurrentPosition()+ (int) (LTarget * COUNTS_PER_INCH);
+        int FRTarget = fr.getCurrentPosition() + (int) (RTarget * COUNTS_PER_INCH);
+        int BLTarget = bl.getCurrentPosition()+ (int) (LTarget * COUNTS_PER_INCH);
+        int BRTarget = br.getCurrentPosition() + (int) (RTarget * COUNTS_PER_INCH);
         double pow = 0.0;
         if (!forward) {
             pow = DRIVETRAIN_SPEED_MODIFIER * -1;
-            fr.setTargetPosition(RTarget);
-            fl.setTargetPosition(LTarget);
-            br.setTargetPosition(RTarget);
-            bl.setTargetPosition(LTarget);
+            fr.setTargetPosition(FRTarget);
+            fl.setTargetPosition(FLTarget);
+            br.setTargetPosition(BRTarget);
+            bl.setTargetPosition(BLTarget);
         } else {
-            fr.setTargetPosition(-RTarget);
-            fl.setTargetPosition(-LTarget);
-            br.setTargetPosition(-RTarget);
-            bl.setTargetPosition(-LTarget);
+            fr.setTargetPosition(-FRTarget);
+            fl.setTargetPosition(-FLTarget);
+            br.setTargetPosition(-BRTarget);
+            bl.setTargetPosition(-BLTarget);
         }
 
         setEncoderMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        move(pow, pow, pow, pow);
-
-        setEncoderMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        move(0,0,pow);
 
 
 
     }
-    public void strafe(boolean left, int amount)
+    public void strafe(boolean left, int LTarget, int RTarget)
     {
-        amount = (int) (amount * COUNTS_PER_INCH);
+        int FLTarget = (int) (LTarget * COUNTS_PER_INCH);
+        int FRTarget = (int) (RTarget * COUNTS_PER_INCH);
+        int BLTarget = (int) (LTarget * COUNTS_PER_INCH);
+        int BRTarget = (int) (RTarget * COUNTS_PER_INCH);
         reset();
         double pow= 0.0;
         if (!left) {
-            fr.setTargetPosition(amount);
-            fl.setTargetPosition(-amount);
-            br.setTargetPosition(-amount);
-            bl.setTargetPosition(amount);
+            fr.setTargetPosition(FRTarget);
+            fl.setTargetPosition(-FLTarget);
+            br.setTargetPosition(-BRTarget);
+            bl.setTargetPosition(BLTarget);
             pow = DRIVETRAIN_SPEED_MODIFIER * -1;
         } else {
-            fr.setTargetPosition(-amount);
-            fl.setTargetPosition(amount);
-            br.setTargetPosition(amount);
-            bl.setTargetPosition(-amount);
+            fr.setTargetPosition(-FRTarget);
+            fl.setTargetPosition(FLTarget);
+            br.setTargetPosition(BRTarget);
+            bl.setTargetPosition(-BLTarget);
         }
 
-        setEncoderMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        move(-pow, -pow, pow, pow);
-
-        setEncoderMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        move(pow, 0, 0);
 
     }
 
