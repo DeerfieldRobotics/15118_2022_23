@@ -82,13 +82,16 @@ public class encoder_test extends LinearOpMode {
         telemetry.update();
 
         drivetrain.reset();
-        drivetrain.setEncoderMode(DcMotor.RunMode.RUN_TO_POSITION);
+        while(OpModeIsActive()){
+                drivetrain.setEncoderMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        drivetrain.forwards(false, 30,30);
-        drivetrain.strafe(true, 30,30);
+                drivetrain.forwards(false, 30,30);
+                drivetrain.strafe(true, 30,30);
 
-        drivetrain.stop();
+                drivetrain.stop();
 
-        drivetrain.setEncoderMode(DcMotor.RunMode.RUN_TO_POSITION);
+                drivetrain.setEncoderMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
-    }
+
+        }
+}
