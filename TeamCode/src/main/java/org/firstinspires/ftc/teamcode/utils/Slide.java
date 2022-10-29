@@ -13,7 +13,8 @@ public class Slide {
     public final static int low = 1000;
     public final static int medium = 1600;
     public final static int high = 2200;
-    public final static int slideMin = 150;
+    public final static int slideMin = 1000;
+    public final static int slideFlipLimit = 500;
 
     public Slide (HardwareMap hardwaremap) {
         hw = hardwaremap;

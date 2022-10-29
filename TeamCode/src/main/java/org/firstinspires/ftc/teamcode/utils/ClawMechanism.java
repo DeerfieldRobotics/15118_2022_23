@@ -64,7 +64,7 @@ public class ClawMechanism {
                 sc.start();
             }
             else {
-                int oldPos = slide.getCurrentPosition();
+                int oldPos = Math.max(slide.getCurrentPosition(),slide.slideFlipLimit);
                 slide.setPosition(Slide.slideMin);
                 //start thread to check if slide goes up and then flip the arm, then go back to old position
                 sc = new SlideCheck(slide, claw, flip, oldPos);
