@@ -20,12 +20,13 @@ public class slide_test extends LinearOpMode{
         runtime.reset();
         while(opModeIsActive()) {
             telemetry.addLine("Encoder Ticks: "+s.getCurrentPosition());
+            telemetry.update();
         }
     }
 
     public void initialize() {
-        s = hardwareMap.get(DcMotor.class, "s");
-        s.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        s = hardwareMap.get(DcMotor.class, "slide");
+        s.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         s.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 }

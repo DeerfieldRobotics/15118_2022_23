@@ -93,4 +93,10 @@ public class ClawMechanism {
     public void setPitch(double position) {
         claw.movePitch(position);
     }
+
+    public void setSlidePower(double power) {
+        slide.move(power);
+    }
+
+    public void stopSlide() {slide.stop();}
 }

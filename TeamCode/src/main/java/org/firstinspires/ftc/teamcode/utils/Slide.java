@@ -22,11 +22,11 @@ public class Slide {
     }
 
     public void initialize() {
-         s = hw.get(DcMotor.class, "s");
+         s = hw.get(DcMotor.class, "slide" +
+                 "");
 
         s.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //sets current encoder position to zero
-        s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
+        s.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         s.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE); //static power
     }
 
@@ -45,11 +45,13 @@ public class Slide {
     }
 
     public void move(double amount) {
+        s.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE); //static power
         s.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         s.setPower(amount);
     }
 
     public void stop() {
+        s.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE); //static power
         s.setPower(0);
     }
 

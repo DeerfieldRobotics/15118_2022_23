@@ -42,9 +42,6 @@ public class teleop extends LinearOpMode {
 
     private boolean lb;
 
-    private DcMotor getMotor(String motorName) {
-        return hardwareMap.get(DcMotor.class, motorName);
-    }
     public ElapsedTime loopTime = new ElapsedTime();
 
     @Override
@@ -68,15 +65,17 @@ public class teleop extends LinearOpMode {
             else {
                 drivetrain.stop();
             }
-/*
             //manual slide movement
             if(gamepad1.left_trigger != 0 || gamepad1.right_trigger != 0) {
-                //(right_trigger)-(left_trigger) for slide movement + limits, maybe add separate thread for evaluating limits with limit switch
+                //(right_trigger)-(left_trigger) for slide movement + limits, maybe add separate thread for evaluating limits with limit switch\
+                claw.setSlidePower(gamepad1.right_trigger-gamepad1.left_trigger);
             }
             else {
-
+                claw.stopSlide();
             }
 
+            claw.setArm(1);
+/*
             //Driver 2
             if(!claw.flip&&(gamepad2.left_stick_y != 0 || gamepad2.right_stick_y != 0 || gamepad2.right_stick_x != 0))
             {
@@ -153,7 +152,7 @@ public class teleop extends LinearOpMode {
 
     public void initialize() {
         drivetrain = new Drivetrain(hardwareMap);
-        //claw = new ClawMechanism(hardwareMap);
+        claw = new ClawMechanism(hardwareMap);
 
         ledB =new LedEffect.Builder();
         ledB.addStep(1,0,0,100);
