@@ -82,7 +82,7 @@ public class encoder_test extends LinearOpMode {
         telemetry.update();
 
         drivetrain.reset();
-        while(OpModeIsActive()){
+        while(opModeIsActive()){
                 drivetrain.setEncoderMode(DcMotor.RunMode.RUN_TO_POSITION);
 
                 drivetrain.forwards(false, 30,30);

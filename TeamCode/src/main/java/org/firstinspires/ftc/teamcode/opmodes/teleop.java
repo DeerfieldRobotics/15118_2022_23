@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.hardware.Gamepad.LedEffect;
 import com.qualcomm.robotcore.hardware.Gamepad.RumbleEffect;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
+import org.firstinspires.ftc.teamcode.utils.Claw;
 import org.firstinspires.ftc.teamcode.utils.ClawMechanism;
 import org.firstinspires.ftc.teamcode.utils.Drivetrain;
 
@@ -18,6 +20,8 @@ public class teleop extends LinearOpMode {
 
     private Drivetrain drivetrain;
     private ClawMechanism claw;
+
+    private Claw c;
 
     private LedEffect.Builder ledB;
     private LedEffect red;
@@ -73,10 +77,13 @@ public class teleop extends LinearOpMode {
             else {
                 claw.stopSlide();
             }
-
             claw.setArm(1);
-/*
+            claw.closeClaw(gamepad2.right_trigger);
+            claw.setRoll(Math.abs(gamepad2.right_stick_x));
+            claw.setPitch(Math.abs(gamepad2.right_stick_y));
+
             //Driver 2
+            /*
             if(!claw.flip&&(gamepad2.left_stick_y != 0 || gamepad2.right_stick_y != 0 || gamepad2.right_stick_x != 0))
             {
                 if(armNeutral+gamepad2.left_stick_y*leftYSens<armMin) { //add limits with slide height
@@ -124,7 +131,7 @@ public class teleop extends LinearOpMode {
 
             claw.closeClaw(gamepad2.right_trigger);
 
-            if(gamepad2.left_bumper&&!lb&&!claw.getSlideCheck().isAlive()) {
+            if(gamepad2.left_bumper&&!lb&&claw.getSlideCheck()!=null&&!claw.getSlideCheck().isAlive()) {
                 claw.flip();
                 lb = true;
             }
@@ -143,16 +150,20 @@ public class teleop extends LinearOpMode {
             else if (gamepad2.circle) {
                 claw.setSlideLevel(3);
             }
-
- */
+*/
+            telemetry.addData("Pos", gamepad2.right_trigger);
+            telemetry.addData("AMPS: ", claw.getSlide().getMotor().getCurrent(CurrentUnit.AMPS));
+            telemetry.update();
         }
-
 
     }
 
     public void initialize() {
         drivetrain = new Drivetrain(hardwareMap);
         claw = new ClawMechanism(hardwareMap);
+        c = new Claw(hardwareMap);
+
+        claw.setArm(1);
 
         ledB =new LedEffect.Builder();
         ledB.addStep(1,0,0,100);

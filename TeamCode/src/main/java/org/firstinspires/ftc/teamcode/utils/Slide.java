@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode.utils;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Slide {
 
-    private DcMotor s;
+    private DcMotorEx s;
     private HardwareMap hw;
 
     private final float speed = 1;
@@ -23,8 +24,7 @@ public class Slide {
     }
 
     public void initialize() {
-         s = hw.get(DcMotor.class, "slide" +
-                 "");
+         s = (DcMotorEx) hw.get(DcMotor.class, "slide");
 
         s.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //sets current encoder position to zero
         s.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -59,5 +59,9 @@ public class Slide {
     public void resetEncoder() {
         s.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //sets current encoder position to zero
         s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    public DcMotorEx getMotor() {
+        return s;
     }
 }

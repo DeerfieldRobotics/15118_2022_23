@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.utils;
 
+import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class ClawMechanism {
@@ -99,4 +100,7 @@ public class ClawMechanism {
     }
 
     public void stopSlide() {slide.stop();}
+    public Slide getSlide() {
+        return slide;
+    }
 }
