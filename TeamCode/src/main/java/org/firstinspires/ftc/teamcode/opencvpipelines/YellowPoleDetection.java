@@ -18,8 +18,8 @@ public class YellowPoleDetection extends OpenCvPipeline {
 
     List<int[]> yXArray = new ArrayList<int[]>();
 
-    Scalar low = new Scalar(61, 50, 100);
-    Scalar high = new Scalar(120, 50, 100);
+    Scalar low = new Scalar(20, 150, 150);
+    Scalar high = new Scalar(35, 255, 255);
     private double[][][] initial;
 
     Mat workingMatrix = new Mat();
@@ -45,7 +45,7 @@ public class YellowPoleDetection extends OpenCvPipeline {
 
 
 
-        return input;
+        return workingMatrix;
     }
 
 
@@ -74,14 +74,15 @@ public class YellowPoleDetection extends OpenCvPipeline {
         for(int i = 0; i < workingMatrix.height();i++) {
             for(int j = 0; j<workingMatrix.width();j++) {
                 if(workingMatrix.get(i,j)[0]==255) {
-                    if(j>RDist1)
-                        RDist1=j;
+                    if(j>RDist1) {
+                        RDist1 = j;
                         Ry = i;
-                    if(j<LDist1)
-                        LDist1=j;
+                    }
+                    if(j<LDist1) {
+                        LDist1 = j;
                         Ly = i;
 
-
+                    }
                 }
             }
         }
