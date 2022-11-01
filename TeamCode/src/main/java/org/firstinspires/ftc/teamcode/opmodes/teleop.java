@@ -47,9 +47,11 @@ public class teleop extends LinearOpMode {
     private boolean lb;
     private boolean s;
     private boolean w;
+    private boolean f;
 
     private boolean pitch = false;
     private boolean roll = false;
+    private boolean flip = false;
 
     public ElapsedTime loopTime = new ElapsedTime();
 
@@ -65,7 +67,6 @@ public class teleop extends LinearOpMode {
             //drivetrain movement
             if(gamepad2.left_trigger < leftTriggerSens&&(gamepad1.left_stick_x != 0 || gamepad1.right_stick_x != 0 || gamepad1.left_stick_y != 0 || gamepad2.left_stick_x != 0))
             {
-
                 drivetrain.move(gamepad1.left_stick_x, gamepad1.right_stick_x+gamepad2.left_stick_x*leftXSens, gamepad1.left_stick_y);
             }
             else if(gamepad2.left_trigger >= leftTriggerSens&&(gamepad1.left_stick_x != 0 || gamepad1.right_stick_x != 0 || gamepad1.left_stick_y != 0 || gamepad2.left_stick_x != 0)) {
@@ -76,13 +77,13 @@ public class teleop extends LinearOpMode {
             }
             //manual slide movement
             if(gamepad1.left_trigger != 0 || gamepad1.right_trigger != 0) {
-                //(right_trigger)-(left_trigger) for slide movement + limits, maybe add separate thread for evaluating limits with limit switch\
-                claw.setSlidePower(gamepad1.right_trigger-gamepad1.left_trigger);
+                //(right_trigger)-(left_trigger) for slide movement + limits, maybe add separate thread for evaluating limits with limit switch
+                claw.setSlidePower(gamepad1.right_trigger - gamepad1.left_trigger);
             }
             else {
                 claw.stopSlide();
             }
-            claw.setArm(1);
+            //claw.setArm(1);
             claw.closeClaw(gamepad2.right_trigger);
             //claw.setRoll(Math.max(0,-gamepad2.right_stick_x));
 
@@ -116,9 +117,24 @@ public class teleop extends LinearOpMode {
                 w = false;
             }
 
+            if(gamepad2.left_bumper && !f) {
+                if(flip) {
+                    claw.setArm(0);
+                    flip = false;
+                }
+                else {
+                    claw.setArm(0.8);
+                    flip = true;
+                }
+                f = true;
+            }
+            else if(!gamepad2.left_bumper) {
+                f = false;
+            }
+
             //Driver 2
-            /*
-            if(!claw.flip&&(gamepad2.left_stick_y != 0 || gamepad2.right_stick_y != 0 || gamepad2.right_stick_x != 0))
+
+            /*if(!claw.flip&&(gamepad2.left_stick_y != 0 || gamepad2.right_stick_y != 0 || gamepad2.right_stick_x != 0))
             {
                 if(armNeutral+gamepad2.left_stick_y*leftYSens<armMin) { //add limits with slide height
                     claw.setArm(armMin);
@@ -183,10 +199,11 @@ public class teleop extends LinearOpMode {
             }
             else if (gamepad2.circle) {
                 claw.setSlideLevel(3);
-            }
-*/
+            }*/
+
             telemetry.addData("Pos", gamepad2.right_trigger);
             telemetry.addData("AMPS: ", claw.getSlide().getMotor().getCurrent(CurrentUnit.AMPS));
+            telemetry.addData("", gamepad2.left_bumper);
             telemetry.update();
         }
 
@@ -197,11 +214,14 @@ public class teleop extends LinearOpMode {
         claw = new ClawMechanism(hardwareMap);
         c = new Claw(hardwareMap);
 
+        claw.closeClaw(0);
+        claw.setRoll(0);
+        claw.setPitch(0);
         claw.setArm(1);
 
-        ledB =new LedEffect.Builder();
+        ledB = new LedEffect.Builder();
         ledB.addStep(1,0,0,100);
-        red= ledB.build();
+        red = ledB.build();
 
         rumbleB = new RumbleEffect.Builder();
         rumbleB.addStep(1,1, 100);

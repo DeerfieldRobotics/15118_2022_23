@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.utils;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Slide {
@@ -24,11 +25,11 @@ public class Slide {
     }
 
     public void initialize() {
-         s = (DcMotorEx) hw.get(DcMotor.class, "slide");
+         s = (DcMotorImplEx) hw.get(DcMotor.class, "slide");
 
         s.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //sets current encoder position to zero
         s.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        s.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE); //static power
+        s.setZeroPowerBehavior(DcMotorImplEx.ZeroPowerBehavior.BRAKE); //static power
     }
 
     public int getCurrentPosition() {
