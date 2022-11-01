@@ -23,7 +23,7 @@ public class Claw {
 
         arm.scaleRange(0, 1); //range of motion for arm TODO
         roll.scaleRange(0, 1); //range of motion for the roll servo TODO
-        pitch.scaleRange(.36, .7); //range of motion for the pitch servo DONE
+        pitch.scaleRange(0, 0.8); //range of motion for the pitch servo DONE
         claw.scaleRange(.6, .8); //range of motion for the claw servo DONE
     }
 

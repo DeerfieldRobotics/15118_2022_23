@@ -45,6 +45,11 @@ public class teleop extends LinearOpMode {
     private final double leftTriggerSens = 0.2;
 
     private boolean lb;
+    private boolean s;
+    private boolean w;
+
+    private boolean pitch = false;
+    private boolean roll = false;
 
     public ElapsedTime loopTime = new ElapsedTime();
 
@@ -79,8 +84,37 @@ public class teleop extends LinearOpMode {
             }
             claw.setArm(1);
             claw.closeClaw(gamepad2.right_trigger);
-            claw.setRoll(Math.abs(gamepad2.right_stick_x));
-            claw.setPitch(Math.abs(gamepad2.right_stick_y));
+            //claw.setRoll(Math.max(0,-gamepad2.right_stick_x));
+
+            if(gamepad2.dpad_down && !s) {
+                if(pitch) {
+                    claw.setPitch(0);
+                    pitch = false;
+                }
+                else {
+                    claw.setPitch(0.9);
+                    pitch = true;
+                }
+                s = true;
+            }
+            else if(!gamepad2.dpad_down) {
+                s = false;
+            }
+
+            if(gamepad2.dpad_left && !w) {
+                if(roll) {
+                    claw.setRoll(0);
+                    roll = false;
+                }
+                else {
+                    claw.setRoll(1);
+                    roll = true;
+                }
+                w = true;
+            }
+            else if(!gamepad2.dpad_left) {
+                w = false;
+            }
 
             //Driver 2
             /*
