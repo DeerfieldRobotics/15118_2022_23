@@ -1,17 +1,13 @@
 package org.firstinspires.ftc.teamcode.utils;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
-
 public class Drivetrain
 {
-    private DcMotorEx fl, fr, bl, br;
+    private DcMotor fl, fr, bl, br;
     private HardwareMap hw;
 
 
@@ -25,7 +21,7 @@ public class Drivetrain
 
     private ElapsedTime runtime = new ElapsedTime();
 
-    private double DRIVETRAIN_SPEED_MODIFIER = 1;
+    private double DRIVETRAIN_SPEED_MODIFIER = 0.8;
     public Drivetrain (HardwareMap hardwaremap) {
         hw = hardwaremap;
 
@@ -34,10 +30,10 @@ public class Drivetrain
     }
 
     public void initialize() {
-        fr = (DcMotorImplEx) hw.get(DcMotorEx.class, "fr");
-        fl = (DcMotorImplEx) hw.get(DcMotorEx.class, "fl");
-        br = (DcMotorImplEx) hw.get(DcMotorEx.class, "br");
-        bl = (DcMotorImplEx) hw.get(DcMotorEx.class, "bl");
+        fr = hw.get(DcMotor.class, "fr");
+        fl = hw.get(DcMotor.class, "fl");
+        br = hw.get(DcMotor.class, "br");
+        bl = hw.get(DcMotor.class, "bl");
 
         fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -182,11 +178,7 @@ public class Drivetrain
     public boolean isBusy(){
         return fl.isBusy() && fr.isBusy();
     }
-    public double avgCurrent() {
-        return (fl.getCurrent(CurrentUnit.AMPS)+fr.getCurrent(CurrentUnit.AMPS)+bl.getCurrent(CurrentUnit.AMPS)+br.getCurrent(CurrentUnit.AMPS))/4;
-    }
-    public DcMotorEx[] getMotors() {
-        return new DcMotorEx[] {fl, fr, bl, br};
-    }
+
+
 
 }

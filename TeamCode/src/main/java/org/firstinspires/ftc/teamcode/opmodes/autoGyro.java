@@ -91,11 +91,10 @@ import org.firstinspires.ftc.teamcode.utils.Drivetrain;
  */
 
 @Autonomous(name="Auto Gyro", group="Robot")
-@Disabled
+
 public class autoGyro extends LinearOpMode {
 
     /* Declare OpMode members. */
-    Drivetrain drivetrain = new Drivetrain(hardwareMap);
     private BNO055IMU       imu         = null;      // Control/Expansion Hub IMU
 
     private double          robotHeading  = 0;
@@ -115,7 +114,7 @@ public class autoGyro extends LinearOpMode {
 
     // These constants define the desired driving/control characteristics
     // They can/should be tweaked to suit the specific robot drive train.
-    static final double     DRIVE_SPEED             = 0.4;     // Max driving speed for better distance accuracy.
+    static final double     DRIVE_SPEED             = 0.7;     // Max driving speed for better distance accuracy.
     static final double     TURN_SPEED              = 0.2;     // Max Turn speed to limit turn rate
     static final double     HEADING_THRESHOLD       = 1.0 ;    // How close must the heading get to the target before moving to next step.
     // Requiring more accuracy (a smaller number) will often make the turn take longer to get into the final position.
@@ -129,8 +128,7 @@ public class autoGyro extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        drivetrain.initialize();
-
+        Drivetrain drivetrain = new Drivetrain(hardwareMap);
         // define initialization values for IMU, and then initialize it.
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit            = BNO055IMU.AngleUnit.DEGREES;
@@ -154,19 +152,8 @@ public class autoGyro extends LinearOpMode {
         //          holdHeading() is used after turns to let the heading stabilize
         //          Add a sleep(2000) after any step to keep the telemetry data visible for review
 
-        driveStraight(DRIVE_SPEED, 24.0, 0.0);    // Drive Forward 24"
-        turnToHeading( TURN_SPEED, -45.0);               // Turn  CW to -45 Degrees
-        holdHeading( TURN_SPEED, -45.0, 0.5);   // Hold -45 Deg heading for a 1/2 second
-
-        driveStraight(DRIVE_SPEED, 17.0, -45.0);  // Drive Forward 17" at -45 degrees (12"x and 12"y)
-        turnToHeading( TURN_SPEED,  45.0);               // Turn  CCW  to  45 Degrees
-        holdHeading( TURN_SPEED,  45.0, 0.5);    // Hold  45 Deg heading for a 1/2 second
-
-        driveStraight(DRIVE_SPEED, 17.0, 45.0);  // Drive Forward 17" at 45 degrees (-12"x and 12"y)
-        turnToHeading( TURN_SPEED,   0.0);               // Turn  CW  to 0 Degrees
-        holdHeading( TURN_SPEED,   0.0, 1.0);    // Hold  0 Deg heading for 1 second
-
-        driveStraight(DRIVE_SPEED,-48.0, 0.0);    // Drive in Reverse 48" (should return to approx. staring position)
+        driveStraight(-DRIVE_SPEED, -30.0, 0.0, drivetrain, false);    // Drive Forward 24"
+            // Drive in Reverse 48" (should return to approx. staring position)
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -196,7 +183,7 @@ public class autoGyro extends LinearOpMode {
      */
     public void driveStraight(double maxDriveSpeed,
                               double distance,
-                              double heading) {
+                              double heading, Drivetrain drivetrain, boolean forwards) {
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
@@ -207,14 +194,14 @@ public class autoGyro extends LinearOpMode {
             rightTarget = drivetrain.getEncoderTicks()[1] + moveCounts;
 
             // Set Target FIRST, then turn on RUN_TO_POSITION
-            drivetrain.forwards(true, leftTarget, rightTarget);
+            drivetrain.forwards(forwards, leftTarget, rightTarget);
 
             drivetrain.setEncoderMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // Set the required driving speed  (must be positive for RUN_TO_POSITION)
             // Start driving straight, and then enter the control loop
             maxDriveSpeed = Math.abs(maxDriveSpeed);
-            moveRobot(maxDriveSpeed, 0);
+            moveRobot(maxDriveSpeed, 0 , drivetrain);
 
             // keep looping while we are still active, and BOTH motors are running.
             while (opModeIsActive() &&
@@ -228,14 +215,14 @@ public class autoGyro extends LinearOpMode {
                     turnSpeed *= -1.0;
 
                 // Apply the turning correction to the current driving speed.
-                moveRobot(driveSpeed, turnSpeed);
+                moveRobot(driveSpeed, turnSpeed, drivetrain);
 
                 // Display drive status for the driver.
-                sendTelemetry(true);
+                sendTelemetry(true, drivetrain);
             }
 
             // Stop all motion & Turn off RUN_TO_POSITION
-            moveRobot(0, 0);
+            drivetrain.stop();
             drivetrain.setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
@@ -251,7 +238,7 @@ public class autoGyro extends LinearOpMode {
      *              0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
      *              If a relative angle is required, add/subtract from current heading.
      */
-    public void turnToHeading(double maxTurnSpeed, double heading) {
+    public void turnToHeading(double maxTurnSpeed, double heading, Drivetrain drivetrain) {
 
         // Run getSteeringCorrection() once to pre-calculate the current error
         getSteeringCorrection(heading, P_DRIVE_GAIN);
@@ -266,14 +253,14 @@ public class autoGyro extends LinearOpMode {
             turnSpeed = Range.clip(turnSpeed, -maxTurnSpeed, maxTurnSpeed);
 
             // Pivot in place by applying the turning correction
-            moveRobot(0, turnSpeed);
+            moveRobot(0, turnSpeed, drivetrain);
 
             // Display drive status for the driver.
-            sendTelemetry(false);
+            sendTelemetry(false, drivetrain);
         }
 
         // Stop all motion;
-        moveRobot(0, 0);
+        drivetrain.stop();
     }
 
     /**
@@ -287,7 +274,7 @@ public class autoGyro extends LinearOpMode {
      *                   If a relative angle is required, add/subtract from current heading.
      * @param holdTime   Length of time (in seconds) to hold the specified heading.
      */
-    public void holdHeading(double maxTurnSpeed, double heading, double holdTime) {
+    public void holdHeading(double maxTurnSpeed, double heading, double holdTime, Drivetrain drivetrain) {
 
         ElapsedTime holdTimer = new ElapsedTime();
         holdTimer.reset();
@@ -301,14 +288,14 @@ public class autoGyro extends LinearOpMode {
             turnSpeed = Range.clip(turnSpeed, -maxTurnSpeed, maxTurnSpeed);
 
             // Pivot in place by applying the turning correction
-            moveRobot(0, turnSpeed);
+            moveRobot(0, turnSpeed, drivetrain);
 
             // Display drive status for the driver.
-            sendTelemetry(false);
+            sendTelemetry(false, drivetrain);
         }
 
         // Stop all motion;
-        moveRobot(0, 0);
+        moveRobot(0, 0, drivetrain);
     }
 
     // **********  LOW Level driving functions.  ********************
@@ -343,7 +330,7 @@ public class autoGyro extends LinearOpMode {
      * @param drive forward motor speed
      * @param turn  clockwise turning motor speed.
      */
-    public void moveRobot(double drive, double turn) {
+    public void moveRobot(double drive, double turn, Drivetrain drivetrain) {
         driveSpeed = drive;     // save this value as a class member so it can be used by telemetry.
         turnSpeed  = turn;      // save this value as a class member so it can be used by telemetry.
 
@@ -366,7 +353,7 @@ public class autoGyro extends LinearOpMode {
      *
      * @param straight  Set to true if we are driving straight, and the encoder positions should be included in the telemetry.
      */
-    private void sendTelemetry(boolean straight) {
+    private void sendTelemetry(boolean straight, Drivetrain drivetrain) {
 
         if (straight) {
             telemetry.addData("Motion", "Drive Straight");

@@ -71,27 +71,16 @@ public class encoder_test extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         drivetrain = new Drivetrain(hardwareMap);
 
-        drivetrain.reset();
-        drivetrain.setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        // Send telemetry message to indicate successful Encoder reset
-        telemetry.addData("Starting at",  "%7d :%7d",
-                drivetrain.getEncoderTicks()[0], drivetrain.getEncoderTicks()[1]);
+        ElapsedTime runtime = new ElapsedTime();
 
         waitForStart();
-        telemetry.update();
 
-        drivetrain.reset();
-        while(opModeIsActive()){
-                drivetrain.setEncoderMode(DcMotor.RunMode.RUN_TO_POSITION);
+        drivetrain.setEncoderMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-                drivetrain.forwards(false, 30,30);
-                drivetrain.strafe(true, 30,30);
+        drivetrain.setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-                drivetrain.stop();
+        while(opModeIsActive()) {
 
-                drivetrain.setEncoderMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
-
         }
 }

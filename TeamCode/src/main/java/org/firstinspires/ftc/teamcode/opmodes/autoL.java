@@ -18,9 +18,9 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 
-@Autonomous(name = "Autono")
+@Autonomous(name = "LEFT AUTO")
 
-public class auto extends LinearOpMode {
+public class autoL extends LinearOpMode {
 
     private Drivetrain drivetrain;
     private ClawMechanism claw;
@@ -194,7 +194,7 @@ public class auto extends LinearOpMode {
 
                     telemetry.addLine("STRAFE");
                     telemetry.update();
-                    drivetrain.strafe(true, 26, 26);
+                    drivetrain.strafe(false, 26, 26);
                 }
 
                 break;
@@ -222,7 +222,7 @@ public class auto extends LinearOpMode {
 
                     telemetry.addLine("STRAFE");
                     telemetry.update();
-                    drivetrain.strafe(false, 26, 26);
+                    drivetrain.strafe(true, 26, 26);
                 }
                 break;
             default:
