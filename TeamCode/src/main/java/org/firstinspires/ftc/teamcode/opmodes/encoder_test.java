@@ -108,8 +108,6 @@ public class encoder_test extends LinearOpMode {
             fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            //drivetrain.forwards(true, 26, 26);
         }
 
         }
