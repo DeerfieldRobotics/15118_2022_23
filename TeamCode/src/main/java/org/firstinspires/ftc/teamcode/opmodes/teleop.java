@@ -80,9 +80,9 @@ public class teleop extends LinearOpMode {
             else {
                 drivetrain.stop();
             }*/
-            double forward = gamepad1.left_stick_y;
-            double turn = -gamepad1.right_stick_x;
-            double strafe = gamepad1.left_stick_x;
+            double forward = gamepad1.left_stick_y*0.85;
+            double turn = -gamepad1.right_stick_x*0.5;
+            double strafe = gamepad1.left_stick_x*.9;
 
             fl.setPower(forward + turn + strafe);
             fr.setPower(forward - turn - strafe);
@@ -97,7 +97,8 @@ public class teleop extends LinearOpMode {
             else {
                 claw.stopSlide();
             }
-            claw.setArm(1);
+            claw.setArm(.65);
+
             claw.closeClaw(gamepad2.right_trigger);
             //claw.setRoll(Math.max(0,-gamepad2.right_stick_x));
 

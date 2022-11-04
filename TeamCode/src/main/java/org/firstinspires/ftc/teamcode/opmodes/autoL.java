@@ -27,11 +27,9 @@ public class autoL extends LinearOpMode {
     private IMU imu;
 
     // APRILTAGS
-    OpenCvCamera backCamera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
     RedConeDetection redConeDetection;
 
-    //OTHER CAMERA
     OpenCvCamera frontCamera;
 
     static final double FEET_PER_METER = 3.28084;
@@ -76,18 +74,17 @@ public class autoL extends LinearOpMode {
 //
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         frontCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "frontWeb"), cameraMonitorViewId);
-        backCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "backWeb"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
 
         redConeDetection = new RedConeDetection();
 
-        backCamera.setPipeline(aprilTagDetectionPipeline);
-        backCamera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        frontCamera.setPipeline(aprilTagDetectionPipeline);
+        frontCamera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
             @Override
             public void onOpened()
             {
-                backCamera.startStreaming(800,448, OpenCvCameraRotation.UPRIGHT);
+                frontCamera.startStreaming(800,448, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
@@ -96,6 +93,8 @@ public class autoL extends LinearOpMode {
 
             }
         });
+
+
 
         drivetrain.setEncoderMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         drivetrain.setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -123,9 +122,9 @@ public class autoL extends LinearOpMode {
 
                 // If there's been a new frame...
                 if (detections != null) {
-                    telemetry.addData("FPS", backCamera.getFps());
-                    telemetry.addData("Overhead ms", backCamera.getOverheadTimeMs());
-                    telemetry.addData("Pipeline ms", backCamera.getPipelineTimeMs());
+                    telemetry.addData("FPS", frontCamera.getFps());
+                    telemetry.addData("Overhead ms", frontCamera.getOverheadTimeMs());
+                    telemetry.addData("Pipeline ms", frontCamera.getPipelineTimeMs());
 
                     // If we don't see any tags
                     if (detections.size() == 0) {
@@ -168,7 +167,6 @@ public class autoL extends LinearOpMode {
             telemetry.update();
 
             drivetrain.reset();
-            drivetrain.setEncoderMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             drive(detectedID);
 

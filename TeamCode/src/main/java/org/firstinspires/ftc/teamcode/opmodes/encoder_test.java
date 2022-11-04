@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -71,16 +72,45 @@ public class encoder_test extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         drivetrain = new Drivetrain(hardwareMap);
 
+        DcMotor fr = hardwareMap.get(DcMotor.class, "fr");
+        DcMotor fl = hardwareMap.get(DcMotor.class, "fl");
+        DcMotor br = hardwareMap.get(DcMotor.class, "br");
+        DcMotor bl = hardwareMap.get(DcMotor.class, "bl");
+        br.setDirection(DcMotorSimple.Direction.REVERSE);
+        fr.setDirection(DcMotorSimple.Direction.REVERSE);
+        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         ElapsedTime runtime = new ElapsedTime();
 
         waitForStart();
 
         drivetrain.setEncoderMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        drivetrain.setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //drivetrain.setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        while(opModeIsActive()) {
 
+        while ((opModeIsActive() && drivetrain.isBusy()) || runtime.milliseconds() <= 3000) {
+            telemetry.addLine(drivetrain.getEncoderTicks()[0] + "\n" + drivetrain.getEncoderTicks()[1] + "\n" + runtime.milliseconds());
+            telemetry.update();
+            fr.setTargetPosition(1000);
+            fl.setTargetPosition(1000);
+            br.setTargetPosition(1000);
+            bl.setTargetPosition(1000);
+
+            fr.setPower(.7);
+            fl.setPower(.7);
+            br.setPower(.7);
+            bl.setPower(.7);
+
+            fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            //drivetrain.forwards(true, 26, 26);
         }
+
         }
 }

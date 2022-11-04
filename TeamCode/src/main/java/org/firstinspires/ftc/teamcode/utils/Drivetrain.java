@@ -11,7 +11,7 @@ public class Drivetrain
     private HardwareMap hw;
 
 
-    static final double     COUNTS_PER_MOTOR_REV    = 384.5 ;
+    static final double     COUNTS_PER_MOTOR_REV    = 1 ;
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // No External Gearing.
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     public static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
@@ -21,7 +21,7 @@ public class Drivetrain
 
     private ElapsedTime runtime = new ElapsedTime();
 
-    private double DRIVETRAIN_SPEED_MODIFIER = 0.8;
+    private double DRIVETRAIN_SPEED_MODIFIER = 0.5;
     public Drivetrain (HardwareMap hardwaremap) {
         hw = hardwaremap;
 
@@ -104,55 +104,54 @@ public class Drivetrain
         return new int[]
                 {fl.getCurrentPosition(), fr.getCurrentPosition(), bl.getCurrentPosition(), br.getCurrentPosition()};
     }
-    public void forwards(boolean forward, int LTarget, int RTarget)
+    public void forwards(boolean backwards, int LTarget, int RTarget)
     {
-        int FLTarget = fl.getCurrentPosition()+ (int) (LTarget * COUNTS_PER_INCH);
-        int FRTarget = fr.getCurrentPosition() + (int) (RTarget * COUNTS_PER_INCH);
-        int BLTarget = bl.getCurrentPosition()+ (int) (LTarget * COUNTS_PER_INCH);
-        int BRTarget = br.getCurrentPosition() + (int) (RTarget * COUNTS_PER_INCH);
-        double pow = 0.0;
-        if (!forward) {
-            pow = DRIVETRAIN_SPEED_MODIFIER * -1;
-            fr.setTargetPosition(FRTarget);
-            fl.setTargetPosition(FLTarget);
-            br.setTargetPosition(BRTarget);
-            bl.setTargetPosition(BLTarget);
-        } else {
-            fr.setTargetPosition(-FRTarget);
-            fl.setTargetPosition(-FLTarget);
-            br.setTargetPosition(-BRTarget);
-            bl.setTargetPosition(-BLTarget);
+        double pow = DRIVETRAIN_SPEED_MODIFIER;
+        int mult = 1;
+        if(!backwards) {
+            //backwards
+            mult *= -1;
         }
+        int FLTarget = mult * (int) (LTarget * 22);
+        int FRTarget = mult * (int) (RTarget * 22);
+        int BLTarget = mult  *(int) (LTarget * 22);
+        int BRTarget = mult * (int) (RTarget * 22);
+
+
+        setPosition(FLTarget, FRTarget, BLTarget, BRTarget);
 
         setEncoderMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        move(0,0,pow);
-
-
-
+        move(pow, pow, pow, pow);
     }
-    public void strafe(boolean left, int LTarget, int RTarget)
+
+    public void setPosition(int fl, int fr, int bl, int br){
+        this.fl.setTargetPosition(fl);
+        this.fr.setTargetPosition(fr);
+        this.bl.setTargetPosition(bl);
+        this.br.setTargetPosition(br);
+    }
+
+    public void strafe(boolean right, int LTarget, int RTarget)
     {
-        int FLTarget = (int) (LTarget * COUNTS_PER_INCH);
-        int FRTarget = (int) (RTarget * COUNTS_PER_INCH);
-        int BLTarget = (int) (LTarget * COUNTS_PER_INCH);
-        int BRTarget = (int) (RTarget * COUNTS_PER_INCH);
-        reset();
-        double pow= 0.0;
-        if (!left) {
-            fr.setTargetPosition(FRTarget);
-            fl.setTargetPosition(-FLTarget);
-            br.setTargetPosition(-BRTarget);
-            bl.setTargetPosition(BLTarget);
-            pow = DRIVETRAIN_SPEED_MODIFIER * -1;
-        } else {
-            fr.setTargetPosition(-FRTarget);
-            fl.setTargetPosition(FLTarget);
-            br.setTargetPosition(BRTarget);
-            bl.setTargetPosition(-BLTarget);
+        double pow= DRIVETRAIN_SPEED_MODIFIER;
+        int mult = 1;
+        if (!right) {
+            //right
+            mult =-1;
         }
 
-        move(pow, 0, 0);
+
+        int FLTarget = mult * (int) (LTarget * 22);
+        int FRTarget = -mult * (int) (RTarget * 22);
+        int BLTarget = -mult *(int) (LTarget * 22);
+        int BRTarget = mult * (int) (RTarget * 22);
+
+        setPosition(FLTarget, FRTarget, BLTarget, BRTarget);
+
+        setEncoderMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        move(pow, pow, pow,pow);
 
     }
 
