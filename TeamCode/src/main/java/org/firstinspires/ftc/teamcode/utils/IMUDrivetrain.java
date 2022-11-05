@@ -101,7 +101,6 @@ public class IMUDrivetrain {
 
         while(Math.abs(error) > 2) {
             double motorPower = (error < 0 ? -0.3 : 0.3);
-
             fl.setPower(motorPower);
             fr.setPower(-motorPower);
             bl.setPower(motorPower);
