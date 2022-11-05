@@ -17,7 +17,12 @@ public class IMUDrivetrainTester extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         initialize();
         waitForStart();
-        drivetrain.turn(-90);
+        drivetrain.turn(45);
+        drivetrain.turn(-45);
+        drivetrain.turn(180);
+        drivetrain.turn(-235);
+
+
         telemetry.addData("Current", drivetrain.getAngle());
         telemetry.update();
 
@@ -27,6 +32,6 @@ public class IMUDrivetrainTester extends LinearOpMode {
     }
 
     public void initialize() {
-        drivetrain = new IMUDrivetrain(hardwareMap);
+        drivetrain = new IMUDrivetrain(hardwareMap, telemetry);
     }
 }

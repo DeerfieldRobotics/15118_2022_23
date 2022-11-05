@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -28,7 +29,11 @@ public class IMUDrivetrain {
     private final double kD = 1;
     private final double ff = 2.5;
 
-    public IMUDrivetrain(HardwareMap hw) {
+    private Telemetry telemetry;
+
+    public IMUDrivetrain(HardwareMap hw, Telemetry t) {
+        telemetry = t;
+
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -78,12 +83,12 @@ public class IMUDrivetrain {
     }
 
     public double getAngle() {
+
         Orientation orientation = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        double deltaAngle = orientation.firstAngle - lastAngles.firstAngle;
 
-        normalize(deltaAngle);
 
-        curAngle += deltaAngle;
+        curAngle = (orientation.firstAngle+180);
+
         lastAngles = orientation;
 
         return curAngle;
@@ -97,17 +102,37 @@ public class IMUDrivetrain {
 
         resetAngle();
 
-        double error = degrees;
+        double target = normalize(degrees);
 
-        while(Math.abs(error) > 10) {
-            double motorPower = (error < 0 ? -0.3 : 0.3);
-            fl.setPower(motorPower);
-            fr.setPower(-motorPower);
-            bl.setPower(motorPower);
-            br.setPower(-motorPower);
+        double error = target;
+        double current_pos = getAngle();
 
-            error = degrees - getAngle();
+        double target_pos = (current_pos+degrees)%360;
+        if(target_pos<0){
+            target_pos+=360;
         }
+
+        while(Math.abs(error) > 1) {
+            current_pos = getAngle();
+            double motorPower = (error < 0 || error > 180 ? -0.3 : 0.3);
+            fl.setPower(-motorPower);
+            fr.setPower(motorPower);
+            bl.setPower(-motorPower);
+            br.setPower(motorPower);
+
+            error = target_pos - current_pos;
+            if (Math.abs(error) > 180) {
+                error = current_pos-target_pos;
+            }
+
+            telemetry.addData("angle",getAngle());
+            telemetry.addData("error",error);
+            telemetry.addData("target",target_pos);
+
+            telemetry.update();
+        }
+        telemetry.addLine("finished");
+        telemetry.update();
         setAllPower(0);
     }
 
