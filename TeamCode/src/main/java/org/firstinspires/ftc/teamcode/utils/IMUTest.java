@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode.utils;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.utils.PID;
-
+@Autonomous(name = "imu test")
 public class IMUTest extends LinearOpMode {
     IMU imu;
 

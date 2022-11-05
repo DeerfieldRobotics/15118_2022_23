@@ -112,10 +112,10 @@ public class Drivetrain
             //backwards
             mult *= -1;
         }
-        int FLTarget = mult * (int) (LTarget * 22);
-        int FRTarget = mult * (int) (RTarget * 22);
-        int BLTarget = mult  *(int) (LTarget * 22);
-        int BRTarget = mult * (int) (RTarget * 22);
+        int FLTarget = mult * (int) (LTarget * 31);
+        int FRTarget = mult * (int) (RTarget * 31);
+        int BLTarget = mult  *(int) (LTarget * 31);
+        int BRTarget = mult * (int) (RTarget * 31);
 
 
         setPosition(FLTarget, FRTarget, BLTarget, BRTarget);
@@ -132,20 +132,20 @@ public class Drivetrain
         this.br.setTargetPosition(br);
     }
 
-    public void strafe(boolean right, int LTarget, int RTarget)
+    public void strafe(boolean left, int LTarget, int RTarget)
     {
         double pow= DRIVETRAIN_SPEED_MODIFIER;
         int mult = 1;
-        if (!right) {
+        if (!left) {
             //right
             mult =-1;
         }
 
 
-        int FLTarget = mult * (int) (LTarget * 22);
-        int FRTarget = -mult * (int) (RTarget * 22);
-        int BLTarget = -mult *(int) (LTarget * 22);
-        int BRTarget = mult * (int) (RTarget * 22);
+        int FLTarget = mult * (int) (LTarget * 31);
+        int FRTarget = -mult * (int) (RTarget * 31);
+        int BLTarget = -mult *(int) (LTarget * 31);
+        int BRTarget = mult * (int) (RTarget * 31);
 
         setPosition(FLTarget, FRTarget, BLTarget, BRTarget);
 

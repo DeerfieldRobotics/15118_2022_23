@@ -3,11 +3,13 @@ package org.firstinspires.ftc.teamcode.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.opencvpipelines.RedConeDetection;
+import org.firstinspires.ftc.teamcode.utils.Claw;
 import org.firstinspires.ftc.teamcode.utils.IMU;
 import org.firstinspires.ftc.teamcode.utils.Drivetrain;
 import org.firstinspires.ftc.teamcode.utils.ClawMechanism;
@@ -24,7 +26,7 @@ import java.util.ArrayList;
 public class encoder_test extends LinearOpMode {
 
     private Drivetrain drivetrain;
-    private ClawMechanism claw;
+    //private ClawMechanism claw;
     private IMU imu;
 
     // APRILTAGS
@@ -71,18 +73,8 @@ public class encoder_test extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         drivetrain = new Drivetrain(hardwareMap);
-
-        DcMotor fr = hardwareMap.get(DcMotor.class, "fr");
-        DcMotor fl = hardwareMap.get(DcMotor.class, "fl");
-        DcMotor br = hardwareMap.get(DcMotor.class, "br");
-        DcMotor bl = hardwareMap.get(DcMotor.class, "bl");
-        br.setDirection(DcMotorSimple.Direction.REVERSE);
-        fr.setDirection(DcMotorSimple.Direction.REVERSE);
-        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
+        DcMotorEx slide = (DcMotorEx) hardwareMap.get(DcMotor.class, "slide");
+        Claw c = new Claw(hardwareMap);
         ElapsedTime runtime = new ElapsedTime();
 
         waitForStart();
@@ -92,22 +84,30 @@ public class encoder_test extends LinearOpMode {
         //drivetrain.setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
-        while ((opModeIsActive() && drivetrain.isBusy()) || runtime.milliseconds() <= 3000) {
+        while (opModeIsActive() && runtime.milliseconds() <= 4000) {
             telemetry.addLine(drivetrain.getEncoderTicks()[0] + "\n" + drivetrain.getEncoderTicks()[1] + "\n" + runtime.milliseconds());
             telemetry.update();
-            fr.setTargetPosition(1000);
-            fl.setTargetPosition(1000);
-            br.setTargetPosition(1000);
-            bl.setTargetPosition(1000);
+            c.moveClaw(0);
 
-            fr.setPower(.7);
-            fl.setPower(.7);
-            br.setPower(.7);
-            bl.setPower(.7);
+            drivetrain.strafe(true, 39, 39);
+            slide.setTargetPosition(2535);
+            slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            slide.setPower(1);
+        }
 
-            fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        while(opModeIsActive() && runtime.milliseconds() >= 4000  && runtime.milliseconds() <= 7000){
+            c.moveClaw(0);
+            drivetrain.forwards(false,35,35);
+        }
+
+        while(opModeIsActive() && runtime.milliseconds() >= 7000 && runtime.milliseconds() <= 8000){
+            c.moveClaw(1);
+        }
+
+        while(opModeIsActive() && runtime.milliseconds() >= 8000 && runtime.milliseconds() <= 11000){
+            c.moveClaw(0);
+            slide.setTargetPosition(0);
+            slide.setPower(0.7);
         }
 
         }

@@ -69,31 +69,6 @@ public class auto extends LinearOpMode {
         drivetrain = new Drivetrain(hardwareMap);
         imu = new IMU(hardwareMap);
         aprilTags = new AprilTags(hardwareMap);
-        //APRILTAGS
-
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        frontCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "frontWeb"), cameraMonitorViewId);
-        aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
-
-        redConeDetection = new RedConeDetection();
-
-        frontCamera.setPipeline(aprilTagDetectionPipeline);
-        frontCamera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
-            @Override
-            public void onOpened()
-            {
-                frontCamera.startStreaming(800,448, OpenCvCameraRotation.UPRIGHT);
-            }
-
-            @Override
-            public void onError(int errorCode)
-            {
-
-            }
-        });
-
-
 
         drivetrain.setEncoderMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         drivetrain.setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);

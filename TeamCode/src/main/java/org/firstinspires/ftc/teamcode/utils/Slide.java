@@ -7,16 +7,18 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Slide {
 
-    private DcMotorEx s;
+    public DcMotorEx s;
     private HardwareMap hw;
 
     private final float speed = 1;
 
-    public final static int low = 1000;
-    public final static int medium = 1600;
-    public final static int high = 2200;
+    public final static int low = 1140;
+    public final static int medium = 1815;
+    public final static int high = 2535;
     public final static int slideMin = 1000;
     public final static int slideFlipLimit = 500;
+
+    int target = 0;
 
     public Slide (HardwareMap hardwaremap) {
         hw = hardwaremap;
@@ -44,6 +46,22 @@ public class Slide {
         s.setTargetPosition(target);
         s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         s.setPower(speed);
+    }
+
+    public void setSlideLevel(int level) {
+        if(level == 0) {
+            //maybe make it run down until it hits limit switch and then reset
+            setPosition(0);
+        }
+        else if(level == 1) {
+            setPosition(Slide.low);
+        }
+        else if(level == 2) {
+            setPosition(Slide.medium);
+        }
+        else if(level == 3) {
+            setPosition(Slide.high);
+        }
     }
 
     public void move(double amount) {

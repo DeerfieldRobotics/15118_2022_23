@@ -15,12 +15,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.utils.Claw;
 import org.firstinspires.ftc.teamcode.utils.ClawMechanism;
 import org.firstinspires.ftc.teamcode.utils.Drivetrain;
+import org.firstinspires.ftc.teamcode.utils.Slide;
 
 @TeleOp(name = "teleop", group = "teleop")
 public class teleop extends LinearOpMode {
     public ElapsedTime runtime = new ElapsedTime();
 
-    private ClawMechanism claw;
+    private DcMotorEx slide;
 
     private DcMotorEx fl;
     private DcMotorEx fr;
@@ -30,6 +31,10 @@ public class teleop extends LinearOpMode {
     private final double turnMult = 0.5;
     private final double forwardMult = 0.8;
     private final double strafeMult = 0.85;
+
+    public final static int low = 1140;
+    public final static int medium = 1815;
+    public final static int high = 2535;
 
     private double speedMult = 0.7;
 
@@ -59,6 +64,8 @@ public class teleop extends LinearOpMode {
         while(opModeIsActive()) {
             double loopStart = loopTime.milliseconds();
 
+            speedMult = 0.7+0.3 * gamepad1.right_trigger-0.7*gamepad1.left_trigger;
+            //movement
             if(gamepad1.right_stick_x != 0 || gamepad1.left_stick_y != 0||gamepad1.left_stick_x!=0) {
 
 
@@ -70,25 +77,45 @@ public class teleop extends LinearOpMode {
                 fr.setPower(forward + turn + strafe);
                 bl.setPower(forward - turn + strafe);
                 br.setPower(forward + turn - strafe);
+                telemetry.addLine("moving");
             }
             else {
                 fl.setPower(0);
                 fr.setPower(0);
                 bl.setPower(0);
                 br.setPower(0);
+                telemetry.addLine("not moving");
             }
 
-            speedMult = 0.7+0.3*gamepad1.right_trigger-0.7*gamepad1.left_trigger;
 
             //manual slide movement
-            if(gamepad2.left_trigger != 0 || gamepad2.right_trigger != 0) {
+            if(gamepad2.right_trigger != 0) {
                 //(right_trigger)-(left_trigger) for slide movement + limits, maybe add separate thread for evaluating limits with limit switch\
-                claw.setSlidePower(gamepad1.right_trigger-gamepad1.left_trigger);
+                c.moveClaw(1);
             }
             else {
-                claw.stopSlide();
+                c.moveClaw(0);
             }
-            claw.closeClaw(gamepad2.right_trigger);
+            slide.setDirection(DcMotorSimple.Direction.REVERSE);
+            if(gamepad2.cross){
+                slide.setTargetPosition(low);
+                slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slide.setPower(1);
+            } else if(gamepad2.square){
+                slide.setTargetPosition(medium);
+                slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slide.setPower(1);
+            } else if(gamepad2.triangle){
+                slide.setTargetPosition(high);
+                slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slide.setPower(1);
+            } else if (gamepad2.circle){
+                slide.setTargetPosition(0);
+                slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slide.setPower(1);
+            }
+
+            telemetry.addData("Slide ticks", slide.getCurrentPosition());
 
             telemetry.update();
         }
@@ -96,10 +123,9 @@ public class teleop extends LinearOpMode {
     }
 
     public void initialize() {
-        claw = new ClawMechanism(hardwareMap);
         c = new Claw(hardwareMap);
 
-        claw.closeClaw(0);
+        c.moveClaw(0);
 
         ledB = new LedEffect.Builder();
         ledB.addStep(1,0,0,100);
@@ -109,7 +135,7 @@ public class teleop extends LinearOpMode {
         rumbleB.addStep(1,1, 100);
         warning = rumbleB.build();
 
-
+        slide = (DcMotorEx) hardwareMap.get(DcMotor.class, "slide");
         fl = (DcMotorEx) hardwareMap.get(DcMotor.class, "fl");
         fr = (DcMotorEx) hardwareMap.get(DcMotor.class, "fr");
         bl = (DcMotorEx) hardwareMap.get(DcMotor.class, "bl");
@@ -126,5 +152,7 @@ public class teleop extends LinearOpMode {
         fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 }

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -24,6 +25,7 @@ public class autoL extends LinearOpMode {
 
     private Drivetrain drivetrain;
     private ClawMechanism claw;
+    private DcMotorEx slide;
     private IMU imu;
 
     // APRILTAGS
@@ -69,6 +71,7 @@ public class autoL extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         drivetrain = new Drivetrain(hardwareMap);
         imu = new IMU(hardwareMap);
+        slide = (DcMotorEx) hardwareMap.get(DcMotor.class, "slide");
 
 //        //APRILTAGS
 //
@@ -84,7 +87,7 @@ public class autoL extends LinearOpMode {
             @Override
             public void onOpened()
             {
-                frontCamera.startStreaming(800,448, OpenCvCameraRotation.UPRIGHT);
+                frontCamera.startStreaming(800,600, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
@@ -113,7 +116,7 @@ public class autoL extends LinearOpMode {
 
         while (opModeIsActive())
         {
-            while(runtime.milliseconds()< 3000) {
+            while(runtime.milliseconds()< 3000 && opModeIsActive()) {
                 // Calling getDetectionsUpdate() will only return an object if there was a new frame
                 // processed since the last time we called it. Otherwise, it will return null. This
                 // enables us to only run logic when there has been a new frame, as opposed to the
@@ -166,11 +169,17 @@ public class autoL extends LinearOpMode {
 
             telemetry.update();
 
-            drivetrain.reset();
-
-            drive(detectedID);
+            while(opModeIsActive()){
+                drive(detectedID);
+            }
 
             drivetrain.stop();
+
+            drivetrain.reset();
+
+            while(opModeIsActive()){
+
+            }
         }
     }
 
@@ -180,47 +189,49 @@ public class autoL extends LinearOpMode {
             case 1:
                 //inside
                 telemetry.addLine("DRIVE 1");
-                while ((opModeIsActive() && drivetrain.isBusy()) || runtime.milliseconds() <= 3000) {
-                    telemetry.addLine(drivetrain.getEncoderTicks()[0] + "\n" + drivetrain.getEncoderTicks()[1] + "\n" + runtime.milliseconds());
+
+                while ((opModeIsActive() && drivetrain.isBusy()) || runtime.milliseconds() <= 6000) {
+
+                    telemetry.addLine("STRAFE");
                     telemetry.update();
-                    drivetrain.forwards(true, 26, 26);
+                    drivetrain.strafe(true, 26, 26);
                 }
                 drivetrain.setEncoderMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 drivetrain.setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-                while ((opModeIsActive() && drivetrain.isBusy()) || runtime.milliseconds() >= 3000) {
-
-                    telemetry.addLine("STRAFE");
+                while ((opModeIsActive() && drivetrain.isBusy()) || runtime.milliseconds() <= 9000) {
+                    telemetry.addLine(drivetrain.getEncoderTicks()[0] + "\n" + drivetrain.getEncoderTicks()[1] + "\n" + runtime.milliseconds());
                     telemetry.update();
-                    drivetrain.strafe(false, 26, 26);
+                    drivetrain.forwards(false, 26, 26);
                 }
+
 
                 break;
             case 2:
                 //middle
                 telemetry.addLine("DRIVE 2");
-                while ((opModeIsActive() && drivetrain.isBusy()) || runtime.milliseconds() <= 3000) {
+                while ((opModeIsActive() && drivetrain.isBusy()) || runtime.milliseconds() <= 9000) {
                     telemetry.addLine(drivetrain.getEncoderTicks()[0] + "\n" + drivetrain.getEncoderTicks()[1] + "\n" + runtime.milliseconds());
                     telemetry.update();
-                    drivetrain.forwards(true, 26, 26);
+                    drivetrain.forwards(false, 26, 26);
                 }
                 break;
             case 3:
                 //outside
                 telemetry.addLine("DRIVE 3");
-                while ((opModeIsActive() && drivetrain.isBusy()) || runtime.milliseconds() <= 3000) {
-                    telemetry.addLine(drivetrain.getEncoderTicks()[0] + "\n" + drivetrain.getEncoderTicks()[1] + "\n" + runtime.milliseconds());
+                while ((opModeIsActive() && drivetrain.isBusy()) || runtime.milliseconds() <= 6000) {
+
+                    telemetry.addLine("STRAFE");
                     telemetry.update();
-                    drivetrain.forwards(true, 26, 26);
+                    drivetrain.strafe(false, 26, 26);
                 }
                 drivetrain.setEncoderMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 drivetrain.setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-                while ((opModeIsActive() && drivetrain.isBusy()) || runtime.milliseconds() >= 3000) {
-
-                    telemetry.addLine("STRAFE");
+                while ((opModeIsActive() && drivetrain.isBusy()) || runtime.milliseconds() <= 9000) {
+                    telemetry.addLine(drivetrain.getEncoderTicks()[0] + "\n" + drivetrain.getEncoderTicks()[1] + "\n" + runtime.milliseconds());
                     telemetry.update();
-                    drivetrain.strafe(true, 26, 26);
+                    drivetrain.forwards(false, 26, 26);
                 }
                 break;
             default:
