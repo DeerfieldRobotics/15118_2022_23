@@ -5,6 +5,7 @@ import android.graphics.drawable.GradientDrawable;
 import com.acmerobotics.roadrunner.util.Angle;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -17,8 +18,9 @@ import org.firstinspires.ftc.teamcode.utils.AutoDrivetrain;
 public class AutoDrivetrainTester extends LinearOpMode {
 
     private AutoDrivetrain drivetrain;
-    DcMotorEx fl, fr, bl, br;
 
+    private Orientation lastAngles = new Orientation();
+    private double curAngle = 0.0;
 
     private final int ticksPerInch = 22;
 
@@ -28,8 +30,8 @@ public class AutoDrivetrainTester extends LinearOpMode {
         waitForStart();
 
         while(opModeIsActive()) {
-            drivetrain.turn(-90);
-            telemetry.addData("Current Angle", drivetrain.getAngle());
+
+            //telemetry.addData("Current Angle", drivetrain.getIMU().getAngle());
             //drivetrain.moveTicks(1000,0,0);
 
             //telemetry.addData("Front Left Current", drivetrain.getCurrent()[0]);

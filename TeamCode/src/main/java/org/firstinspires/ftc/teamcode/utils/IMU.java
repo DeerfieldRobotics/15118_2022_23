@@ -82,14 +82,14 @@ public class IMU{
 
     public double normalize(double angle){
         if(angle > 180){
-            angle-=360;
+            angle -= 360;
         } else if(angle < -180){
             angle += 360;
         }
         return angle;
     }
 
-    public void resetAngle(){
+    public void resetAngle() {
         //update orientation and reset current angle
         lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         currentAngle = 0.0;

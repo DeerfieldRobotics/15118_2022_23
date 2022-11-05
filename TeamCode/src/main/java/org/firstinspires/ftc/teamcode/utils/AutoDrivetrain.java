@@ -17,10 +17,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 public class AutoDrivetrain {
     DcMotorEx fl, fr, bl, br;
 
-    public BNO055IMU imu;
-    private Orientation lastAngles = new Orientation();
-    private double curAngle = 0.0;
-
     private final int ticksPerInch = 22;
 
     private final double speedMult = 0.8;
@@ -31,35 +27,29 @@ public class AutoDrivetrain {
     private final double ff = 2.5;
 
     public AutoDrivetrain(HardwareMap hw) {
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json";
-        parameters.loggingEnabled = true;
-        parameters.loggingTag = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-
-        imu = hw.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
-
+        //gets motors from hardware map
         fl = hw.get(DcMotorEx.class, "fl");
         fr = hw.get(DcMotorEx.class, "fr");
         bl = hw.get(DcMotorEx.class, "bl");
         br = hw.get(DcMotorEx.class, "br");
 
+        //sets motor modes
         fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        //sets motor behavior
         fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        //change as needed to get proper behavior
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        //tuning of PID coefficients to yield better results
         fl.setVelocityPIDFCoefficients(kP,kI,kD,ff);
         fr.setVelocityPIDFCoefficients(kP,kI,kD,ff);
         bl.setVelocityPIDFCoefficients(kP,kI,kD,ff);
@@ -94,64 +84,6 @@ public class AutoDrivetrain {
         this.fr.setPower(fr);
         this.bl.setPower(bl);
         this.br.setPower(br);
-    }
-
-    public void resetAngle() {
-        lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        curAngle = 0;
-    }
-
-    public double getAngle() {
-        Orientation orientation = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        double deltaAngle = orientation.firstAngle - lastAngles.firstAngle;
-
-        if(deltaAngle > 180) {
-            deltaAngle -= 360;
-        } else if(deltaAngle <= -180) {
-            deltaAngle += 360;
-        }
-
-        curAngle += deltaAngle;
-        lastAngles = orientation;
-
-        return curAngle;
-    }
-
-    public void turn(double degrees) {
-        resetAngle();
-
-        double error = degrees;
-
-        while(Math.abs(error) > 2) {
-            double motorPower;
-            if(error < 0) {
-                motorPower = -0.3;
-            } else {
-                motorPower = 0.3;
-            }
-            setMotorPower(-motorPower, motorPower, -motorPower, motorPower);
-            error = degrees - getAngle();
-            //telemetry.addData("Error", error);
-            //telemetry.update();
-        }
-        this.fl.setPower(0);
-        this.fr.setPower(0);
-        this.bl.setPower(0);
-        this.br.setPower(0);
-    }
-
-    public void turnTo(double degrees) {
-        Orientation orientation = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        double error = degrees - orientation.firstAngle;
-
-        if(error >  180) {
-            error -= 360;
-        } else if(error < -180) {
-            error += 360;
-        }
-
-        turn(error);
     }
 
     public double[] getCurrent() {
