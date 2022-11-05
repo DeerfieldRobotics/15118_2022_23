@@ -20,15 +20,15 @@ import org.firstinspires.ftc.teamcode.utils.Drivetrain;
 public class teleop extends LinearOpMode {
     public ElapsedTime runtime = new ElapsedTime();
 
-    private Drivetrain drivetrain;
+    //private Drivetrain drivetrain;
     private ClawMechanism claw;
-
-    private Claw c;
 
     private DcMotorEx fl;
     private DcMotorEx fr;
     private DcMotorEx bl;
     private DcMotorEx br;
+
+    private Claw c;
 
     private LedEffect.Builder ledB;
     private LedEffect red;
@@ -70,25 +70,35 @@ public class teleop extends LinearOpMode {
             double loopStart = loopTime.milliseconds();
 
             //drivetrain movement
-            /*if(gamepad2.left_trigger < leftTriggerSens&&(gamepad1.left_stick_x != 0 || gamepad1.right_stick_x != 0 || gamepad1.left_stick_y != 0 || gamepad2.left_stick_x != 0))
+            /*
+            if(gamepad2.left_trigger < leftTriggerSens&&(gamepad1.left_stick_x != 0 || gamepad1.right_stick_x != 0 || gamepad1.left_stick_y != 0 || gamepad2.left_stick_x != 0))
             {
+
                 drivetrain.move(gamepad1.left_stick_x, gamepad1.right_stick_x+gamepad2.left_stick_x*leftXSens, gamepad1.left_stick_y);
             }
             else if(gamepad2.left_trigger >= leftTriggerSens&&(gamepad1.left_stick_x != 0 || gamepad1.right_stick_x != 0 || gamepad1.left_stick_y != 0 || gamepad2.left_stick_x != 0)) {
                 drivetrain.move(gamepad1.left_stick_x, gamepad1.right_stick_x, gamepad1.left_stick_y);
             }
+
+             */
+            if(gamepad1.right_stick_x != 0 || gamepad1.left_stick_y != 0||gamepad1.left_stick_x!=0) {
+
+
+                double forward = gamepad1.left_stick_y*0.85;
+                double turn = -gamepad1.right_stick_x*0.5;
+                double strafe = -gamepad1.left_stick_x*0.9;
+
+                fl.setPower(forward + turn + strafe);
+                fr.setPower(forward - turn - strafe);
+                bl.setPower(forward + turn - strafe);
+                br.setPower(forward - turn + strafe);
+            }
             else {
-                drivetrain.stop();
-            }*/
-            double forward = gamepad1.left_stick_y*0.85;
-            double turn = -gamepad1.right_stick_x*0.5;
-            double strafe = gamepad1.left_stick_x*.9;
-
-            fl.setPower(forward + turn + strafe);
-            fr.setPower(forward - turn - strafe);
-            bl.setPower(forward + turn - strafe);
-            br.setPower(forward - turn + strafe);
-
+                fl.setPower(0);
+                fr.setPower(0);
+                bl.setPower(0);
+                br.setPower(0);
+            }
             //manual slide movement
             if(gamepad1.left_trigger != 0 || gamepad1.right_trigger != 0) {
                 //(right_trigger)-(left_trigger) for slide movement + limits, maybe add separate thread for evaluating limits with limit switch\
@@ -98,7 +108,6 @@ public class teleop extends LinearOpMode {
                 claw.stopSlide();
             }
             claw.setArm(.65);
-
             claw.closeClaw(gamepad2.right_trigger);
             //claw.setRoll(Math.max(0,-gamepad2.right_stick_x));
 
@@ -200,15 +209,46 @@ public class teleop extends LinearOpMode {
             else if (gamepad2.circle) {
                 claw.setSlideLevel(3);
             }
-*/
-            telemetry.addData("Pos", gamepad2.right_trigger);
-            telemetry.addData("AMPS: ", claw.getSlide().getMotor().getCurrent(CurrentUnit.AMPS));
+/*
+            //telemetry.addData("Pos", gamepad2.right_trigger);
+            //telemetry.addData("AMPS: ", claw.getSlide().getMotor().getCurrent(CurrentUnit.AMPS));
+            //telemetry.addData("LEFT_STICK_X", gamepad1.left_stick_x);
+            //telemetry.addData("LEFT_STICK_Y", gamepad1.left_stick_y);
+            //telemetry.addData("RIGHT_STICK_X", gamepad1.right_stick_x);
+            //telemetry.addData("Average Current", drivetrain.avgCurrent());
+            /*
+            telemetry.addData("fl power", drivetrain.getMotors()[0].getPower());
+            telemetry.addData("fr power", drivetrain.getMotors()[1].getPower());
+            telemetry.addData("bl power", drivetrain.getMotors()[2].getPower());
+            telemetry.addData("br power", drivetrain.getMotors()[3].getPower());
+
+             */
             telemetry.update();
         }
 
     }
 
     public void initialize() {
+        //drivetrain = new Drivetrain(hardwareMap);
+        claw = new ClawMechanism(hardwareMap);
+        c = new Claw(hardwareMap);
+
+        //drivetrain.setEncoderMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        claw.setArm(1);
+        claw.closeClaw(0);
+        claw.setPitch(0);
+        claw.setRoll(0);
+
+        ledB = new LedEffect.Builder();
+        ledB.addStep(1,0,0,100);
+        red= ledB.build();
+
+        rumbleB = new RumbleEffect.Builder();
+        rumbleB.addStep(1,1, 100);
+        warning = rumbleB.build();
+
+
         fl = (DcMotorEx) hardwareMap.get(DcMotor.class, "fl");
         fr = (DcMotorEx) hardwareMap.get(DcMotor.class, "fr");
         bl = (DcMotorEx) hardwareMap.get(DcMotor.class, "bl");
@@ -220,18 +260,10 @@ public class teleop extends LinearOpMode {
         bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         br.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.REVERSE);
-        drivetrain = new Drivetrain(hardwareMap);
-        claw = new ClawMechanism(hardwareMap);
-        c = new Claw(hardwareMap);
 
-        claw.setArm(1);
-
-        ledB =new LedEffect.Builder();
-        ledB.addStep(1,0,0,100);
-        red= ledB.build();
-
-        rumbleB = new RumbleEffect.Builder();
-        rumbleB.addStep(1,1, 100);
-        warning = rumbleB.build();
+        fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 }

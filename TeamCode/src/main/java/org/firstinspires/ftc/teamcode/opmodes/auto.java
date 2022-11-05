@@ -7,16 +7,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.opencvpipelines.RedConeDetection;
+import org.firstinspires.ftc.teamcode.utils.AprilTags;
 import org.firstinspires.ftc.teamcode.utils.IMU;
 import org.firstinspires.ftc.teamcode.utils.Drivetrain;
 import org.firstinspires.ftc.teamcode.utils.ClawMechanism;
 import org.firstinspires.ftc.teamcode.utils.PID;
-import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
-
-import java.util.ArrayList;
 
 @Autonomous(name = "AUTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
 
