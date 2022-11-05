@@ -90,16 +90,16 @@ public class IMUDrivetrain {
     }
 
     public void turn(double degrees) {
-        fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         resetAngle();
 
         double error = degrees;
 
-        while(Math.abs(error) > 2) {
+        while(Math.abs(error) > 10) {
             double motorPower = (error < 0 ? -0.3 : 0.3);
             fl.setPower(motorPower);
             fr.setPower(-motorPower);

@@ -101,6 +101,8 @@ public class auto extends LinearOpMode {
         // Send telemetry message to indicate successful Encoder reset
         telemetry.addData("Starting at",  "%7d :%7d",
                 drivetrain.getEncoderTicks()[0], drivetrain.getEncoderTicks()[1]);
+        telemetry.addLine(">. START");
+        telemetry.update();
 
         waitForStart();
 
