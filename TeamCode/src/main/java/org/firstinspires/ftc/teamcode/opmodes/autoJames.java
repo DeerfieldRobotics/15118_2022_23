@@ -17,7 +17,7 @@ public class autoJames extends LinearOpMode {
 
         initialize();
         waitForStart();
-        drivetrain.forwards(true, 1000, 1000);
+        drivetrain.forwards(true, 1000, 1000,1);
         while(opModeIsActive()) {
 
         }

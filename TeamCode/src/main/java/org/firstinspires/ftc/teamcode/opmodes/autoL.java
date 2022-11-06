@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.opencvpipelines.RedConeDetection;
+import org.firstinspires.ftc.teamcode.utils.AprilTags;
 import org.firstinspires.ftc.teamcode.utils.IMU;
 import org.firstinspires.ftc.teamcode.utils.Drivetrain;
 import org.firstinspires.ftc.teamcode.utils.ClawMechanism;
@@ -27,6 +28,7 @@ public class autoL extends LinearOpMode {
     private ClawMechanism claw;
     private DcMotorEx slide;
     private IMU imu;
+    private AprilTags aprilTags;
 
     // APRILTAGS
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
@@ -73,6 +75,9 @@ public class autoL extends LinearOpMode {
         imu = new IMU(hardwareMap);
         slide = (DcMotorEx) hardwareMap.get(DcMotor.class, "slide");
 
+        aprilTags = new AprilTags(hardwareMap);
+
+
 //        //APRILTAGS
 //
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -82,17 +87,14 @@ public class autoL extends LinearOpMode {
         redConeDetection = new RedConeDetection();
 
         frontCamera.setPipeline(aprilTagDetectionPipeline);
-        frontCamera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
+        frontCamera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
-            public void onOpened()
-            {
-                frontCamera.startStreaming(800,600, OpenCvCameraRotation.UPRIGHT);
+            public void onOpened() {
+                frontCamera.startStreaming(800, 600, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
-            public void onError(int errorCode)
-            {
+            public void onError(int errorCode) {
 
             }
         });
@@ -103,7 +105,7 @@ public class autoL extends LinearOpMode {
         drivetrain.setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Send telemetry message to indicate successful Encoder reset
-        telemetry.addData("Starting at",  "%7d :%7d",
+        telemetry.addData("Starting at", "%7d :%7d",
                 drivetrain.getEncoderTicks()[0], drivetrain.getEncoderTicks()[1]);
 
         waitForStart();
@@ -114,9 +116,8 @@ public class autoL extends LinearOpMode {
 
         int detectedID = 0;
 
-        while (opModeIsActive())
-        {
-            while(runtime.milliseconds()< 3000 && opModeIsActive()) {
+        while (opModeIsActive()) {
+            while (runtime.milliseconds() < 3000 && opModeIsActive()) {
                 // Calling getDetectionsUpdate() will only return an object if there was a new frame
                 // processed since the last time we called it. Otherwise, it will return null. This
                 // enables us to only run logic when there has been a new frame, as opposed to the
@@ -168,16 +169,87 @@ public class autoL extends LinearOpMode {
             telemetry.addData("FINAL ID", detectedID);
 
             telemetry.update();
+            runtime.reset();
 
-            while(opModeIsActive()){
-                drive(detectedID);
-            }
+            while (opModeIsActive()) {
+                telemetry.addLine("" + runtime.milliseconds());
+                telemetry.update();
+                while (opModeIsActive() && runtime.milliseconds() <= 500) {
+                    slide.setTargetPosition(300);
+                    slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    slide.setPower(0.7);
 
-            drivetrain.stop();
+                }
 
-            drivetrain.reset();
+                while (opModeIsActive() && runtime.milliseconds() >= 500 && runtime.milliseconds() <= 2500) {
+                    telemetry.addLine(drivetrain.getPower());
+                    telemetry.addLine(drivetrain.getEncoderTicks()[0] + "\n" + drivetrain.getEncoderTicks()[1] + "\n" + runtime.milliseconds());
+                    telemetry.update();
 
-            while(opModeIsActive()){
+                    drivetrain.strafe(true, 40, 40);
+                }
+//
+//            drivetrain.stop();
+//
+                drivetrain.reset();
+
+                while (opModeIsActive() && runtime.milliseconds() >= 2500 && runtime.milliseconds() <= 6500) {
+                    telemetry.addLine("Forward");
+                    telemetry.update();
+                    drivetrain.forwards(false, 20, 20, 1);
+                }
+
+                while (opModeIsActive() && runtime.milliseconds() >= 6500 && runtime.milliseconds() <= 8500) {
+
+                    slide.setTargetPosition(2536);
+                    slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    slide.setPower(1);
+                }
+
+                drivetrain.reset();
+
+                while (opModeIsActive() && runtime.milliseconds() >= 8500 && runtime.milliseconds() <= 10500) {
+                    telemetry.addLine("Forward");
+                    telemetry.update();
+                    drivetrain.forwards(false, 13, 13, 0.5);
+                }
+
+//            while (opModeIsActive() && runtime.milliseconds() >= 8500 && runtime.milliseconds() <= 9500) {
+//                telemetry.addLine("Open claw");
+//                telemetry.update();
+//                c.moveClaw(1);
+//            }
+
+//
+                drivetrain.reset();
+
+                while (opModeIsActive() && runtime.milliseconds() >= 10500 && runtime.milliseconds() <= 12000) {
+                    telemetry.addLine("move back");
+                    telemetry.update();
+                    drivetrain.forwards(true, 5, 5, 0.5);
+                }
+
+//            while (opModeIsActive() && runtime.milliseconds() >= 11500 && runtime.milliseconds() <= 12500) {
+//                telemetry.addLine("Finish");
+//                telemetry.update();
+//                c.moveClaw(0);
+//            }
+
+                while (opModeIsActive() && runtime.milliseconds() >= 12500 && runtime.milliseconds() <= 16000) {
+                    slide.setTargetPosition(0);
+                    slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    slide.setPower(0.7);
+                }
+
+                while (opModeIsActive() && runtime.milliseconds() >= 16000 && runtime.milliseconds() <= 20000) {
+                    drivetrain.strafe(true, 40, 40);
+                }
+
+                runtime.reset();
+                drivetrain.reset();
+                while (opModeIsActive() && runtime.milliseconds() <= 10000) {
+                    drive(detectedID);
+                }
 
             }
         }
@@ -194,18 +266,8 @@ public class autoL extends LinearOpMode {
 
                     telemetry.addLine("STRAFE");
                     telemetry.update();
-                    drivetrain.strafe(true, 26, 26);
+                    drivetrain.strafe(true, 65, 65);
                 }
-                drivetrain.setEncoderMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                drivetrain.setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-                while ((opModeIsActive() && drivetrain.isBusy()) || runtime.milliseconds() <= 9000) {
-                    telemetry.addLine(drivetrain.getEncoderTicks()[0] + "\n" + drivetrain.getEncoderTicks()[1] + "\n" + runtime.milliseconds());
-                    telemetry.update();
-                    drivetrain.forwards(false, 26, 26);
-                }
-
-
                 break;
             case 2:
                 //middle
@@ -213,7 +275,7 @@ public class autoL extends LinearOpMode {
                 while ((opModeIsActive() && drivetrain.isBusy()) || runtime.milliseconds() <= 9000) {
                     telemetry.addLine(drivetrain.getEncoderTicks()[0] + "\n" + drivetrain.getEncoderTicks()[1] + "\n" + runtime.milliseconds());
                     telemetry.update();
-                    drivetrain.forwards(false, 26, 26);
+                    drivetrain.forwards(false, 39, 39, 1);
                 }
                 break;
             case 3:
@@ -223,15 +285,7 @@ public class autoL extends LinearOpMode {
 
                     telemetry.addLine("STRAFE");
                     telemetry.update();
-                    drivetrain.strafe(false, 26, 26);
-                }
-                drivetrain.setEncoderMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                drivetrain.setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-                while ((opModeIsActive() && drivetrain.isBusy()) || runtime.milliseconds() <= 9000) {
-                    telemetry.addLine(drivetrain.getEncoderTicks()[0] + "\n" + drivetrain.getEncoderTicks()[1] + "\n" + runtime.milliseconds());
-                    telemetry.update();
-                    drivetrain.forwards(false, 26, 26);
+                    drivetrain.strafe(false, 13, 13);
                 }
                 break;
             default:

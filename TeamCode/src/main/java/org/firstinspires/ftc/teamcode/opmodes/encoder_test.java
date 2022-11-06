@@ -76,8 +76,10 @@ public class encoder_test extends LinearOpMode {
         DcMotorEx slide = (DcMotorEx) hardwareMap.get(DcMotor.class, "slide");
         Claw c = new Claw(hardwareMap);
 
-        drivetrain.stop();
+        slide.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        drivetrain.stop();
+        //c.moveClaw(0);
         waitForStart();
         ElapsedTime runtime = new ElapsedTime();
 
@@ -89,38 +91,75 @@ public class encoder_test extends LinearOpMode {
         while(opModeIsActive()){
             telemetry.addLine(""+runtime.milliseconds());
             telemetry.update();
-            while (opModeIsActive() && runtime.milliseconds() <= 4000) {
+            while (opModeIsActive() && runtime.milliseconds() <= 500) {
+                slide.setTargetPosition(300);
+                slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slide.setPower(0.7);
 
+            }
+
+            while (opModeIsActive() &&  runtime.milliseconds() >= 500 && runtime.milliseconds() <= 2500) {
+                telemetry.addLine(drivetrain.getPower());
                 telemetry.addLine(drivetrain.getEncoderTicks()[0] + "\n" + drivetrain.getEncoderTicks()[1] + "\n" + runtime.milliseconds());
                 telemetry.update();
-                c.moveClaw(0);
 
-                drivetrain.strafe(true, 39, 39);
-                slide.setTargetPosition(2535);
+                drivetrain.strafe(true, 40, 40);
+            }
+//
+//            drivetrain.stop();
+//
+            drivetrain.reset();
+
+            while (opModeIsActive() && runtime.milliseconds() >= 2500 && runtime.milliseconds() <= 6500) {
+                telemetry.addLine("Forward");
+                telemetry.update();
+                drivetrain.forwards(false, 20, 20, 1);
+            }
+
+            while(opModeIsActive() && runtime.milliseconds() >= 6500 && runtime.milliseconds() <= 8500){
+
+                slide.setTargetPosition(2536);
                 slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 slide.setPower(1);
             }
 
-            while (opModeIsActive() && runtime.milliseconds() >= 4000 && runtime.milliseconds() <= 7000) {
+            drivetrain.reset();
+
+            while (opModeIsActive() && runtime.milliseconds() >= 8500 && runtime.milliseconds() <= 10500) {
                 telemetry.addLine("Forward");
                 telemetry.update();
-                c.moveClaw(0);
-                drivetrain.forwards(false, 35, 35);
+                drivetrain.forwards(false, 13, 13, 0.5);
             }
 
-            while (opModeIsActive() && runtime.milliseconds() >= 7000 && runtime.milliseconds() <= 8000) {
-                telemetry.addLine("Open claw");
+//            while (opModeIsActive() && runtime.milliseconds() >= 8500 && runtime.milliseconds() <= 9500) {
+//                telemetry.addLine("Open claw");
+//                telemetry.update();
+//                c.moveClaw(1);
+//            }
+
+//
+            drivetrain.reset();
+
+            while (opModeIsActive() && runtime.milliseconds() >= 10500 && runtime.milliseconds() <= 12000) {
+                telemetry.addLine("move back");
                 telemetry.update();
-                c.moveClaw(1);
+                drivetrain.forwards(true, 5,5, 0.5);
             }
 
-            while (opModeIsActive() && runtime.milliseconds() >= 8000 && runtime.milliseconds() <= 11000) {
-                telemetry.addLine("Finish");
-                telemetry.update();
-                c.moveClaw(0);
+//            while (opModeIsActive() && runtime.milliseconds() >= 11500 && runtime.milliseconds() <= 12500) {
+//                telemetry.addLine("Finish");
+//                telemetry.update();
+//                c.moveClaw(0);
+//            }
+
+            while(opModeIsActive() && runtime.milliseconds() >= 12500 && runtime.milliseconds() <= 16000){
                 slide.setTargetPosition(0);
                 slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 slide.setPower(0.7);
+            }
+
+            while (opModeIsActive() &&  runtime.milliseconds() >= 16000 && runtime.milliseconds() <= 20000) {
+                drivetrain.strafe(true, 40, 40);
             }
         }
 

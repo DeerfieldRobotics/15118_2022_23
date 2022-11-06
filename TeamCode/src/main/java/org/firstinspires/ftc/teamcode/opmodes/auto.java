@@ -3,11 +3,14 @@ package org.firstinspires.ftc.teamcode.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.opencvpipelines.RedConeDetection;
 import org.firstinspires.ftc.teamcode.utils.AprilTags;
+import org.firstinspires.ftc.teamcode.utils.Claw;
 import org.firstinspires.ftc.teamcode.utils.IMU;
 import org.firstinspires.ftc.teamcode.utils.Drivetrain;
 import org.firstinspires.ftc.teamcode.utils.ClawMechanism;
@@ -22,6 +25,7 @@ public class auto extends LinearOpMode {
 
     private Drivetrain drivetrain;
     private ClawMechanism claw;
+    private DcMotorEx slide;
     private IMU imu;
     private AprilTags aprilTags;
 
@@ -69,7 +73,11 @@ public class auto extends LinearOpMode {
         drivetrain = new Drivetrain(hardwareMap);
         imu = new IMU(hardwareMap);
         aprilTags = new AprilTags(hardwareMap);
+        Claw c = new Claw(hardwareMap);
 
+        slide = (DcMotorEx) hardwareMap.get(DcMotor.class, "slide");
+
+        slide.setDirection(DcMotorSimple.Direction.REVERSE);
         drivetrain.setEncoderMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         drivetrain.setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
@@ -81,23 +89,97 @@ public class auto extends LinearOpMode {
 
         waitForStart();
 
-        ElapsedTime runtime = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+        ElapsedTime totalTime = new ElapsedTime();
+
+        ElapsedTime runtime = new ElapsedTime();
 
         telemetry.setMsTransmissionInterval(50);
 
         int detectedID = 0;
 
-        while (opModeIsActive()) {
+        while (opModeIsActive() && totalTime.milliseconds() <= 29000) {
             while (runtime.milliseconds() < 3000) {
                 detectedID = aprilTags.getID();
+                telemetry.addData("FINAL ID", detectedID);
+                telemetry.update();
             }
 
-            while(runtime.milliseconds() >3000 && runtime.milliseconds() < 8000) {
-                telemetry.addData("FINAL ID", detectedID);
+            runtime.reset();
 
+            while (opModeIsActive()) {
+                telemetry.addLine("" + runtime.milliseconds());
                 telemetry.update();
+                while (opModeIsActive() && runtime.milliseconds() <= 500) {
+                    slide.setTargetPosition(300);
+                    slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    slide.setPower(0.7);
 
-                drive(detectedID);
+                }
+
+                while (opModeIsActive() && runtime.milliseconds() >= 500 && runtime.milliseconds() <= 2500) {
+                    telemetry.addLine(drivetrain.getPower());
+                    telemetry.addLine(drivetrain.getEncoderTicks()[0] + "\n" + drivetrain.getEncoderTicks()[1] + "\n" + runtime.milliseconds());
+                    telemetry.update();
+
+                    drivetrain.strafe(true, 42, 42);
+                }
+                drivetrain.reset();
+
+                while (opModeIsActive() && runtime.milliseconds() >= 2500 && runtime.milliseconds() <= 4500) {
+                    telemetry.addLine("Forward");
+                    telemetry.update();
+                    drivetrain.forwards(false, 20, 20, 1);
+                }
+
+                while (opModeIsActive() && runtime.milliseconds() >= 4500 && runtime.milliseconds() <= 6500) {
+
+                    slide.setTargetPosition(2536);
+                    slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    slide.setPower(1);
+                }
+
+                drivetrain.reset();
+
+                while (opModeIsActive() && runtime.milliseconds() >= 6500 && runtime.milliseconds() <= 8500) {
+                    telemetry.addLine("Forward");
+                    telemetry.update();
+                    drivetrain.forwards(false, 13, 13, 0.5);
+                }
+
+            while (opModeIsActive() && runtime.milliseconds() >= 8500 && runtime.milliseconds() <= 9500) {
+                telemetry.addLine("Open claw");
+                telemetry.update();
+                c.moveClaw(1);
+            }
+
+                drivetrain.reset();
+
+                while (opModeIsActive() && runtime.milliseconds() >= 9500 && runtime.milliseconds() <= 11500) {
+                    telemetry.addLine("move back");
+                    telemetry.update();
+                    drivetrain.forwards(true, 5, 5, 0.5);
+                }
+
+            while (opModeIsActive() && runtime.milliseconds() >= 11500 && runtime.milliseconds() <= 12500) {
+                telemetry.addLine("Finish");
+                telemetry.update();
+                c.moveClaw(0);
+            }
+
+                while (opModeIsActive() && runtime.milliseconds() >= 12500 && runtime.milliseconds() <= 15500) {
+                    slide.setTargetPosition(0);
+                    slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    slide.setPower(0.7);
+                }
+
+                runtime.reset();
+                drivetrain.reset();
+                while (opModeIsActive() && runtime.milliseconds() <= 9000) {
+                    drive(detectedID);
+                }
+
+                drivetrain.stop();
+
             }
         }
     }
@@ -109,47 +191,31 @@ public class auto extends LinearOpMode {
             case 1:
                 //inside
                 telemetry.addLine("DRIVE 1");
-                while ((opModeIsActive() && drivetrain.isBusy()) || runtime.milliseconds() <= 3000) {
-                    telemetry.addLine(drivetrain.getEncoderTicks()[0] + "\n" + drivetrain.getEncoderTicks()[1] + "\n" + runtime.milliseconds());
-                    telemetry.update();
-                    drivetrain.forwards(true, 26, 26);
-                }
-                drivetrain.setEncoderMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                drivetrain.setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-                while ((opModeIsActive() && drivetrain.isBusy()) || runtime.milliseconds() >= 3000) {
+                while ((opModeIsActive() && drivetrain.isBusy()) || runtime.milliseconds() <= 6000) {
 
                     telemetry.addLine("STRAFE");
                     telemetry.update();
-                    drivetrain.strafe(false, 26, 26);
+                    drivetrain.strafe(false, 65, 65);
                 }
-
                 break;
             case 2:
                 //middle
                 telemetry.addLine("DRIVE 2");
-                while ((opModeIsActive() && drivetrain.isBusy()) || runtime.milliseconds() <= 3000) {
+                while ((opModeIsActive() && drivetrain.isBusy()) || runtime.milliseconds() <= 9000) {
                     telemetry.addLine(drivetrain.getEncoderTicks()[0] + "\n" + drivetrain.getEncoderTicks()[1] + "\n" + runtime.milliseconds());
                     telemetry.update();
-                    drivetrain.forwards(true, 26, 26);
+                    drivetrain.strafe(false, 39, 39);
                 }
                 break;
             case 3:
                 //outside
                 telemetry.addLine("DRIVE 3");
-                while ((opModeIsActive() && drivetrain.isBusy()) || runtime.milliseconds() <= 3000) {
-                    telemetry.addLine(drivetrain.getEncoderTicks()[0] + "\n" + drivetrain.getEncoderTicks()[1] + "\n" + runtime.milliseconds());
-                    telemetry.update();
-                    drivetrain.forwards(true, 26, 26);
-                }
-                drivetrain.setEncoderMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                drivetrain.setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-                while ((opModeIsActive() && drivetrain.isBusy()) || runtime.milliseconds() >= 3000) {
+                while ((opModeIsActive() && drivetrain.isBusy()) || runtime.milliseconds() <= 6000) {
 
                     telemetry.addLine("STRAFE");
                     telemetry.update();
-                    drivetrain.strafe(true, 26, 26);
+                    drivetrain.strafe(false, 13, 13);
                 }
                 break;
             default:

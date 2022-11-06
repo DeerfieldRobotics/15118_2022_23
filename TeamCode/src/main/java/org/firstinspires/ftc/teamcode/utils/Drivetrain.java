@@ -104,9 +104,9 @@ public class Drivetrain
         return new int[]
                 {fl.getCurrentPosition(), fr.getCurrentPosition(), bl.getCurrentPosition(), br.getCurrentPosition()};
     }
-    public void forwards(boolean backwards, int LTarget, int RTarget)
+    public void forwards(boolean backwards, int LTarget, int RTarget, double speed_mod)
     {
-        double pow = DRIVETRAIN_SPEED_MODIFIER;
+        double pow = DRIVETRAIN_SPEED_MODIFIER * speed_mod;
         int mult = 1;
         if(!backwards) {
             //backwards
@@ -130,6 +130,10 @@ public class Drivetrain
         this.fr.setTargetPosition(fr);
         this.bl.setTargetPosition(bl);
         this.br.setTargetPosition(br);
+    }
+
+    public String getPower(){
+        return "fl: " + fl.getPower() +"fr: " + fr.getPower()+"bl: " + bl.getPower()+"br: " + br.getPower();
     }
 
     public void strafe(boolean left, int LTarget, int RTarget)

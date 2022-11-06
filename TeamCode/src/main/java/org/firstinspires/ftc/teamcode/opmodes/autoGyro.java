@@ -194,7 +194,7 @@ public class autoGyro extends LinearOpMode {
             rightTarget = drivetrain.getEncoderTicks()[1] + moveCounts;
 
             // Set Target FIRST, then turn on RUN_TO_POSITION
-            drivetrain.forwards(forwards, leftTarget, rightTarget);
+            drivetrain.forwards(forwards, leftTarget, rightTarget,1);
 
             drivetrain.setEncoderMode(DcMotor.RunMode.RUN_TO_POSITION);
 

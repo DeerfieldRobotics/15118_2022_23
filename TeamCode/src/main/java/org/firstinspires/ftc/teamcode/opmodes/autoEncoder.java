@@ -116,7 +116,7 @@ public class autoEncoder extends LinearOpMode {
             // Determine new target position, and pass to motor controller
             newLeftTarget = drivetrain.getEncoderTicks()[0] + (int)(leftInches * drivetrain.COUNTS_PER_INCH);
             newRightTarget = drivetrain.getEncoderTicks()[1] + (int)(rightInches * drivetrain.COUNTS_PER_INCH);
-            drivetrain.forwards(true, newLeftTarget, newRightTarget);
+            drivetrain.forwards(true, newLeftTarget, newRightTarget,1);
 
             drivetrain.setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
