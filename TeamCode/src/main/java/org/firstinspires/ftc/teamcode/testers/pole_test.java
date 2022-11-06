@@ -3,29 +3,48 @@ package org.firstinspires.ftc.teamcode.testers;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.opencvpipelines.ConeDetectionPipeline;
 import org.firstinspires.ftc.teamcode.opencvpipelines.YellowPoleDetection;
+import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
 @Autonomous(name = "poletest")
 public class pole_test extends LinearOpMode {
-    private OpenCvInternalCamera phoneCam;
+    OpenCvCamera frontCamera;
     private YellowPoleDetection detector = new YellowPoleDetection();
 
 
     @Override
     public void runOpMode() throws InterruptedException {
-        int cameraMonitorViewId = hardwareMap.appContext
-                .getResources().getIdentifier("cameraMonitorViewId",
-                        "id", hardwareMap.appContext.getPackageName());
-        phoneCam = OpenCvCameraFactory.getInstance()
-                .createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
-        phoneCam.setPipeline(detector);
-        phoneCam.openCameraDevice();
-        phoneCam.startStreaming(320,240, OpenCvCameraRotation.UPRIGHT);
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        frontCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "frontWeb"), cameraMonitorViewId);
+        frontCamera.setPipeline(detector);
+        frontCamera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        {
+            @Override
+            public void onOpened()
+            {
+                frontCamera.startStreaming(320,240, OpenCvCameraRotation.UPRIGHT);
+            }
+
+            @Override
+            public void onError(int errorCode)
+            {
+
+            }
+        });
         waitForStart();
 
+        while(opModeIsActive()) {
+            int[] widths = detector.getMaxWidth();
+            telemetry.addData("maxwidth",widths[0]);
+            telemetry.addData("min",widths[1]);
+            telemetry.addData("max",widths[2]);
+            telemetry.addData("y",widths[3]);
+            telemetry.update();
+        }
     }
 }
