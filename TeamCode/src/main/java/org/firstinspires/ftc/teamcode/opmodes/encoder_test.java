@@ -75,39 +75,53 @@ public class encoder_test extends LinearOpMode {
         drivetrain = new Drivetrain(hardwareMap);
         DcMotorEx slide = (DcMotorEx) hardwareMap.get(DcMotor.class, "slide");
         Claw c = new Claw(hardwareMap);
-        ElapsedTime runtime = new ElapsedTime();
+
+        drivetrain.stop();
 
         waitForStart();
+        ElapsedTime runtime = new ElapsedTime();
 
         drivetrain.setEncoderMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //drivetrain.setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
-        while (opModeIsActive() && runtime.milliseconds() <= 4000) {
-            telemetry.addLine(drivetrain.getEncoderTicks()[0] + "\n" + drivetrain.getEncoderTicks()[1] + "\n" + runtime.milliseconds());
+        while(opModeIsActive()){
+            telemetry.addLine(""+runtime.milliseconds());
             telemetry.update();
-            c.moveClaw(0);
+            while (opModeIsActive() && runtime.milliseconds() <= 4000) {
 
-            drivetrain.strafe(true, 39, 39);
-            slide.setTargetPosition(2535);
-            slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            slide.setPower(1);
-        }
+                telemetry.addLine(drivetrain.getEncoderTicks()[0] + "\n" + drivetrain.getEncoderTicks()[1] + "\n" + runtime.milliseconds());
+                telemetry.update();
+                c.moveClaw(0);
 
-        while(opModeIsActive() && runtime.milliseconds() >= 4000  && runtime.milliseconds() <= 7000){
-            c.moveClaw(0);
-            drivetrain.forwards(false,35,35);
-        }
+                drivetrain.strafe(true, 39, 39);
+                slide.setTargetPosition(2535);
+                slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slide.setPower(1);
+            }
 
-        while(opModeIsActive() && runtime.milliseconds() >= 7000 && runtime.milliseconds() <= 8000){
-            c.moveClaw(1);
-        }
+            while (opModeIsActive() && runtime.milliseconds() >= 4000 && runtime.milliseconds() <= 7000) {
+                telemetry.addLine("Forward");
+                telemetry.update();
+                c.moveClaw(0);
+                drivetrain.forwards(false, 35, 35);
+            }
 
-        while(opModeIsActive() && runtime.milliseconds() >= 8000 && runtime.milliseconds() <= 11000){
-            c.moveClaw(0);
-            slide.setTargetPosition(0);
-            slide.setPower(0.7);
+            while (opModeIsActive() && runtime.milliseconds() >= 7000 && runtime.milliseconds() <= 8000) {
+                telemetry.addLine("Open claw");
+                telemetry.update();
+                c.moveClaw(1);
+            }
+
+            while (opModeIsActive() && runtime.milliseconds() >= 8000 && runtime.milliseconds() <= 11000) {
+                telemetry.addLine("Finish");
+                telemetry.update();
+                c.moveClaw(0);
+                slide.setTargetPosition(0);
+                slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slide.setPower(0.7);
+            }
         }
 
         }

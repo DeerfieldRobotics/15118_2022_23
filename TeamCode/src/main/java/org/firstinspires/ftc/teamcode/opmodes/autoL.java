@@ -97,7 +97,7 @@ public class autoL extends LinearOpMode {
             }
         });
 
-
+        drivetrain.stop();
 
         drivetrain.setEncoderMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         drivetrain.setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
