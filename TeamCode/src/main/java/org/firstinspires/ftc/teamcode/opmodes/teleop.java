@@ -36,6 +36,8 @@ public class teleop extends LinearOpMode {
     public final static int medium = 1815;
     public final static int high = 2535;
 
+    private boolean manual;
+
     private double speedMult = 0.7;
 
     private Claw c;
@@ -88,7 +90,6 @@ public class teleop extends LinearOpMode {
             }
 
 
-            //manual slide movement
             if(gamepad2.right_trigger != 0) {
                 //(right_trigger)-(left_trigger) for slide movement + limits, maybe add separate thread for evaluating limits with limit switch\
                 c.moveClaw(1);
@@ -96,30 +97,38 @@ public class teleop extends LinearOpMode {
             else {
                 c.moveClaw(0);
             }
+            if(gamepad2.right_stick_y!=0) {
+                slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                slide.setPower(gamepad2.right_stick_y);
+                manual = true;
+            }
+            else if(manual) {
+                slide.setPower(0);
+            }
 
             if(gamepad2.cross){
                 slide.setTargetPosition(low);
                 slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 slide.setPower(1);
+                manual = false;
             } else if(gamepad2.square){
                 slide.setTargetPosition(medium);
                 slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 slide.setPower(1);
+                manual = false;
             } else if(gamepad2.triangle){
                 slide.setTargetPosition(high);
                 slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 slide.setPower(1);
+                manual = false;
             } else if (gamepad2.circle){
+                manual = false;
                 slide.setTargetPosition(0);
                 slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 slide.setPower(1);
                 resetSlide();
             }
 
-            if(gamepad2.right_stick_y!=0) {
-                slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                slide.setPower(gamepad2.right_stick_y);
-            }
 
 
             telemetry.addData("Slide ticks", slide.getCurrentPosition());
@@ -161,13 +170,17 @@ public class teleop extends LinearOpMode {
         bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public void resetSlide() {
         slide.setDirection(DcMotorSimple.Direction.REVERSE);
         slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        while(slide.getCurrent(CurrentUnit.AMPS)<10)
+        while(slide.getCurrent(CurrentUnit.AMPS)<6) {
+            telemetry.addLine("resetting");
+            telemetry.update();
             slide.setPower(-1);
+        }
         slide.setPower(0);
         slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
