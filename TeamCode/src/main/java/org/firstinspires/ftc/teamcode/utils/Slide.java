@@ -12,9 +12,9 @@ public class Slide {
 
     private final float speed = 1;
 
-    public final static int low = 1140;
-    public final static int medium = 1815;
-    public final static int high = 2535;
+    public final static int low = 1560;
+    public final static int medium = 2670;
+    public final static int high = 3760;
     public final static int slideMin = 1000;
     public final static int slideFlipLimit = 500;
 
