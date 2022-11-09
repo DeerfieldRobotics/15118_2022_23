@@ -28,7 +28,7 @@ public class teleop extends LinearOpMode {
     private DcMotorEx bl;
     private DcMotorEx br;
 
-    private final double turnMult = 0.5;
+    private final double turnMult = 0.6;
     private final double forwardMult = 0.8;
     private final double strafeMult = 0.85;
 
@@ -152,6 +152,7 @@ public class teleop extends LinearOpMode {
         warning = rumbleB.build();
 
         slide = (DcMotorEx) hardwareMap.get(DcMotor.class, "slide");
+        slide.setDirection(DcMotorSimple.Direction.REVERSE);
         fl = (DcMotorEx) hardwareMap.get(DcMotor.class, "fl");
         fr = (DcMotorEx) hardwareMap.get(DcMotor.class, "fr");
         bl = (DcMotorEx) hardwareMap.get(DcMotor.class, "bl");
