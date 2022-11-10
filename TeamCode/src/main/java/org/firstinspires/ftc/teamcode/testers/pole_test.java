@@ -13,14 +13,18 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 
 @Autonomous(name = "poletest")
 public class pole_test extends LinearOpMode {
-    OpenCvCamera frontCamera;
+    //OpenCvCamera frontCamera;
+    private OpenCvInternalCamera frontCamera;
+
     private YellowPoleDetection detector = new YellowPoleDetection();
 
 
     @Override
     public void runOpMode() throws InterruptedException {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        frontCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "frontWeb"), cameraMonitorViewId);
+        //frontCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "frontWeb"), cameraMonitorViewId);
+        frontCamera = OpenCvCameraFactory.getInstance()
+                .createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
         frontCamera.setPipeline(detector);
         frontCamera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
@@ -39,12 +43,11 @@ public class pole_test extends LinearOpMode {
         waitForStart();
 
         while(opModeIsActive()) {
-            int[] widths = detector.getMaxWidth();
-            telemetry.addData("maxwidth",widths[0]);
-            telemetry.addData("min",widths[1]);
-            telemetry.addData("max",widths[2]);
-            telemetry.addData("y",widths[3]);
+            telemetry.addData("maxwidth",detector.getMaxWidth());
+            telemetry.addData("left",detector.getLeft());
+            telemetry.addData("right",detector.getRight());
             telemetry.update();
+            Thread.sleep(100);
         }
     }
 }
