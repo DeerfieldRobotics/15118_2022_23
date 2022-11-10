@@ -3,14 +3,14 @@ package org.firstinspires.ftc.teamcode.utils;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class Drivetrain
 {
+    // initialize motors, hardwareMap
     private DcMotor fl, fr, bl, br;
     private HardwareMap hw;
 
-
+    //constants
     static final double     COUNTS_PER_MOTOR_REV    = 1 ;
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // No External Gearing.
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
@@ -19,12 +19,11 @@ public class Drivetrain
     public static final double     DRIVE_SPEED             = 0.6;
     public static final double     TURN_SPEED              = 0.5;
 
-    private ElapsedTime runtime = new ElapsedTime();
+    private double drivetrainPowMod = 0.5;
 
-    private double DRIVETRAIN_SPEED_MODIFIER = 0.5;
+
     public Drivetrain (HardwareMap hardwaremap) {
         hw = hardwaremap;
-
 
         initialize();
     }
@@ -51,9 +50,9 @@ public class Drivetrain
      */
     public void move(double strafe, double turn, double forward)
     {
-        turn *= -DRIVETRAIN_SPEED_MODIFIER;
-        forward *= DRIVETRAIN_SPEED_MODIFIER;
-        strafe *= -DRIVETRAIN_SPEED_MODIFIER;
+        turn *= -drivetrainPowMod;
+        forward *= drivetrainPowMod;
+        strafe *= -drivetrainPowMod;
         fl.setPower(forward + turn + strafe);
         fr.setPower(forward - turn - strafe);
         bl.setPower(forward + turn - strafe);
@@ -61,7 +60,7 @@ public class Drivetrain
         stop();
     }
 
-    public void move(double flpow, double frpow, double blpow, double brpow){
+    public void setMotorPowers(double flpow, double frpow, double blpow, double brpow){
         fl.setPower(flpow);
         fr.setPower(frpow);
         bl.setPower(blpow);
@@ -75,38 +74,44 @@ public class Drivetrain
 
     }
 
-    public void reset(){
+    public void stop_reset_encoder(){
         fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void setSpeed(double newSpeed)
-    {
-        DRIVETRAIN_SPEED_MODIFIER = newSpeed;
+    public void run_to_pos(){
+        fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
-    public void setEncoderMode(DcMotor.RunMode encoderMode)
-    {
-        fr.setMode(encoderMode);
-        fl.setMode(encoderMode);
-        br.setMode(encoderMode);
-        bl.setMode(encoderMode);
+    public void setDrivetrainSpeedMod(double speed) {
+        drivetrainPowMod=speed;
     }
 
-    public void setDrivetrainSpeed(double speed) {
-        DRIVETRAIN_SPEED_MODIFIER=speed;
-    }
-
-    public int[] getEncoderTicks()
+    public int[] getMotorPositions()
     {
         return new int[]
                 {fl.getCurrentPosition(), fr.getCurrentPosition(), bl.getCurrentPosition(), br.getCurrentPosition()};
     }
+
+    public void setPosition(int fl, int fr, int bl, int br){
+        this.fl.setTargetPosition(fl);
+        this.fr.setTargetPosition(fr);
+        this.bl.setTargetPosition(bl);
+        this.br.setTargetPosition(br);
+    }
+
+    public String printMotorPowers(){
+        return "fl: " + fl.getPower() +"fr: " + fr.getPower()+"bl: " + bl.getPower()+"br: " + br.getPower();
+    }
+
     public void forwards(boolean backwards, int LTarget, int RTarget, double speed_mod)
     {
-        double pow = DRIVETRAIN_SPEED_MODIFIER * speed_mod;
+        double pow = drivetrainPowMod * speed_mod;
         int mult = 1;
         if(!backwards) {
             //backwards
@@ -120,31 +125,19 @@ public class Drivetrain
 
         setPosition(FLTarget, FRTarget, BLTarget, BRTarget);
 
-        setEncoderMode(DcMotor.RunMode.RUN_TO_POSITION);
+        run_to_pos();
 
-        move(pow, pow, pow, pow);
-    }
-
-    public void setPosition(int fl, int fr, int bl, int br){
-        this.fl.setTargetPosition(fl);
-        this.fr.setTargetPosition(fr);
-        this.bl.setTargetPosition(bl);
-        this.br.setTargetPosition(br);
-    }
-
-    public String getPower(){
-        return "fl: " + fl.getPower() +"fr: " + fr.getPower()+"bl: " + bl.getPower()+"br: " + br.getPower();
+        setMotorPowers(pow, pow, pow, pow);
     }
 
     public void strafe(boolean left, int LTarget, int RTarget)
     {
-        double pow= DRIVETRAIN_SPEED_MODIFIER;
+        double pow= drivetrainPowMod;
         int mult = 1;
         if (!left) {
             //right
             mult =-1;
         }
-
 
         int FLTarget = mult * (int) (LTarget * 31);
         int FRTarget = -mult * (int) (RTarget * 31);
@@ -153,9 +146,9 @@ public class Drivetrain
 
         setPosition(FLTarget, FRTarget, BLTarget, BRTarget);
 
-        setEncoderMode(DcMotor.RunMode.RUN_TO_POSITION);
+        run_to_pos();
 
-        move(pow, pow, pow,pow);
+        setMotorPowers(pow, pow, pow,pow);
 
     }
 
@@ -172,10 +165,7 @@ public class Drivetrain
             bl.setTargetPosition(-amount);
         }
 
-        fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        run_to_pos();
     }
 
     public boolean isBusy(){

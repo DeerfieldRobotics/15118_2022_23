@@ -11,17 +11,17 @@ public class IMUTest extends LinearOpMode {
     Drivetrain drivetrain;
     @Override
     public void runOpMode() throws InterruptedException{
-         drivetrain = new Drivetrain(hardwareMap);
-         imu = new IMU(hardwareMap);
-         while(opModeIsActive()) {
-             telemetry.addLine("" + imu.getAngle());
-             telemetry.update();
+        drivetrain = new Drivetrain(hardwareMap);
+        imu = new IMU(hardwareMap);
+        while(opModeIsActive()) {
+            telemetry.addLine("" + imu.getAngle());
+            telemetry.update();
 
-             turn(90);
+            turn(90);
 
-             telemetry.addLine("" + imu.getAngle());
-             telemetry.update();
-         }
+            telemetry.addLine("" + imu.getAngle());
+            telemetry.update();
+        }
     }
 
     //turn a specific amount of degrees, using the gyro to check.

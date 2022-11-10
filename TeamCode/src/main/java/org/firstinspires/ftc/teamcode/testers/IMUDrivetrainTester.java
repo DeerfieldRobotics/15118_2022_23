@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-import org.firstinspires.ftc.teamcode.utils.AutoDrivetrain;
 import org.firstinspires.ftc.teamcode.utils.IMUDrivetrain;
 
 @Autonomous(name = "IMUDrivetrainTester")

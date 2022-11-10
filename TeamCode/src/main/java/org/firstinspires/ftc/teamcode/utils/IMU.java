@@ -42,11 +42,11 @@ public class IMU{
 
 
     }
-/*
-    public void initializeAcc(double pos, double v){
-        pid.initializePID(parameters, pos, v);
-    }
-*/
+    /*
+        public void initializeAcc(double pos, double v){
+            pid.initializePID(parameters, pos, v);
+        }
+    */
     public double getAngle(){
         //get the current orientation
         getTemp();
