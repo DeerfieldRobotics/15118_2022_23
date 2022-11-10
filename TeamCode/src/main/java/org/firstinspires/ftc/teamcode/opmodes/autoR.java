@@ -26,9 +26,9 @@ import org.firstinspires.ftc.teamcode.utils.Slide;
 
 import java.util.ArrayList;
 
-@Autonomous(name = "LEFT HIGH AUTO")
+@Autonomous(name = "RIGHT HIGH AUTO")
 
-public class autoL extends LinearOpMode {
+public class autoR extends LinearOpMode {
 
     private Drivetrain drivetrain;
     private DcMotorEx slide;
@@ -131,7 +131,7 @@ public class autoL extends LinearOpMode {
                     telemetry.addLine(drivetrain.getEncoderTicks()[0] + "\n" + drivetrain.getEncoderTicks()[1] + "\n" + runtime.milliseconds());
                     telemetry.update();
 
-                    drivetrain.strafe(true, 40, 40);
+                    drivetrain.strafe(false, 40, 40);
                 }
 //
 //            drivetrain.stop();
@@ -159,11 +159,11 @@ public class autoL extends LinearOpMode {
                     drivetrain.forwards(false, 13, 13, 0.5);
                 }
 
-            while (opModeIsActive() && runtime.milliseconds() >= 12500 && runtime.milliseconds() <= 13500) {
-                telemetry.addLine("Open claw");
-                telemetry.update();
-                c.moveClaw(1);
-            }
+                while (opModeIsActive() && runtime.milliseconds() >= 12500 && runtime.milliseconds() <= 13500) {
+                    telemetry.addLine("Open claw");
+                    telemetry.update();
+                    c.moveClaw(1);
+                }
 
 //
                 drivetrain.reset();
@@ -171,14 +171,14 @@ public class autoL extends LinearOpMode {
                 while (opModeIsActive() && runtime.milliseconds() >= 13500 && runtime.milliseconds() <= 14500) {
                     telemetry.addLine("move back");
                     telemetry.update();
-                    drivetrain.forwards(true, 5, 5, 0.5);
+                    drivetrain.forwards(false, 5, 5, 0.5);
                 }
 
-            while (opModeIsActive() && runtime.milliseconds() >= 14500 && runtime.milliseconds() <= 15500) {
-                telemetry.addLine("Finish");
-                telemetry.update();
-                c.moveClaw(0);
-            }
+                while (opModeIsActive() && runtime.milliseconds() >= 14500 && runtime.milliseconds() <= 15500) {
+                    telemetry.addLine("Finish");
+                    telemetry.update();
+                    c.moveClaw(0);
+                }
 
                 while (opModeIsActive() && runtime.milliseconds() >= 15500 && runtime.milliseconds() <= 18500) {
                     slide.setTargetPosition(0);
@@ -216,7 +216,7 @@ public class autoL extends LinearOpMode {
                 while ((opModeIsActive() && drivetrain.isBusy()) && runtime.milliseconds() <= 9000) {
                     telemetry.addLine(drivetrain.getEncoderTicks()[0] + "\n" + drivetrain.getEncoderTicks()[1] + "\n" + runtime.milliseconds());
                     telemetry.update();
-                    drivetrain.strafe(false, 39, 39);
+                    drivetrain.strafe(true, 39, 39);
                 }
                 break;
             case 3:
@@ -226,7 +226,7 @@ public class autoL extends LinearOpMode {
 
                     telemetry.addLine("STRAFE");
                     telemetry.update();
-                    drivetrain.strafe(false, 13, 13);
+                    drivetrain.strafe(true, 13, 13);
                 }
                 break;
             default:
