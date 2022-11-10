@@ -12,6 +12,8 @@ import org.firstinspires.ftc.teamcode.opencvpipelines.RedConeDetection;
 import org.firstinspires.ftc.teamcode.utils.AprilTags;
 import org.firstinspires.ftc.teamcode.utils.Claw;
 import org.firstinspires.ftc.teamcode.utils.Drivetrain;
+import org.firstinspires.ftc.teamcode.utils.IMU;
+import org.firstinspires.ftc.teamcode.utils.PID;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.firstinspires.ftc.teamcode.utils.Slide;
 
@@ -80,12 +82,12 @@ public class autoL extends LinearOpMode {
 
         drivetrain.stop();
 
-        drivetrain.setEncoderMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        drivetrain.setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        drivetrain.stop_reset_encoder();
+        drivetrain.run_using_encoder();
 
         // Send telemetry message to indicate successful Encoder reset
         telemetry.addData("Starting at", "%7d :%7d",
-                drivetrain.getEncoderTicks()[0], drivetrain.getEncoderTicks()[1]);
+                drivetrain.getMotorPositions()[0], drivetrain.getMotorPositions()[1]);
 
         waitForStart();
 
@@ -116,8 +118,7 @@ public class autoL extends LinearOpMode {
                 }
 
                 while (opModeIsActive() && runtime.milliseconds() >= 500 && runtime.milliseconds() <= 2500) {
-                    telemetry.addLine(drivetrain.getPower());
-                    telemetry.addLine(drivetrain.getEncoderTicks()[0] + "\n" + drivetrain.getEncoderTicks()[1] + "\n" + runtime.milliseconds());
+                    telemetry.addLine(drivetrain.getMotorPositions()[0] + "\n" + drivetrain.getMotorPositions()[1] + "\n" + runtime.milliseconds());
                     telemetry.update();
 
                     drivetrain.strafe(true, 40, 40);
@@ -125,7 +126,7 @@ public class autoL extends LinearOpMode {
 //
 //            drivetrain.stop();
 //
-                drivetrain.reset();
+                drivetrain.stop_reset_encoder();
 
                 while (opModeIsActive() && runtime.milliseconds() >= 2500 && runtime.milliseconds() <= 6500) {
                     telemetry.addLine("Forward");
@@ -140,7 +141,7 @@ public class autoL extends LinearOpMode {
                     slide.setPower(0.7);
                 }
 
-                drivetrain.reset();
+                drivetrain.stop_reset_encoder();
 
                 while (opModeIsActive() && runtime.milliseconds() >= 10500 && runtime.milliseconds() <= 12500) {
                     telemetry.addLine("Forward");
@@ -155,7 +156,7 @@ public class autoL extends LinearOpMode {
             }
 
 //
-                drivetrain.reset();
+                drivetrain.stop_reset_encoder();
 
                 while (opModeIsActive() && runtime.milliseconds() >= 13500 && runtime.milliseconds() <= 14500) {
                     telemetry.addLine("move back");
@@ -176,7 +177,7 @@ public class autoL extends LinearOpMode {
                 }
 
                 runtime.reset();
-                drivetrain.reset();
+                drivetrain.stop_reset_encoder();
                 while (opModeIsActive() && runtime.milliseconds() >= 18500) {
                     drive(detectedID);
                 }
@@ -203,7 +204,7 @@ public class autoL extends LinearOpMode {
                 //middle
                 telemetry.addLine("DRIVE 2");
                 while ((opModeIsActive() && drivetrain.isBusy()) && runtime.milliseconds() <= 9000) {
-                    telemetry.addLine(drivetrain.getEncoderTicks()[0] + "\n" + drivetrain.getEncoderTicks()[1] + "\n" + runtime.milliseconds());
+                    telemetry.addLine(drivetrain.getMotorPositions()[0] + "\n" + drivetrain.getMotorPositions()[1] + "\n" + runtime.milliseconds());
                     telemetry.update();
                     drivetrain.strafe(false, 39, 39);
                 }
@@ -230,7 +231,7 @@ public class autoL extends LinearOpMode {
         double error = degrees;
         while(opModeIsActive() || Math.abs(error)>2){
             double motorPower = (error < 0? -0.3: 0.3);
-            drivetrain.move(-motorPower, motorPower, -motorPower, motorPower);
+            drivetrain.setMotorPowers(-motorPower, motorPower, -motorPower, motorPower);
             error = degrees - imu.getAngle();
             telemetry.addData("error", error);
             telemetry.update();
@@ -258,7 +259,7 @@ public class autoL extends LinearOpMode {
         PID pid = new PID(targetAngle, 0,0,0); //TUNE PID VALUES
         while(opModeIsActive() && Math.abs(targetAngle - imu.getAbsoluteAngle()) > 2){
             double motorPower = pid.update(imu.getAbsoluteAngle());
-            drivetrain.move(-motorPower, motorPower, -motorPower, motorPower);
+            drivetrain.setMotorPowers(-motorPower, motorPower, -motorPower, motorPower);
         }
 
         drivetrain.stop();

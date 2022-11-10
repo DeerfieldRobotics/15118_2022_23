@@ -88,6 +88,13 @@ public class Drivetrain
         br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
+    public void run_using_encoder(){
+        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
     public void setDrivetrainSpeedMod(double speed) {
         drivetrainPowMod=speed;
     }
