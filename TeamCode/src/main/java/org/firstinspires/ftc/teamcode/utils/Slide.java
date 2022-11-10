@@ -11,10 +11,11 @@ public class Slide {
     private HardwareMap hw;
 
     private final float speed = 1;
-
+    //TODO: tune these values
     public final static int low = 1560;
     public final static int medium = 2670;
     public final static int high = 3760;
+    
     public final static int slideMin = 1000;
     public final static int slideFlipLimit = 500;
 
@@ -47,7 +48,8 @@ public class Slide {
         s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         s.setPower(speed);
     }
-
+    
+    //TODO: Tune these values
     public void setSlideLevel(int level) {
         if(level == 0) {
             //maybe make it run down until it hits limit switch and then reset
@@ -77,7 +79,6 @@ public class Slide {
 
     public void resetEncoder() {
         s.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //sets current encoder position to zero
-        s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     public DcMotorEx getMotor() {
