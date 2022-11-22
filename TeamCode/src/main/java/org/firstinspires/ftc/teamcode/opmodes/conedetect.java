@@ -103,9 +103,9 @@ public class conedetect extends LinearOpMode {
     } 
     public boolean setOrientation(){
         if (redConeDetection.getLeft()-redConeDetection.width()+redConeDetection.getRight()>20){
-            //drivetrain.turn(-1);
+            turn(-1);
         } else if (redConeDetection.getLeft()-redConeDetection.width()+redConeDetection.getRight()<-20){
-            //drivetrain.turn(1);
+            turn(1);
         }
         return redConeDetection.getLeft()-redConeDetection.width()+redConeDetection.getRight()<20 && redConeDetection.getLeft()-redConeDetection.width()+redConeDetection.getRight()>20;
     }
