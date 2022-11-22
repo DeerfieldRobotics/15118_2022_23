@@ -31,7 +31,7 @@ public class IMUTest extends LinearOpMode {
         double error = degrees;
         while(opModeIsActive() || Math.abs(error)>2){
             double motorPower = (error < 0? -0.3: 0.3);
-            drivetrain.move(-motorPower, motorPower, -motorPower, motorPower);
+            drivetrain.setMotorPowers(-motorPower, motorPower, -motorPower, motorPower);
             error = degrees - imu.getAngle();
             telemetry.addData("error", error);
             telemetry.update();
@@ -59,7 +59,7 @@ public class IMUTest extends LinearOpMode {
         PID pid = new PID(targetAngle, 0,0,0); //TUNE PID VALUES
         while(opModeIsActive() && Math.abs(targetAngle - imu.getAbsoluteAngle()) > 2){
             double motorPower = pid.update(imu.getAbsoluteAngle());
-            drivetrain.move(-motorPower, motorPower, -motorPower, motorPower);
+            drivetrain.setMotorPowers(-motorPower, motorPower, -motorPower, motorPower);
         }
 
         drivetrain.stop();

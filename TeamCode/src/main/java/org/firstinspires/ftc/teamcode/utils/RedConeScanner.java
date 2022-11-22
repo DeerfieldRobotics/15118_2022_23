@@ -144,8 +144,8 @@ public class RedConeScanner {
                 }
             }
             
-            drivetrain.setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            drivetrain.setDrivetrainSpeed(1);
+            drivetrain.run_using_encoder();
+            drivetrain.setDrivetrainSpeedMod(1);
             drivetrain.move(strafe, rotate, forward);
         }
 
@@ -208,8 +208,8 @@ public class RedConeScanner {
 
             }
             
-            drivetrain.setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            drivetrain.setDrivetrainSpeed(1);
+            drivetrain.run_using_encoder();
+            drivetrain.setDrivetrainSpeedMod(1);
             drivetrain.move(0, rotate, forward);
         }
     }
