@@ -1,107 +1,84 @@
-//package org.firstinspires.ftc.teamcode.opmodes;
-//
-//import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-//import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-//import com.qualcomm.robotcore.hardware.DcMotor;
-//import com.qualcomm.robotcore.util.ElapsedTime;
-//
-//import org.firstinspires.ftc.teamcode.opencvpipelines.AprilTagDetectionPipeline;
-//import org.firstinspires.ftc.teamcode.opencvpipelines.RedConeDetection;
-//import org.firstinspires.ftc.teamcode.utils.AprilTags;
-//import org.firstinspires.ftc.teamcode.utils.Drivetrain;
-//import org.firstinspires.ftc.teamcode.utils.ClawMechanism;
-//import org.openftc.easyopencv.OpenCvCamera;
-//
-//@Autonomous(name = "AUTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
-//
-//public class auto extends LinearOpMode {
-//
-//    private Drivetrain drivetrain;
-//    private ClawMechanism claw;
-//    private AprilTags aprilTags;
-//
-//    // APRILTAGS
-//    AprilTagDetectionPipeline aprilTagDetectionPipeline;
-//    RedConeDetection redConeDetection;
-//
-//    OpenCvCamera frontCamera;
-//
-//    static final double FEET_PER_METER = 3.28084;
-//
-//    // Lens intrinsics
-//    // UNITS ARE PIXELS
-//    // NOTE: this calibration is for the C920 webcam at 800x448.
-//    // You will need to do your own calibration for other configurations!
-//    double fx = 578.272;
-//    double fy = 578.272;
-//    double cx = 402.145;
-//    double cy = 221.506;
-//
-//    // UNITS ARE METERS
-//    double tagsize = 0.173;
-//
-//    int numFramesWithoutDetection = 0;
-//
-//    final float DECIMATION_HIGH = 3;
-//    final float DECIMATION_LOW = 2;
-//    final float THRESHOLD_HIGH_DECIMATION_RANGE_METERS = 1.0f;
-//    final int THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION = 4;
-//
-//    // ENCODERS & GYRO
-//    static final double     COUNTS_PER_MOTOR_REV    = 384.5 ;    // eg: TETRIX Motor Encoder
-//    static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // No External Gearing.
-//    static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
-//    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-//            (WHEEL_DIAMETER_INCHES * 3.1415);
-//    static final double     DRIVE_SPEED             = 0.6;
-//    static final double     TURN_SPEED              = 0.5;
-//
-//    @Override
-//    public void runOpMode() throws InterruptedException {
-//        drivetrain = new Drivetrain(hardwareMap);
-//        aprilTags = new AprilTags(hardwareMap);
-//        //APRILTAGS
-//
-//
-//
-//        drivetrain.setEncoderMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        drivetrain.setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//
-//        // Send telemetry message to indicate successful Encoder reset
-//        telemetry.addData("Starting at",  "%7d :%7d",
-//                drivetrain.getEncoderTicks()[0], drivetrain.getEncoderTicks()[1]);
-//        telemetry.addLine(">. START");
-//        telemetry.update();
-//        drivetrain.stop();
-//
-//        ElapsedTime runtime = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
-//
-//        int detectedID = 0;
-//
-//        waitForStart();
-//
-//        runtime.reset();
-//
-//        telemetry.setMsTransmissionInterval(50);
-//
-//
-//        while (opModeIsActive()) {
-//            while(runtime.milliseconds() <= 3000){
-//                detectedID = aprilTags.getID();
-//            }
-//            while(runtime.milliseconds() < 5000  && runtime.milliseconds() >= 3000 && opModeIsActive()) {
-//                telemetry.addData("FINAL ID", detectedID);
-//
-//                telemetry.update();
-//
-//                drive(detectedID, runtime);
-//            }
-//
-//            drivetrain.stop();
-//        }
-//    }
-//
-//
+package org.firstinspires.ftc.teamcode.opmodes;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import org.firstinspires.ftc.teamcode.utils.Robot;
+
+@Autonomous(name = "AUTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+
+public class auto extends LinearOpMode {
+    private Robot robot;
+
+
+    static final double FEET_PER_METER = 3.28084;
+
+    // Lens intrinsics
+    // UNITS ARE PIXELS
+    // NOTE: this calibration is for the C920 webcam at 800x448.
+    // You will need to do your own calibration for other configurations!
+    double fx = 578.272;
+    double fy = 578.272;
+    double cx = 402.145;
+    double cy = 221.506;
+
+    // UNITS ARE METERS
+    double tagsize = 0.173;
+
+    int numFramesWithoutDetection = 0;
+
+    final float DECIMATION_HIGH = 3;
+    final float DECIMATION_LOW = 2;
+    final float THRESHOLD_HIGH_DECIMATION_RANGE_METERS = 1.0f;
+    final int THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION = 4;
+
+    // ENCODERS & GYRO
+    static final double     COUNTS_PER_MOTOR_REV    = 384.5 ;    // eg: TETRIX Motor Encoder
+    static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // No External Gearing.
+    static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
+    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+            (WHEEL_DIAMETER_INCHES * 3.1415);
+    static final double     DRIVE_SPEED             = 0.6;
+    static final double     TURN_SPEED              = 0.5;
+
+    @Override
+    public void runOpMode() throws InterruptedException {
+        Robot robot = new Robot(hardwareMap);
+        //APRILTAGS
+
+
+
+        robot.drivetrain.stop_reset_encoder();
+        robot.drivetrain.run_using_encoder();
+
+        // Send telemetry message to indicate successful Encoder reset
+        telemetry.addData("Starting at",  "%7d :%7d",
+                robot.drivetrain.getMotorPositions()[0], robot.drivetrain.getMotorPositions()[1]);
+        telemetry.addLine(">. START");
+        telemetry.update();
+        robot.drivetrain.stop();
+
+        ElapsedTime runtime = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+
+        int detectedID = 0;
+
+        while(opModeInInit()){
+            detectedID = robot.getAprilTag();
+        }
+
+        waitForStart();
+
+        runtime.reset();
+
+        telemetry.setMsTransmissionInterval(50);
+
+        while (opModeIsActive()) {
+
+        }
+    }
+
+
 //
 //    public void drive(int tag, ElapsedTime runtime){ //TODO change this name its not descriptive
 //        switch(tag){
@@ -175,6 +152,4 @@
 //                break;
 //        }
 //    }
-//
-//
-//}
+}
