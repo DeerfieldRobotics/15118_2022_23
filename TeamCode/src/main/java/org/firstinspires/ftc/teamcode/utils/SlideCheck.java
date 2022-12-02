@@ -47,7 +47,7 @@ public class SlideCheck extends Thread {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            slide.setPosition(oldPos);
+            slide.setTargetLevel(oldPos);
         }
     }
 }

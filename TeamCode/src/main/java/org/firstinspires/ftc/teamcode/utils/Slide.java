@@ -28,7 +28,7 @@ public class Slide {
     }
 
     public void initialize() {
-         s = (DcMotorImplEx) hw.get(DcMotor.class, "slide");
+         s = (DcMotorEx) hw.get(DcMotor.class, "slide");
 
         s.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //sets current encoder position to zero
         s.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -43,27 +43,29 @@ public class Slide {
         return s.getTargetPosition();
     }
 
-    public void setPosition(int target) {
+    public void setTargetLevel(int target) {
         s.setTargetPosition(target);
         s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         s.setPower(speed);
     }
     
     //TODO: Tune these values
-    public void setSlideLevel(int level) {
+    public void moveSlide(int level) {
         if(level == 0) {
             //maybe make it run down until it hits limit switch and then reset
-            setPosition(0);
+            setTargetLevel(0);
         }
         else if(level == 1) {
-            setPosition(Slide.low);
+            setTargetLevel(Slide.low);
         }
         else if(level == 2) {
-            setPosition(Slide.medium);
+            setTargetLevel(Slide.medium);
         }
         else if(level == 3) {
-            setPosition(Slide.high);
+            setTargetLevel(Slide.high);
         }
+
+        s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     public void move(double amount) {
@@ -75,6 +77,10 @@ public class Slide {
     public void stop() {
         s.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE); //static power
         s.setPower(0);
+    }
+
+    public void setPower(double pow){
+        s.setPower(pow);
     }
 
     public void resetEncoder() {
