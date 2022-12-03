@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.utils;
 
+<<<<<<< HEAD
+=======
+import com.qualcomm.robotcore.hardware.DcMotorImplEx;
+>>>>>>> parent of cae19e6 (started RR for new bot)
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class ClawMechanism {
@@ -27,6 +31,7 @@ public class ClawMechanism {
         if(level == 0) {
             //maybe make it run down until it hits limit switch and then reset
             slideTarget = 0;
+<<<<<<< HEAD
             slide.setTargetLevel(0);
         }
         else if(level == 1) {
@@ -40,6 +45,21 @@ public class ClawMechanism {
         else if(level == 3) {
             slideTarget = Slide.high;
             slide.setTargetLevel(Slide.high);
+=======
+            slide.setPosition(0);
+        }
+        else if(level == 1) {
+            slideTarget = Slide.low;
+            slide.setPosition(Slide.low);
+        }
+        else if(level == 2) {
+            slideTarget = Slide.medium;
+            slide.setPosition(Slide.medium);
+        }
+        else if(level == 3) {
+            slideTarget = Slide.high;
+            slide.setPosition(Slide.high);
+>>>>>>> parent of cae19e6 (started RR for new bot)
         }
     }
     
@@ -65,7 +85,11 @@ public class ClawMechanism {
             }
             else {
                 int oldPos = Math.max(slide.getCurrentPosition(),slide.slideFlipLimit);
+<<<<<<< HEAD
                 slide.setTargetLevel(Slide.slideMin);
+=======
+                slide.setPosition(Slide.slideMin);
+>>>>>>> parent of cae19e6 (started RR for new bot)
                 //start thread to check if slide goes up and then flip the arm, then go back to old position
                 sc = new SlideCheck(slide, claw, flip, oldPos);
                 sc.start();

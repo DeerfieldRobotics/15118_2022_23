@@ -28,7 +28,11 @@ public class Slide {
     }
 
     public void initialize() {
+<<<<<<< HEAD
          s = (DcMotorEx) hw.get(DcMotor.class, "slide");
+=======
+         s = (DcMotorImplEx) hw.get(DcMotor.class, "slide");
+>>>>>>> parent of cae19e6 (started RR for new bot)
 
         s.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //sets current encoder position to zero
         s.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -43,13 +47,18 @@ public class Slide {
         return s.getTargetPosition();
     }
 
+<<<<<<< HEAD
     public void setTargetLevel(int target) {
+=======
+    public void setPosition(int target) {
+>>>>>>> parent of cae19e6 (started RR for new bot)
         s.setTargetPosition(target);
         s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         s.setPower(speed);
     }
     
     //TODO: Tune these values
+<<<<<<< HEAD
     public void moveSlide(int level) {
         if(level == 0) {
             //maybe make it run down until it hits limit switch and then reset
@@ -66,6 +75,22 @@ public class Slide {
         }
 
         s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+=======
+    public void setSlideLevel(int level) {
+        if(level == 0) {
+            //maybe make it run down until it hits limit switch and then reset
+            setPosition(0);
+        }
+        else if(level == 1) {
+            setPosition(Slide.low);
+        }
+        else if(level == 2) {
+            setPosition(Slide.medium);
+        }
+        else if(level == 3) {
+            setPosition(Slide.high);
+        }
+>>>>>>> parent of cae19e6 (started RR for new bot)
     }
 
     public void move(double amount) {
@@ -79,10 +104,13 @@ public class Slide {
         s.setPower(0);
     }
 
+<<<<<<< HEAD
     public void setPower(double pow){
         s.setPower(pow);
     }
 
+=======
+>>>>>>> parent of cae19e6 (started RR for new bot)
     public void resetEncoder() {
         s.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //sets current encoder position to zero
     }

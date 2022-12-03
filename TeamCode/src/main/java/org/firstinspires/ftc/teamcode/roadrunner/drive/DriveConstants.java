@@ -32,8 +32,9 @@ public class DriveConstants {
      * from DriveVelocityPIDTuner.
      */
     public static final boolean RUN_USING_ENCODER = true;
-    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(0, 0, 0,
-            getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV));
+    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(10, 0, 10, 14.05);
+    //public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(0, 0, 10,
+            //getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV));
 
     /*
      * These are physical constants that can be determined from your robot (including the track
@@ -64,16 +65,27 @@ public class DriveConstants {
      * small and gradually increase them later after everything is working. All distance units are
      * inches.
      */
+<<<<<<< HEAD
+<<<<<<< HEAD
     public static double MAX_VEL = 15.5;
     public static double MAX_ACCEL = 30;
     public static double MAX_ANG_VEL = Math.toRadians(60);
     public static double MAX_ANG_ACCEL = Math.toRadians(60);
-
-//    public static double MAX_VEL = 16;
-//    public static double MAX_ACCEL = 30;
-//    public static double MAX_ANG_VEL = Math.toRadians(180);;
-//    public static double MAX_ANG_ACCEL = Math.toRadians(180);
-
+<<<<<<< HEAD
+=======
+=======
+    public static double MAX_VEL = 16;
+    public static double MAX_ACCEL = 30;
+    public static double MAX_ANG_VEL = Math.toRadians(180);;
+    public static double MAX_ANG_ACCEL = Math.toRadians(180);
+>>>>>>> origin/master
+>>>>>>> parent of 1f3525e (files get back)
+=======
+    public static double MAX_VEL = 25;
+    public static double MAX_ACCEL = 30;
+    public static double MAX_ANG_VEL = 4.517088451367871;
+    public static double MAX_ANG_ACCEL = Math.toRadians(60);
+>>>>>>> parent of cae19e6 (started RR for new bot)
 
 
     public static double encoderTicksToInches(double ticks) {
