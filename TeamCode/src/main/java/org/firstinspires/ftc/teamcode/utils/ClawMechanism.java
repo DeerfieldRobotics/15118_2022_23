@@ -1,6 +1,10 @@
 package org.firstinspires.ftc.teamcode.utils;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+import com.qualcomm.robotcore.hardware.DcMotorImplEx;
+>>>>>>> parent of cae19e6 (started RR for new bot)
 =======
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 >>>>>>> parent of cae19e6 (started RR for new bot)
@@ -32,6 +36,7 @@ public class ClawMechanism {
             //maybe make it run down until it hits limit switch and then reset
             slideTarget = 0;
 <<<<<<< HEAD
+<<<<<<< HEAD
             slide.setTargetLevel(0);
         }
         else if(level == 1) {
@@ -46,6 +51,8 @@ public class ClawMechanism {
             slideTarget = Slide.high;
             slide.setTargetLevel(Slide.high);
 =======
+=======
+>>>>>>> parent of cae19e6 (started RR for new bot)
             slide.setPosition(0);
         }
         else if(level == 1) {
@@ -59,6 +66,9 @@ public class ClawMechanism {
         else if(level == 3) {
             slideTarget = Slide.high;
             slide.setPosition(Slide.high);
+<<<<<<< HEAD
+>>>>>>> parent of cae19e6 (started RR for new bot)
+=======
 >>>>>>> parent of cae19e6 (started RR for new bot)
         }
     }
@@ -86,7 +96,11 @@ public class ClawMechanism {
             else {
                 int oldPos = Math.max(slide.getCurrentPosition(),slide.slideFlipLimit);
 <<<<<<< HEAD
+<<<<<<< HEAD
                 slide.setTargetLevel(Slide.slideMin);
+=======
+                slide.setPosition(Slide.slideMin);
+>>>>>>> parent of cae19e6 (started RR for new bot)
 =======
                 slide.setPosition(Slide.slideMin);
 >>>>>>> parent of cae19e6 (started RR for new bot)

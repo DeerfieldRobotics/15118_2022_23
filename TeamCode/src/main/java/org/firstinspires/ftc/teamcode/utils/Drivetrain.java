@@ -89,6 +89,7 @@ public class Drivetrain
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     public void no_encoder(){
         fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -96,6 +97,8 @@ public class Drivetrain
         br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
+=======
+>>>>>>> parent of cae19e6 (started RR for new bot)
 =======
 >>>>>>> parent of cae19e6 (started RR for new bot)
     public void run_using_encoder(){
@@ -192,6 +195,11 @@ public class Drivetrain
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> parent of cae19e6 (started RR for new bot)
 =======
 
 

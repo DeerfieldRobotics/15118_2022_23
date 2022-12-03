@@ -48,7 +48,11 @@ public class SlideCheck extends Thread {
                 e.printStackTrace();
             }
 <<<<<<< HEAD
+<<<<<<< HEAD
             slide.setTargetLevel(oldPos);
+=======
+            slide.setPosition(oldPos);
+>>>>>>> parent of cae19e6 (started RR for new bot)
 =======
             slide.setPosition(oldPos);
 >>>>>>> parent of cae19e6 (started RR for new bot)
