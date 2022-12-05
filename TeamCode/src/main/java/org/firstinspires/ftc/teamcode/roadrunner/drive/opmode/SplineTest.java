@@ -28,25 +28,27 @@ public class SplineTest extends LinearOpMode {
                 .strafeRight(25)
                 .build();
 
-        Trajectory path = drive.trajectoryBuilder(startPose)
-                .strafeRight(20)
-
-                .splineTo(new Vector2d(-45,30), Math.toRadians(-45))
-
-                .splineToConstantHeading(new Vector2d(-45,30), Math.toRadians(-45))
-
-                .splineToConstantHeading(new Vector2d(-45,30), Math.toRadians(-45))
-
+        Trajectory path1 = drive.trajectoryBuilder(startPose)
+                .lineToSplineHeading(new Pose2d(-55,60,Math.toRadians(-180)))
+                .build();
+        Trajectory path2 = drive.trajectoryBuilder(new Pose2d(-55, 60, Math.toRadians(-180)))
+                .lineToSplineHeading(new Pose2d(-60,17, Math.toRadians(-135)))
+                .build();
+        Trajectory path3 = drive.trajectoryBuilder(new Pose2d(-60,17, Math.toRadians(-135)))
+                .lineToSplineHeading(new Pose2d(-30,8, Math.toRadians(-45)))
                 .build();
 
         //drive.followTrajectory(strafeRight);
-        drive.followTrajectory(path);
+        drive.followTrajectory(path1);
+        drive.followTrajectory(path2);
+        drive.followTrajectory(path3);
+
         sleep(2000);
 
-        drive.followTrajectory(
-                drive.trajectoryBuilder(path.end(), true)
-                        .splineTo(new Vector2d(0, 0), Math.toRadians(180))
-                        .build()
-        );
+//        drive.followTrajectory(
+//                drive.trajectoryBuilder(path.end(), true)
+//                        .splineTo(new Vector2d(0, 0), Math.toRadians(180))
+//                        .build()
+//        );
     }
 }

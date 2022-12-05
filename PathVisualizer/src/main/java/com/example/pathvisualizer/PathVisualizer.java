@@ -20,21 +20,11 @@ public class PathVisualizer {
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(new Pose2d(-35, 60, Math.toRadians(-90)))
                                 //.splineTo(new Vector2d(-60,56), Math.toRadians(-90))
-<<<<<<< HEAD
-<<<<<<< HEAD
-                                .strafeRight(15)
-                                .splineToSplineHeading(new Pose2d(-52,28,Math.toRadians(-45)), Math.toRadians(-45))
-                                //.back(5)
-                                .splineToSplineHeading(new Pose2d(-52-(5/Math.sqrt(2)),27.5+(5/Math.sqrt(2)),Math.toRadians(-125)), Math.toRadians(-135))
-                                .splineToConstantHeading(new Vector2d(-65,20), Math.toRadians(-125))
-=======
-                                .strafeRight(20)
-                                .splineToConstantHeading(new Vector2d(-45,30), Math.toRadians(-45))
->>>>>>> parent of cae19e6 (started RR for new bot)
-=======
-                                .strafeRight(20)
-                                .splineToConstantHeading(new Vector2d(-45,30), Math.toRadians(-45))
->>>>>>> parent of cae19e6 (started RR for new bot)
+
+                                .lineToSplineHeading(new Pose2d(-55,60,Math.toRadians(-180)))
+//
+                                .lineToSplineHeading(new Pose2d(-60,17, Math.toRadians(-135)))
+                                .lineToSplineHeading(new Pose2d(-30,8, Math.toRadians(-45)))
                                 .build()
                 );
 
