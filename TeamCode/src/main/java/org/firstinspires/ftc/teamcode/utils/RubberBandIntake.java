@@ -11,11 +11,10 @@ public class RubberBandIntake {
     private HardwareMap hw;
     private CRServoImpl frontServo, backServo;
 
-    private double servoPow = 0.8;
+    private double powerMult = 0.8;
 
     public RubberBandIntake (HardwareMap hardwaremap) {
         hw = hardwaremap;
-
         initialize();
     }
 
@@ -28,15 +27,9 @@ public class RubberBandIntake {
         runtime = new ElapsedTime();
     }
 
-    public void intake(){
-        frontServo.setPower(servoPow);
-        backServo.setPower(servoPow);
-    }
-
-    public void outtake(){
-        frontServo.setPower(-servoPow);
-        backServo.setPower(-servoPow);
-
+    public void intake(double pow){
+        frontServo.setPower(pow*powerMult);
+        backServo.setPower(pow*powerMult);
     }
 
     public void stop(){

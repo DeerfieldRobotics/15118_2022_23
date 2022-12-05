@@ -87,9 +87,6 @@ public class Drivetrain
         bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
-
-<<<<<<< HEAD
-<<<<<<< HEAD
     public void no_encoder(){
         fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -97,10 +94,6 @@ public class Drivetrain
         br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-=======
->>>>>>> parent of cae19e6 (started RR for new bot)
-=======
->>>>>>> parent of cae19e6 (started RR for new bot)
     public void run_using_encoder(){
         fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -191,17 +184,7 @@ public class Drivetrain
 
 
     public boolean isBusy(){
-        return fl.isBusy() && fr.isBusy();
+        return fl.isBusy() && fr.isBusy() && bl.isBusy() && br.isBusy();
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
-
->>>>>>> parent of cae19e6 (started RR for new bot)
-=======
-
-
->>>>>>> parent of cae19e6 (started RR for new bot)
 }

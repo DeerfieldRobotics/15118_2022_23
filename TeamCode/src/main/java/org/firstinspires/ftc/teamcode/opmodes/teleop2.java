@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.checkerframework.checker.units.qual.Current;
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.utils.Claw;
 import org.firstinspires.ftc.teamcode.utils.Drivetrain;
 import org.firstinspires.ftc.teamcode.utils.RubberBandIntake;
@@ -60,13 +62,7 @@ public class teleop2 extends LinearOpMode {
 //                run = false;
 //            }
 
-            if(gamepad2.right_trigger != 0) {
-                intake.intake();
-            } else if(gamepad2.left_trigger !=0) {
-                intake.outtake();
-            } else {
-                intake.stop();
-            }
+            intake.intake(gamepad2.right_trigger-gamepad2.left_trigger);
 
             if(gamepad2.right_stick_y != 0) {
                 slide.setPower(-gamepad2.right_stick_y);
@@ -91,28 +87,29 @@ public class teleop2 extends LinearOpMode {
             }*/
 
             if(gamepad2.cross){
-                slide.setTargetLevel(1);
+                slide.setSlideLevel(1);
                 slide.getMotor().setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 slide.setPower(1);
                 manual = false;
             } else if(gamepad2.square) {
-                slide.setTargetLevel(2);
+                slide.setSlideLevel(2);
                 slide.getMotor().setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 slide.setPower(1);
                 manual = false;
             } else if(gamepad2.triangle) {
-                slide.setTargetLevel(3);
+                slide.setSlideLevel(3);
                 slide.getMotor().setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 slide.setPower(1);
                 manual = false;
             } else if (gamepad2.circle) {
-                slide.setTargetLevel(0);
+                slide.setSlideLevel(0);
                 slide.getMotor().setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 slide.setPower(1);
                 manual = false;
             }
 
             telemetry.addData("Slide ticks", slide.getCurrentPosition());
+            telemetry.addData("slide current draw", slide.getMotor().getCurrent(CurrentUnit.AMPS));
             telemetry.update();
         }
 

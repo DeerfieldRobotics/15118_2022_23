@@ -6,16 +6,12 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Gamepad.LedEffect;
 import com.qualcomm.robotcore.hardware.Gamepad.RumbleEffect;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.utils.Claw;
-import org.firstinspires.ftc.teamcode.utils.ClawMechanism;
-import org.firstinspires.ftc.teamcode.utils.Drivetrain;
-import org.firstinspires.ftc.teamcode.utils.Slide;
 
 @TeleOp(name = "teleop", group = "teleop")
 public class teleop extends LinearOpMode {
