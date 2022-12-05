@@ -41,12 +41,12 @@ public class SplineTest extends LinearOpMode {
 
         //drive.followTrajectory(strafeRight);
         drive.followTrajectory(path);
-        //sleep(2000);
+        sleep(2000);
 
-        /*drive.followTrajectory(
-                drive.trajectoryBuilder(traj.end(), true)
+        drive.followTrajectory(
+                drive.trajectoryBuilder(path.end(), true)
                         .splineTo(new Vector2d(0, 0), Math.toRadians(180))
                         .build()
-        );*/
+        );
     }
 }
