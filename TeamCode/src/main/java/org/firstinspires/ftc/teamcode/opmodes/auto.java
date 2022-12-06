@@ -6,12 +6,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.utils.Robot;
 
-@Autonomous(name = "AUTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+@Autonomous(name = "AUTO")
 
 public class auto extends LinearOpMode {
-    private Robot robot;
-
-
     static final double FEET_PER_METER = 3.28084;
 
     // Lens intrinsics
@@ -44,38 +41,37 @@ public class auto extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        Robot robot = new Robot(hardwareMap);
         //APRILTAGS
 
 
 
-        robot.drivetrain.stop_reset_encoder();
-        robot.drivetrain.run_using_encoder();
-
-        // Send telemetry message to indicate successful Encoder reset
-        telemetry.addData("Starting at",  "%7d :%7d",
-                robot.drivetrain.getMotorPositions()[0], robot.drivetrain.getMotorPositions()[1]);
-        telemetry.addLine(">. START");
-        telemetry.update();
-        robot.drivetrain.stop();
-
-        ElapsedTime runtime = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
-
-        int detectedID = 0;
-
-        while(opModeInInit()){
-            detectedID = robot.getAprilTag();
-        }
-
-        waitForStart();
-
-        runtime.reset();
-
-        telemetry.setMsTransmissionInterval(50);
-
-        while (opModeIsActive()) {
-
-        }
+//        robot.drivetrain.stop_reset_encoder();
+//        robot.drivetrain.run_using_encoder();
+//
+//        // Send telemetry message to indicate successful Encoder reset
+//        telemetry.addData("Starting at",  "%7d :%7d",
+//                robot.drivetrain.getMotorPositions()[0], robot.drivetrain.getMotorPositions()[1]);
+//        telemetry.addLine(">. START");
+//        telemetry.update();
+//        robot.drivetrain.stop();
+//
+//        ElapsedTime runtime = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+//
+//        int detectedID = 0;
+//
+//        while(opModeInInit()){
+//            detectedID = robot.getAprilTag();
+//        }
+//
+//        waitForStart();
+//
+//        runtime.reset();
+//
+//        telemetry.setMsTransmissionInterval(50);
+//
+//        while (opModeIsActive()) {
+//
+//        }
     }
 
 
