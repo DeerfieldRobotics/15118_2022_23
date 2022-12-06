@@ -18,23 +18,24 @@ public class PathVisualizer {
                 //.setStartPose(new Pose2d(50, 50))
                 .setConstraints(15, 30, Math.toRadians(180), Math.toRadians(180), 14.55)
                 .followTrajectorySequence(drive ->
+
+                        drive.trajectorySequenceBuilder(new Pose2d(36,-60.4, Math.toRadians(90)))
+                                //.splineTo(new Pose2d(60,-60.4, Math.toRadians(90)))
+                                .splineToConstantHeading(new Vector2d(60,-60.4), Math.toRadians(90))
+                        /*
                         drive.trajectorySequenceBuilder(new Pose2d(-35, 60, Math.toRadians(-90)))
-                                //.splineTo(new Vector2d(-60,56), Math.toRadians(-90))
-<<<<<<< HEAD
-<<<<<<< HEAD
+
                                 .strafeRight(15)
                                 .splineToSplineHeading(new Pose2d(-52,28,Math.toRadians(-45)), Math.toRadians(-45))
                                 //.back(5)
                                 .splineToSplineHeading(new Pose2d(-52-(5/Math.sqrt(2)),27.5+(5/Math.sqrt(2)),Math.toRadians(-125)), Math.toRadians(-135))
                                 .splineToConstantHeading(new Vector2d(-65,20), Math.toRadians(-125))
-=======
                                 .strafeRight(20)
                                 .splineToConstantHeading(new Vector2d(-45,30), Math.toRadians(-45))
->>>>>>> parent of cae19e6 (started RR for new bot)
-=======
+
                                 .strafeRight(20)
                                 .splineToConstantHeading(new Vector2d(-45,30), Math.toRadians(-45))
->>>>>>> parent of cae19e6 (started RR for new bot)
+*/
                                 .build()
                 );
 
