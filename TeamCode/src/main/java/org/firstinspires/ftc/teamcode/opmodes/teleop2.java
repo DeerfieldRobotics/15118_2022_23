@@ -88,22 +88,18 @@ public class teleop2 extends LinearOpMode {
 
             if(gamepad2.cross){
                 slide.setSlideLevel(1);
-                slide.getMotor().setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 slide.setPower(1);
                 manual = false;
             } else if(gamepad2.square) {
                 slide.setSlideLevel(2);
-                slide.getMotor().setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 slide.setPower(1);
                 manual = false;
             } else if(gamepad2.triangle) {
                 slide.setSlideLevel(3);
-                slide.getMotor().setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 slide.setPower(1);
                 manual = false;
             } else if (gamepad2.circle) {
                 slide.setSlideLevel(0);
-                slide.getMotor().setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 slide.setPower(1);
                 manual = false;
             }

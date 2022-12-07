@@ -16,6 +16,12 @@ public class Slide {
     public final static int low = 1560;
     public final static int medium = 2670;
     public final static int high = 3760;
+
+    public final static int cone1 = ;
+    public final static int cone2 = ;
+    public final static int cone3 = ;
+    public final static int cone4 = ;
+    public final static int cone5 = ;
     
     public final static int slideMin = 1000;
     public final static int slideFlipLimit = 500;
@@ -62,6 +68,26 @@ public class Slide {
 
         s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
+
+    public void setConeLevel(int level){
+        if (level == 0) {
+            //maybe make it run down until it hits limit switch and then reset
+            setTargetLevel(0);
+        } else if (level == 1) {
+            setTargetLevel(Slide.cone1);
+        } else if (level == 2) {
+            setTargetLevel(Slide.cone2);
+        } else if (level == 3) {
+            setTargetLevel(Slide.cone3);
+        }else if (level == 4) {
+            setTargetLevel(Slide.cone4);
+        }else if (level == 5) {
+            setTargetLevel(Slide.cone5);
+        }
+
+        s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
     public void move(double amount) {
         s.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE); //static power
         s.setMode(DcMotor.RunMode.RUN_USING_ENCODER);

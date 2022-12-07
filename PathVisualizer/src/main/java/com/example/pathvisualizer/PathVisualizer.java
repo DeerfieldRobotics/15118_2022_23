@@ -32,6 +32,14 @@ public class PathVisualizer {
                                 .forward(6)
                                 .back(6)
                                 .turn(Math.toRadians(-135))
+
+                                .lineToSplineHeading(new Pose2d(-57,11,Math.toRadians(180)))
+                                .back(20)
+                                .lineToSplineHeading(new Pose2d(-35,11,Math.toRadians(-45)))
+                                .forward(6)
+                                .back(6)
+                                .turn(Math.toRadians(-135))
+
                                 .lineToSplineHeading(new Pose2d(-57,11,Math.toRadians(180)))
                                 .back(20)
                                 .lineToSplineHeading(new Pose2d(-35,11,Math.toRadians(-45)))
