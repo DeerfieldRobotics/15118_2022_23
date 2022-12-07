@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -53,38 +54,14 @@ public class teleop2 extends LinearOpMode {
                 telemetry.addLine("not moving");
             }
 
-            //intake
-
-
-
-//            if(gamepad2.left_bumper) {
-//                //(right_trigger)-(left_trigger) for slide movement + limits, maybe add separate thread for evaluating limits with limit switch\
-//                run = false;
-//            }
-
             intake.intake(gamepad2.right_trigger-gamepad2.left_trigger);
 
-            if(gamepad2.right_stick_y != 0) {
-                slide.setPower(-gamepad2.right_stick_y);
-            } else {
-                slide.stop();
-            }
-            /*
-            if(gamepad2.cross){
-                slide.moveSlide(1);
-                slide.setPower(1);
-            } else if(gamepad2.square) {
-                slide.moveSlide(2);
-                slide.setPower(1);
-            } else if(gamepad2.triangle) {
-                slide.setPosition(3);
-                slide.setPower(1);
-            } else if (gamepad2.circle) {
-                slide.setPosition(0);
-                slide.setPower(1);
-            } else {
+            slide.setPower(-gamepad2.right_stick_y);
 
-            }*/
+            if(slide.getAmperage() > 7) {
+                slide.stop();
+                telemetry.addLine("CURRENT LIMIT");
+            }
 
             if(gamepad2.cross){
                 slide.setSlideLevel(1);
@@ -113,11 +90,8 @@ public class teleop2 extends LinearOpMode {
 
     public void initialize() {
         slide = new Slide(hardwareMap);
-        drivetrain = new Drivetrain(hardwareMap);
-        intake = new RubberBandIntake(hardwareMap);
 
         slide.s.setDirection(DcMotorSimple.Direction.REVERSE);
-        drivetrain.no_encoder();
     }
 
 }

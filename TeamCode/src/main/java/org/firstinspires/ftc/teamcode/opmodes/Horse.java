@@ -122,7 +122,7 @@ public class Horse extends LinearOpMode {
 //        drive.followTrajectory(high1);
 //        drive.followTrajectory(back2);
 //        drive.followTrajectory(high2);
-
+        park(detectedID);
 
     }
 
@@ -138,27 +138,32 @@ public class Horse extends LinearOpMode {
     }
 
     public void park(int id){
-        Trajectory parkingPath= drive.trajectoryBuilder(new Pose2d(-35,11,Math.toRadians(-45)))
+        Trajectory parkingPath= drive.trajectoryBuilder(new Pose2d(-35,11,Math.toRadians(180)))
                 .build();
         switch(id){
             case 1:
                 //left
-                parkingPath = drive.trajectoryBuilder(new Pose2d(-35,11,Math.toRadians(-45)))
-
+                parkingPath = drive.trajectoryBuilder(new Pose2d(-35,11,Math.toRadians(180)))
+                        .forward(26)
                     .build();
                 break;
             case 2:
                 //middle
-                parkingPath = drive.trajectoryBuilder(new Pose2d(-35,11,Math.toRadians(-45)))
-                        .build();
+
+                //do nothing
+
+//                parkingPath = drive.trajectoryBuilder(new Pose2d(-35,11,Math.toRadians(180)))
+//                        .build();
                 break;
             case 3:
                 //right
-                parkingPath = drive.trajectoryBuilder(new Pose2d(-35,11,Math.toRadians(-45)))
+                parkingPath = drive.trajectoryBuilder(new Pose2d(-35,11,Math.toRadians(180)))
+                        .back(26)
                         .build();
 
                 break;
             default:
+                // do nothing
                 break;
         }
         drive.followTrajectory(parkingPath);
