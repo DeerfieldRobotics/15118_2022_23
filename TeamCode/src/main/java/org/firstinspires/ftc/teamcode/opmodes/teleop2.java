@@ -90,7 +90,8 @@ public class teleop2 extends LinearOpMode {
 
     public void initialize() {
         slide = new Slide(hardwareMap);
-
+        drivetrain = new Drivetrain(hardwareMap);
+        intake = new RubberBandIntake(hardwareMap);
         slide.s.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 

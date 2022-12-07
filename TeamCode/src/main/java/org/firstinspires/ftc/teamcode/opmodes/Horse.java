@@ -58,34 +58,34 @@ public class Horse extends LinearOpMode {
                         intake.intake(-1);
                     }
                 })
+//                .lineToSplineHeading(new Pose2d(-57,11,Math.toRadians(180)))
+//                .addDisplacementMarker(40, () -> {
+//                    slide.setSlideLevel(1);
+//                    slide.setPower(1);
+//                })
+//                .addDisplacementMarker(44, () -> {
+//                    slide.setSlideLevel(1);
+//                    slide.setPower(1);
+//                    intake.intake(1);
+//                })
                 .build();
 
-        runtime.reset();
-        
-        Trajectory low = drive.trajectoryBuilder(new Pose2d(-60, 59, Math.toRadians(180)))
-                .lineToSplineHeading(new Pose2d(-57,11,Math.toRadians(180)))
-                .addDisplacementMarker(40, () -> {
-                    slide.setSlideLevel(1);
-                    slide.setPower(1);
-                })
-                .addDisplacementMarker(44, () -> {
-                    slide.setSlideLevel(1);
-                    slide.setPower(1);
-                    intake.intake(1);
-                })
-                .lineToSplineHeading(new Pose2d(-35,11,Math.toRadians(135)))
-                .addDisplacementMarker(20, () -> {
-                    slide.setSlideLevel(1);
-                    slide.setPower(1);
-                })
-                .forward(8)
-                .addTemporalMarker(10, () -> {
-                    while(runtime.milliseconds() >= 5 && runtime.milliseconds() <= 6000){
-                        intake.intake(-1);
-                    }
-                })
-                .back(8)
-                .build();
+//        runtime.reset();
+//
+//        Trajectory low = drive.trajectoryBuilder(new Pose2d(-57,11,Math.toRadians(180)))
+//                .lineToSplineHeading(new Pose2d(-35,11,Math.toRadians(135)))
+//                .addDisplacementMarker(20, () -> {
+//                    slide.setSlideLevel(1);
+//                    slide.setPower(1);
+//                })
+//                .forward(8)
+//                .addTemporalMarker(10, () -> {
+//                    while(runtime.milliseconds() >= 5 && runtime.milliseconds() <= 6000){
+//                        intake.intake(-1);
+//                    }
+//                })
+//                .back(8)
+//                .build();
         
 //        Trajectory back1 = drive.trajectoryBuilder(new Pose2d(-35,11,Math.toRadians(135)))
 //                .lineToSplineHeading(new Pose2d(-57,11,Math.toRadians(180)))
@@ -117,12 +117,12 @@ public class Horse extends LinearOpMode {
 
         drive.followTrajectory(forwards);
         drive.followTrajectory(terminal);
-        drive.followTrajectory(low);
+//        drive.followTrajectory(low);
 //        drive.followTrajectory(back1);
 //        drive.followTrajectory(high1);
 //        drive.followTrajectory(back2);
 //        drive.followTrajectory(high2);
-        park(detectedID);
+        //park(detectedID);
 
     }
 
