@@ -53,14 +53,17 @@ public class Horse extends LinearOpMode {
                 .forward(25)
                 .lineToSplineHeading(new Pose2d(-57,11,Math.toRadians(180)))
                 .build();
+        
         Trajectory low = drive.trajectoryBuilder(new Pose2d(-57,11,Math.toRadians(180)))
                 .lineToSplineHeading(new Pose2d(-35,11,Math.toRadians(135)))
                 .forward(8)
                 .back(8).build();
-        Trajectory back1 = drive.trajectoryBuilder(new Pose2d(-57,11,Math.toRadians(180)))
+        
+        Trajectory back1 = drive.trajectoryBuilder(new Pose2d(-35,11,Math.toRadians(135)))
                 .lineToSplineHeading(new Pose2d(-57,11,Math.toRadians(180)))
                 .back(20)
                 .build();
+        
         Trajectory high1 = drive.trajectoryBuilder(new Pose2d(-37,11,Math.toRadians(180)))
                 .lineToSplineHeading(new Pose2d(-35,11,Math.toRadians(-45)))
                 .forward(6)
@@ -69,9 +72,11 @@ public class Horse extends LinearOpMode {
                     drive.turn(-135);
                 })
                 .build();
-        Trajectory back2 = drive.trajectoryBuilder(new Pose2d(-35,11,Math.toRadians(-45)))
+        
+        Trajectory back2 = drive.trajectoryBuilder(new Pose2d(-35,11,Math.toRadians(180)))
                 .lineToSplineHeading(new Pose2d(-57,11,Math.toRadians(180)))
                 .back(20).build();
+        
         Trajectory high2 = drive.trajectoryBuilder(new Pose2d(-37,11,Math.toRadians(180)))
                 .lineToSplineHeading(new Pose2d(-35,11,Math.toRadians(-45)))
                 .forward(6)
