@@ -42,22 +42,28 @@ public class Horse extends LinearOpMode {
 
         if (isStopRequested()) return;
 
-        Trajectory forwards = drive.trajectoryBuilder(startPose)
+        Trajectory terminal = drive.trajectoryBuilder(startPose)
                 .forward(3)
                 .addDisplacementMarker(() -> {
                     drive.turn(-90);
                 })
-                .build();
-
-        runtime.reset();
-
-        Trajectory terminal = drive.trajectoryBuilder(new Pose2d(-35, 59, Math.toRadians(180)))
                 .forward(25)
                 .addDisplacementMarker(() -> {
                     while(runtime.milliseconds() <= 1500){
                         intake.intake(-1);
                     }
                 })
+                .build();
+
+        runtime.reset();
+
+//        Trajectory terminal = drive.trajectoryBuilder(new Pose2d(-35, 59, Math.toRadians(180)))
+//                .forward(25)
+//                .addDisplacementMarker(() -> {
+//                    while(runtime.milliseconds() <= 1500){
+//                        intake.intake(-1);
+//                    }
+//                })
 //                .lineToSplineHeading(new Pose2d(-57,11,Math.toRadians(180)))
 //                .addDisplacementMarker(40, () -> {
 //                    slide.setSlideLevel(1);
@@ -68,7 +74,7 @@ public class Horse extends LinearOpMode {
 //                    slide.setPower(1);
 //                    intake.intake(1);
 //                })
-                .build();
+//                .build();
 
 //        runtime.reset();
 //
@@ -115,7 +121,7 @@ public class Horse extends LinearOpMode {
 //                })
 //                .build();
 
-        drive.followTrajectory(forwards);
+        //drive.followTrajectory(forwards);
         drive.followTrajectory(terminal);
 //        drive.followTrajectory(low);
 //        drive.followTrajectory(back1);
@@ -167,6 +173,40 @@ public class Horse extends LinearOpMode {
                 break;
         }
         drive.followTrajectory(parkingPath);
+    }
+
+    public void capLow(){
+        Trajectory lowPole= drive.trajectoryBuilder(new Pose2d(-57,12,Math.toRadians(180)))
+                .back(22)
+                .addDisplacementMarker(() -> {
+                    drive.turn(-45);
+                })
+                .forward(6)
+                .back(6)
+                .addDisplacementMarker(() -> {
+                    drive.turn(45);
+                })
+                .forward(22)
+                .build();
+
+        drive.followTrajectory(lowPole);
+    }
+
+    public void capHigh(int intakeHeight){
+        Trajectory highPole= drive.trajectoryBuilder(new Pose2d(-57,12,Math.toRadians(180)))
+                .back(22)
+                .addDisplacementMarker(() -> {
+                       drive.turn(-45);
+                })
+                .forward(7)
+                .back(7)
+                .addDisplacementMarker(() -> {
+                    drive.turn(45);
+                })
+                .forward(22)
+                .build();
+
+        drive.followTrajectory(highPole);
     }
 
 }

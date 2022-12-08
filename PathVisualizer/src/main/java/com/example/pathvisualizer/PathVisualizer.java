@@ -19,32 +19,42 @@ public class PathVisualizer {
                 .setConstraints(15, 30, Math.toRadians(180), Math.toRadians(180), 14.55)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(new Pose2d(-35, 62, Math.toRadians(-90)))
+                                // Path 1: Terminal
                                 .forward(3)
                                 .turn(Math.toRadians(-90))
                                 .forward(25)
-                                .lineToSplineHeading(new Pose2d(-57,11,Math.toRadians(180)))
-                                .lineToSplineHeading(new Pose2d(-35,11,Math.toRadians(135)))
-                                .forward(8)
-                                .back(8)
-                                .lineToSplineHeading(new Pose2d(-57,11,Math.toRadians(180)))
-                                .back(20)
-                                .lineToSplineHeading(new Pose2d(-35,11,Math.toRadians(-45)))
-                                .forward(6)
-                                .back(6)
-                                .turn(Math.toRadians(-135))
+                                // outtake
 
-                                .lineToSplineHeading(new Pose2d(-57,11,Math.toRadians(180)))
-                                .back(20)
-                                .lineToSplineHeading(new Pose2d(-35,11,Math.toRadians(-45)))
-                                .forward(6)
-                                .back(6)
-                                .turn(Math.toRadians(-135))
 
-                                .lineToSplineHeading(new Pose2d(-57,11,Math.toRadians(180)))
-                                .back(20)
-                                .lineToSplineHeading(new Pose2d(-35,11,Math.toRadians(-45)))
+
+                                // Path 2: pick up 2nd cone
+                                .strafeLeft(26)
+                                .splineToSplineHeading(new Pose2d(-58 ,12,Math.toRadians(180)),Math.toRadians(-100))
+                                .back(21)
+                                .turn(Math.toRadians(-45))
                                 .forward(6)
                                 .back(6)
+                                .turn(Math.toRadians(45))
+                                .forward(22)
+                                .back(22)
+                                .turn(Math.toRadians(135))
+                                .forward(7)
+                                .back(7)
+                                .turn(Math.toRadians(-135))
+                                .forward(22)
+
+//                                .lineToSplineHeading(new Pose2d(-57,12,Math.toRadians(180)))
+//                                .back(20)
+//                                .lineToSplineHeading(new Pose2d(-35,12,Math.toRadians(-45)))
+//                                .forward(6)
+//                                .back(6)
+//                                .turn(Math.toRadians(-135))
+//
+//                                .lineToSplineHeading(new Pose2d(-57,12,Math.toRadians(180)))
+//                                .back(20)
+//                                .lineToSplineHeading(new Pose2d(-35,12,Math.toRadians(-45)))
+//                                .forward(6)
+//                                .back(6)
                                 .build()
                 );
 
