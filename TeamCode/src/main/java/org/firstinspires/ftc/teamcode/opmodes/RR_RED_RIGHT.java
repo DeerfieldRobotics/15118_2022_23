@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.utils.AprilTags;
+import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.utils.RubberBandIntake;
 import org.firstinspires.ftc.teamcode.utils.Slide;
 
@@ -17,7 +17,7 @@ public class RR_RED_RIGHT extends LinearOpMode {
     private SampleMecanumDrive drive;
     private RubberBandIntake rubberBandIntake;
     private Slide slide;
-    private AprilTags aprilTags;
+    //private AprilTags aprilTags;
     private int detectedTag;
 
     public void initialize() {
@@ -27,10 +27,10 @@ public class RR_RED_RIGHT extends LinearOpMode {
         slide = new Slide(hardwareMap);
         slide.getMotor().setDirection(DcMotorSimple.Direction.REVERSE);
 
-        while(opModeInInit()) {
+        /*while(opModeInInit()) {
             detectedTag = aprilTags.getID();
             telemetry.addData("DETECTED TAG: ", detectedTag);
-        }
+        }*/
     }
 
     @Override
@@ -42,14 +42,25 @@ public class RR_RED_RIGHT extends LinearOpMode {
             return;
         }
 
-        Pose2d startPose = new Pose2d(-35, 60, Math.toRadians(-90));
+        Pose2d startPose = new Pose2d(30, -60, Math.toRadians(0));
         drive.setPoseEstimate(startPose);
 
-        Trajectory coneCycle = drive.trajectoryBuilder(startPose)
-                .strafeRight(20)
-                .splineTo(new Vector2d(-45,30), Math.toRadians(-45))
+        TrajectorySequence coneCycle = drive.trajectorySequenceBuilder(startPose)
+                //.splineTo(new Vector2d(58,-60), Math.toRadians(0))
+                .forward(20)
+                .addTemporalMarker(1, () -> {
+                    rubberBandIntake.intake(-0.5);
+                })
+                .addTemporalMarker(2, () -> {
+                    rubberBandIntake.intake(0);
+                })
+                .setReversed(true)
+                .splineTo(new Vector2d(44, -60), Math.toRadians(180))
+                .setReversed(false)
+                .splineTo(new Vector2d(58, -12), Math.toRadians(90))
+                .turn(Math.toRadians(-90))
                 .build();
-
+        /*
         Trajectory parkLeft = drive.trajectoryBuilder(coneCycle.end())
                 //TODO: CREATE LEFT PARKING TRAJECTORY
                 .build();
@@ -61,9 +72,9 @@ public class RR_RED_RIGHT extends LinearOpMode {
         Trajectory parkRight = drive.trajectoryBuilder(coneCycle.end())
                 //TODO: CREATE RIGHT PARKING TRAJECTORY
                 .build();
-
-        drive.followTrajectory(coneCycle);
-
+        */
+        drive.followTrajectorySequence(coneCycle);
+        /*
         if(detectedTag == 1) {
             drive.followTrajectory(parkLeft);
         } else if(detectedTag == 2) {
@@ -71,6 +82,7 @@ public class RR_RED_RIGHT extends LinearOpMode {
         } else if (detectedTag == 3) {
             drive.followTrajectory(parkRight);
         }
+        */
     }
 
 }
