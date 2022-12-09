@@ -63,26 +63,59 @@ public class teleop2 extends LinearOpMode {
                 telemetry.addLine("CURRENT LIMIT");
             }
 
+
+
             if(gamepad2.cross){
-                slide.setPower(1);
-                while(slide.s.isBusy())
-                    slide.setSlideLevel(1);
+//                while(opModeIsActive())
+//                    slide.setSlideLevel(1);
+                while(slide.s.getCurrentPosition() < Slide.low){
+                    slide.setPower(1);
+                }
             } else if(gamepad2.square) {
-                slide.setPower(1);
-                while(slide.s.isBusy())
-                    slide.setSlideLevel(2);
+//                while(opModeIsActive())
+//                    slide.setSlideLevel(2);
+                while(slide.s.getCurrentPosition() < Slide.medium){
+                    slide.setPower(1);
+                }
 //                slide.setPower(1);
             } else if(gamepad2.triangle) {
-                slide.setPower(1);
-                while(slide.s.isBusy())
-                    slide.setSlideLevel(3);
+//                while(opModeIsActive())
+//                    slide.setSlideLevel(3);
 //                slide.setPower(1);
+                while(slide.s.getCurrentPosition() < Slide.high){
+                    slide.setPower(1);
+                }
             } else if (gamepad2.circle) {
-                slide.setPower(-1);
-                while(slide.s.isBusy())
-                    slide.setSlideLevel(0);
+//                while(opModeIsActive())
+//                    slide.setSlideLevel(0);
 //                slide.setPower(1);
+                while(slide.s.getCurrentPosition() >=0){
+                    slide.setPower(1);
+                }
             }
+
+//            if(gamepad2.cross){
+//                slide.s.setTargetPosition(low);
+//                slide.s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                slide.setPower(1);
+//                manual = false;
+//            } else if(gamepad2.square){
+//                slide.s.setTargetPosition(medium);
+//                slide.s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                slide.setPower(1);
+//                manual = false;
+//            } else if(gamepad2.triangle){
+//                slide.s.setTargetPosition(high);
+//                slide.s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                slide.setPower(1);
+//                manual = false;
+//            } else if (gamepad2.circle){
+//                manual = false;
+//                slide.s.setTargetPosition(0);
+//                slide.s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                slide.setPower(1);
+//                slide.s.resetSlide();
+//            }
 
             telemetry.addData("Slide ticks", slide.getCurrentPosition());
             telemetry.addData("slide current draw", slide.getMotor().getCurrent(CurrentUnit.AMPS));

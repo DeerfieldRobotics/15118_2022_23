@@ -67,8 +67,6 @@ public class Slide {
         } else if (level == 3) {
             setTargetLevel(Slide.high);
         }
-
-        s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     public void setConeLevel(int level){
