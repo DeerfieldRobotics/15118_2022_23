@@ -59,13 +59,41 @@ public class Slide {
     public void setSlideLevel(int level) {
         if (level == 0) {
             //maybe make it run down until it hits limit switch and then reset
-            setTargetLevel(0);
+            while(s.getCurrentPosition() >=0){
+                s.setPower(-1);
+            }
         } else if (level == 1) {
-            setTargetLevel(Slide.low);
+            if(s.getCurrentPosition() < Slide.low) {
+                while (s.getCurrentPosition() < Slide.low) {
+                    s.setPower(1);
+
+                }
+            } else{
+                while (s.getCurrentPosition() > Slide.low) {
+                    s.setPower(-1);
+                }
+            }
         } else if (level == 2) {
-            setTargetLevel(Slide.medium);
+            if(s.getCurrentPosition() < Slide.medium) {
+                while (s.getCurrentPosition() < Slide.medium) {
+                    s.setPower(1);
+                }
+            } else{
+                while (s.getCurrentPosition() > Slide.medium) {
+                    s.setPower(-1);
+                }
+            }
         } else if (level == 3) {
-            setTargetLevel(Slide.high);
+            if(s.getCurrentPosition() < Slide.high) {
+                while (s.getCurrentPosition() < Slide.high) {
+                    s.setPower(1);
+
+                }
+            } else{
+                while (s.getCurrentPosition() > Slide.high) {
+                    s.setPower(-1);
+                }
+            }
         }
     }
 
