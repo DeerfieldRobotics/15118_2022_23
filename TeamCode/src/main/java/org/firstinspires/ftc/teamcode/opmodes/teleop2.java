@@ -64,21 +64,24 @@ public class teleop2 extends LinearOpMode {
             }
 
             if(gamepad2.cross){
-                slide.setSlideLevel(1);
                 slide.setPower(1);
-                manual = false;
+                while(slide.s.isBusy())
+                    slide.setSlideLevel(1);
             } else if(gamepad2.square) {
-                slide.setSlideLevel(2);
                 slide.setPower(1);
-                manual = false;
+                while(slide.s.isBusy())
+                    slide.setSlideLevel(2);
+//                slide.setPower(1);
             } else if(gamepad2.triangle) {
-                slide.setSlideLevel(3);
                 slide.setPower(1);
-                manual = false;
+                while(slide.s.isBusy())
+                    slide.setSlideLevel(3);
+//                slide.setPower(1);
             } else if (gamepad2.circle) {
-                slide.setSlideLevel(0);
-                slide.setPower(1);
-                manual = false;
+                slide.setPower(-1);
+                while(slide.s.isBusy())
+                    slide.setSlideLevel(0);
+//                slide.setPower(1);
             }
 
             telemetry.addData("Slide ticks", slide.getCurrentPosition());

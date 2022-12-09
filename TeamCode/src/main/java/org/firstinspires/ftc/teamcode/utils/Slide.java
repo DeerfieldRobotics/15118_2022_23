@@ -15,11 +15,11 @@ public class Slide {
 
     private final float speed = 1;
     //TODO: tune these values
-    public final static int low = 1560;
-    public final static int medium = 2670;
-    public final static int high = 3760;
+    public final static int low = 1234;
+    public final static int medium = 2252;
+    public final static int high = 3480;
 
-//    public final static int cone1 = ;
+    public final static int cone1 = 0;
 //    public final static int cone2 = ;
 //    public final static int cone3 = ;
 //    public final static int cone4 = ;
@@ -71,7 +71,7 @@ public class Slide {
         s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
-//    public void setConeLevel(int level){
+    public void setConeLevel(int level){
 //        if (level == 0) {
 //            //maybe make it run down until it hits limit switch and then reset
 //            setTargetLevel(0);
@@ -88,7 +88,7 @@ public class Slide {
 //        }
 //
 //        s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//    }
+    }
 
     public void move(double amount) {
         s.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE); //static power
