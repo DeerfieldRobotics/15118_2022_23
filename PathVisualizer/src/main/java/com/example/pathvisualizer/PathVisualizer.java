@@ -16,17 +16,16 @@ public class PathVisualizer {
                 .setDimensions(15,17)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 //.setStartPose(new Pose2d(50, 50))
-                .setConstraints(20, 30, Math.toRadians(180), Math.toRadians(180), 14.55)
+                .setConstraints(30, 30, Math.toRadians(180), Math.toRadians(180), 14.55)
                 .followTrajectorySequence(drive ->
 
-                        drive.trajectorySequenceBuilder(new Pose2d(38,-60, Math.toRadians(0)))
-                                //.splineTo(new Vector2d(58,-60), Math.toRadians(0))
-                                .forward(21)
+                        drive.trajectorySequenceBuilder(new Pose2d(56,-7, Math.toRadians(0)))
+                                .lineToConstantHeading(new Vector2d(46,-7))
 
-                                .back(2)
-                                //.splineTo(new Vector2d(58,-65), Math.toRadians(0))
-                                .strafeLeft(30)
-                                .splineTo(new Vector2d(56, -9), Math.toRadians(90))
+                                .lineToSplineHeading(new Pose2d(36,-7,Math.toRadians(-45)))
+                                .forward(7)
+                                .lineToSplineHeading(new Pose2d(36,-7,Math.toRadians(0)))
+                                .lineToConstantHeading(new Vector2d(56,-7))
                                 .build()
                 );
 
