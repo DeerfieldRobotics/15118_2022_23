@@ -7,8 +7,10 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.utils.AprilTags;
 import org.firstinspires.ftc.teamcode.utils.RubberBandIntake;
 import org.firstinspires.ftc.teamcode.utils.Slide;
 
@@ -17,20 +19,20 @@ public class RR_RED_RIGHT extends LinearOpMode {
     private SampleMecanumDrive drive;
     private RubberBandIntake rubberBandIntake;
     private Slide slide;
-    //private AprilTags aprilTags;
+    private AprilTags aprilTags;
     private int detectedTag;
 
     public void initialize() {
         drive = new SampleMecanumDrive(hardwareMap);
         rubberBandIntake = new RubberBandIntake(hardwareMap);
-
+        aprilTags = new AprilTags(hardwareMap);
         slide = new Slide(hardwareMap);
         slide.getMotor().setDirection(DcMotorSimple.Direction.REVERSE);
 
-        /*while(opModeInInit()) {
+        while(opModeInInit()) {
             detectedTag = aprilTags.getID();
             telemetry.addData("DETECTED TAG: ", detectedTag);
-        }*/
+        }
     }
 
     @Override
