@@ -17,15 +17,13 @@ import org.firstinspires.ftc.teamcode.utils.AprilTags;
 import org.firstinspires.ftc.teamcode.utils.RubberBandIntake;
 import org.firstinspires.ftc.teamcode.utils.Slide;
 
-@Autonomous(name = "RR_RED_RIGHT")
+@Autonomous(name = "RR_RIGHT")
 public class RR_RED_RIGHT extends LinearOpMode {
     private SampleMecanumDrive drive;
     private RubberBandIntake rubberBandIntake;
     private Slide slide;
     private AprilTags aprilTags;
     private int detectedTag;
-    private int targetPos;
-    //private ElapsedTime runtime;
 
     public void initialize() {
         drive = new SampleMecanumDrive(hardwareMap);
@@ -36,7 +34,8 @@ public class RR_RED_RIGHT extends LinearOpMode {
 
         while(opModeInInit()) {
             detectedTag = aprilTags.getID();
-            //telemetry.addData("DETECTED TAG: ", detectedTag);
+            telemetry.addData("DETECTED TAG: ", detectedTag);
+            telemetry.update();
         }
     }
 
@@ -44,10 +43,7 @@ public class RR_RED_RIGHT extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         initialize();
         waitForStart();
-        updateLoop();
 
-
-        //runtime = new ElapsedTime();
         if(isStopRequested()) {
             return;
         }
@@ -70,25 +66,15 @@ public class RR_RED_RIGHT extends LinearOpMode {
 
                 //GET FROM CONE STACK
                 .addTemporalMarker(10, () -> {
-                    slide.targetPos = 565;
-                    /*targetPos = 565;
-                    Thread runSlide = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            while(true) {
-                                slide.s.setZeroPowerBehavior(DcMotorImplEx.ZeroPowerBehavior.BRAKE);
-                                slide.s.setTargetPosition(targetPos);
-                                slide.s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                                slide.s.setPower(1);
-                            }
-                        }
-                    });
-                    runSlide.start();*/
+                    while(slide.s.getCurrentPosition() < 565) {
+                        slide.s.setZeroPowerBehavior(DcMotorImplEx.ZeroPowerBehavior.BRAKE);
+                        slide.s.setTargetPosition(565);
+                        slide.s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                        slide.s.setPower(1);
+                    }
+                    slide.setPower(0.1);
                 })
                 .forward(2)
-                .addTemporalMarker(12, () -> {
-                        targetPos = 500;
-                })
 
                 //LOW
 
@@ -115,7 +101,7 @@ public class RR_RED_RIGHT extends LinearOpMode {
                 //TODO: CREATE RIGHT PARKING TRAJECTORY
                 .build();
         */
-        drive.followTrajectorySequenceAsync(coneCycle);
+        drive.followTrajectorySequence(coneCycle);
         /*
         if(detectedTag == 1) {
             drive.followTrajectory(parkLeft);
@@ -126,12 +112,6 @@ public class RR_RED_RIGHT extends LinearOpMode {
         }
         */
     }
-    public void updateLoop() {
-        while(opModeIsActive()) {
-            drive.update();
-            slide.update();
-        }
 
-    }
 
 }

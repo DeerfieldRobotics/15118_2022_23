@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.utils.AprilTags;
 import org.firstinspires.ftc.teamcode.utils.RubberBandIntake;
 import org.firstinspires.ftc.teamcode.utils.Slide;
 
-@Autonomous(name = "ParkingAuto")
+@Autonomous(name = "PARKING_AUTO")
 public class ParkingAuto extends LinearOpMode {
     private SampleMecanumDrive drive;
     private AprilTags aprilTags;

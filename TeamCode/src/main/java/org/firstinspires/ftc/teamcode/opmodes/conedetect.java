@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -18,8 +19,8 @@ import org.firstinspires.ftc.teamcode.utils.PID;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.firstinspires.ftc.teamcode.utils.Slide;
 
+@Disabled
 @Autonomous(name = "pick up cone")
-
 public class conedetect extends LinearOpMode {
 
     private Drivetrain drivetrain;

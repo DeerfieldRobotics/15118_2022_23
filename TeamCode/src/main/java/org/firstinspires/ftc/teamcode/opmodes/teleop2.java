@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.utils.Drivetrain;
 import org.firstinspires.ftc.teamcode.utils.RubberBandIntake;
 import org.firstinspires.ftc.teamcode.utils.Slide;
 
-@TeleOp(name = "horse")
+@TeleOp(name = "TELEOP")
 public class teleop2 extends LinearOpMode {
     private Drivetrain drivetrain;
     private ElapsedTime runtime;
