@@ -19,16 +19,14 @@ public class PathVisualizer {
                 .setConstraints(20, 30, Math.toRadians(180), Math.toRadians(180), 14.55)
                 .followTrajectorySequence(drive ->
 
-                        drive.trajectorySequenceBuilder(new Pose2d(35,-60, Math.toRadians(0)))
+                        drive.trajectorySequenceBuilder(new Pose2d(38,-60, Math.toRadians(0)))
                                 //.splineTo(new Vector2d(58,-60), Math.toRadians(0))
-                                .forward(20)
-                                .setReversed(true)
-                                .splineTo(new Vector2d(44, -60), Math.toRadians(180))
-                                .setReversed(false)
-                                .splineTo(new Vector2d(58, -12), Math.toRadians(90))
-                                .turn(Math.toRadians(-90))
-                                //.splineToSplineHeading(new Vector2d(65, -12), Math.toRadians(0))
-                                //.splineToSplineHeading(new Pose2d(58, -10), Math.toRadians(0))
+                                .forward(21)
+
+                                .back(2)
+                                //.splineTo(new Vector2d(58,-65), Math.toRadians(0))
+                                .strafeLeft(30)
+                                .splineTo(new Vector2d(56, -9), Math.toRadians(90))
                                 .build()
                 );
 

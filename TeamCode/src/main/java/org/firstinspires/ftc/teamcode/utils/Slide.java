@@ -18,6 +18,8 @@ public class Slide {
     public final static int low = 1234;
     public final static int medium = 2252;
     public final static int high = 3480;
+    public int targetPos;
+
 
     public final static int cone1 = 0;
 //    public final static int cone2 = ;
@@ -141,5 +143,13 @@ public class Slide {
 
     public double getAmperage() {
         return s.getCurrent(CurrentUnit.AMPS);
+    }
+
+    public void update() {
+        if(Math.abs(targetPos - s.getCurrentPosition()) > 10) {
+            s.setTargetPosition(targetPos);
+            s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            s.setPower(1);
+        }
     }
 }

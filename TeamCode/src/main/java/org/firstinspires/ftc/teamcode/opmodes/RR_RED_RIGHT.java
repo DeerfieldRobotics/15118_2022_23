@@ -5,7 +5,10 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
@@ -21,6 +24,8 @@ public class RR_RED_RIGHT extends LinearOpMode {
     private Slide slide;
     private AprilTags aprilTags;
     private int detectedTag;
+    private int targetPos;
+    //private ElapsedTime runtime;
 
     public void initialize() {
         drive = new SampleMecanumDrive(hardwareMap);
@@ -31,7 +36,7 @@ public class RR_RED_RIGHT extends LinearOpMode {
 
         while(opModeInInit()) {
             detectedTag = aprilTags.getID();
-            telemetry.addData("DETECTED TAG: ", detectedTag);
+            //telemetry.addData("DETECTED TAG: ", detectedTag);
         }
     }
 
@@ -39,29 +44,64 @@ public class RR_RED_RIGHT extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         initialize();
         waitForStart();
+        updateLoop();
 
+
+        //runtime = new ElapsedTime();
         if(isStopRequested()) {
             return;
         }
 
-        Pose2d startPose = new Pose2d(30, -60, Math.toRadians(0));
+        Pose2d startPose = new Pose2d(38, -60, Math.toRadians(0));
         drive.setPoseEstimate(startPose);
 
         TrajectorySequence coneCycle = drive.trajectorySequenceBuilder(startPose)
-                //.splineTo(new Vector2d(58,-60), Math.toRadians(0))
-                .forward(20)
+                .forward(21)
                 .addTemporalMarker(1, () -> {
-                    rubberBandIntake.intake(-0.5);
+                    rubberBandIntake.intake(-1);
                 })
-                .addTemporalMarker(2, () -> {
+                .addTemporalMarker(2.25, () -> {
                     rubberBandIntake.intake(0);
                 })
-                .setReversed(true)
-                .splineTo(new Vector2d(44, -60), Math.toRadians(180))
-                .setReversed(false)
-                .splineTo(new Vector2d(58, -12), Math.toRadians(90))
-                .turn(Math.toRadians(-90))
+                .back(2)
+                .strafeLeft(20)
+                .splineTo(new Vector2d(56, -7), Math.toRadians(90))
+
+
+                //GET FROM CONE STACK
+                .addTemporalMarker(10, () -> {
+                    slide.targetPos = 565;
+                    /*targetPos = 565;
+                    Thread runSlide = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            while(true) {
+                                slide.s.setZeroPowerBehavior(DcMotorImplEx.ZeroPowerBehavior.BRAKE);
+                                slide.s.setTargetPosition(targetPos);
+                                slide.s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                                slide.s.setPower(1);
+                            }
+                        }
+                    });
+                    runSlide.start();*/
+                })
+                .forward(2)
+                .addTemporalMarker(12, () -> {
+                        targetPos = 500;
+                })
+
+                //LOW
+
+                /*
+                .lineToConstantHeading(new Vector2d(46,-7))
+                .lineToSplineHeading(new Pose2d(36,-7,Math.toRadians(-135)))
+                .forward(7)
+                .lineToSplineHeading(new Pose2d(36,-7,Math.toRadians(180)))
+                .lineToConstantHeading(new Vector2d(56,-7))
+                */
                 .build();
+
+
         /*
         Trajectory parkLeft = drive.trajectoryBuilder(coneCycle.end())
                 //TODO: CREATE LEFT PARKING TRAJECTORY
@@ -75,7 +115,7 @@ public class RR_RED_RIGHT extends LinearOpMode {
                 //TODO: CREATE RIGHT PARKING TRAJECTORY
                 .build();
         */
-        drive.followTrajectorySequence(coneCycle);
+        drive.followTrajectorySequenceAsync(coneCycle);
         /*
         if(detectedTag == 1) {
             drive.followTrajectory(parkLeft);
@@ -85,6 +125,13 @@ public class RR_RED_RIGHT extends LinearOpMode {
             drive.followTrajectory(parkRight);
         }
         */
+    }
+    public void updateLoop() {
+        while(opModeIsActive()) {
+            drive.update();
+            slide.update();
+        }
+
     }
 
 }
