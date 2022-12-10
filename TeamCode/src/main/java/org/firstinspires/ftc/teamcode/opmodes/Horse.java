@@ -45,7 +45,9 @@ public class Horse extends LinearOpMode {
 
         runtime.reset();
 
-        //terminal();
+        drive.setPoseEstimate(startPose);
+
+        terminal();
     }
 
     public void initialize(){

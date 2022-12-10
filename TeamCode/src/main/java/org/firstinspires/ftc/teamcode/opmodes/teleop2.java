@@ -68,30 +68,26 @@ public class teleop2 extends LinearOpMode {
             if(gamepad2.cross){
 //                while(opModeIsActive())
 //                    slide.setSlideLevel(1);
-                while(slide.s.getCurrentPosition() < Slide.low){
-                    slide.setPower(1);
-                }
+                slide.setSlideLevel(1);
             } else if(gamepad2.square) {
 //                while(opModeIsActive())
 //                    slide.setSlideLevel(2);
-                while(slide.s.getCurrentPosition() < Slide.medium){
-                    slide.setPower(1);
-                }
+                slide.setSlideLevel(2);
+
 //                slide.setPower(1);
             } else if(gamepad2.triangle) {
 //                while(opModeIsActive())
 //                    slide.setSlideLevel(3);
 //                slide.setPower(1);
-                while(slide.s.getCurrentPosition() < Slide.high){
-                    slide.setPower(1);
-                }
+                slide.setSlideLevel(3);
+
+
             } else if (gamepad2.circle) {
 //                while(opModeIsActive())
 //                    slide.setSlideLevel(0);
 //                slide.setPower(1);
-                while(slide.s.getCurrentPosition() >=0){
-                    slide.setPower(1);
-                }
+                slide.setSlideLevel(0);
+
             }
 
 //            if(gamepad2.cross){
