@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.testers;
 import android.graphics.drawable.GradientDrawable;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -13,6 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.utils.AutoDrivetrain;
 
+@Disabled
 @Autonomous(name = "AutoDrivetrainTester")
 public class AutoDrivetrainTester extends LinearOpMode {
 

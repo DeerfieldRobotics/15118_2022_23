@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.testers;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -13,6 +14,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
+@Disabled
 @TeleOp(name = "slidetester", group = "slidetester")
 public class slide_test extends LinearOpMode{
 
