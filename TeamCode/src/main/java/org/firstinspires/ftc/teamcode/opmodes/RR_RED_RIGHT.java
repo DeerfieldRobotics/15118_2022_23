@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.utils.AprilTags;
 import org.firstinspires.ftc.teamcode.utils.RubberBandIntake;
 import org.firstinspires.ftc.teamcode.utils.Slide;
@@ -65,7 +66,7 @@ public class RR_RED_RIGHT extends LinearOpMode {
 
 
                 //GET FROM CONE STACK
-                .addTemporalMarker(10, () -> {
+                .addTemporalMarker(7, () -> {
                     while(slide.s.getCurrentPosition() < 565) {
                         slide.s.setZeroPowerBehavior(DcMotorImplEx.ZeroPowerBehavior.BRAKE);
                         slide.s.setTargetPosition(565);
@@ -75,6 +76,7 @@ public class RR_RED_RIGHT extends LinearOpMode {
                     slide.setPower(0.1);
                 })
                 .forward(2)
+                .back(15)
 
                 //LOW
 
@@ -86,6 +88,7 @@ public class RR_RED_RIGHT extends LinearOpMode {
                 .lineToConstantHeading(new Vector2d(56,-7))
                 */
                 .build();
+
 
 
         /*
@@ -101,6 +104,7 @@ public class RR_RED_RIGHT extends LinearOpMode {
                 //TODO: CREATE RIGHT PARKING TRAJECTORY
                 .build();
         */
+
         drive.followTrajectorySequence(coneCycle);
         /*
         if(detectedTag == 1) {

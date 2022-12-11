@@ -15,14 +15,14 @@ import org.firstinspires.ftc.teamcode.utils.Drivetrain;
 import org.firstinspires.ftc.teamcode.utils.RubberBandIntake;
 import org.firstinspires.ftc.teamcode.utils.Slide;
 
-@TeleOp(name = "TELEOP")
+@TeleOp(name = "TELEOP_WORKING")
 public class teleop2 extends LinearOpMode {
     private Drivetrain drivetrain;
     private ElapsedTime runtime;
     private Slide slide;
     private RubberBandIntake intake;
 
-    private double turnMult = 0.6;
+    private double turnMult = 0.65;
     private final double forwardMult = 0.8;
     private final double strafeMult = 0.85;
     private double speedMult;
