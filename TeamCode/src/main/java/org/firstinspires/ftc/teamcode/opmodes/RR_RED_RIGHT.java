@@ -82,11 +82,46 @@ public class RR_RED_RIGHT extends LinearOpMode {
 
                 /*
                 .lineToConstantHeading(new Vector2d(46,-7))
-                .lineToSplineHeading(new Pose2d(36,-7,Math.toRadians(-135)))
+                //SLIDE -> LOW
+                .lineToSplineHeading(new Pose2d(36,-7,Math.toRadians(-45)))
                 .forward(7)
-                .lineToSplineHeading(new Pose2d(36,-7,Math.toRadians(180)))
+                //OUTTAKE
+                .lineToSplineHeading(new Pose2d(36,-7,Math.toRadians(0)))
+                //SLIDE DOWN
                 .lineToConstantHeading(new Vector2d(56,-7))
+                // INTAKE
                 */
+
+                //Pick up another cone
+                /*
+                .addTemporalMarker(10, () -> {
+                    while(slide.s.getCurrentPosition() < 565) {
+                        slide.s.setZeroPowerBehavior(DcMotorImplEx.ZeroPowerBehavior.BRAKE);
+                        slide.s.setTargetPosition(565);
+                        slide.s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                        slide.s.setPower(1);
+                    }
+                    slide.setPower(0.1);
+                })
+
+                */
+                // HIGH
+
+                /*
+                .lineToConstantHeading(new Vector2d(44,-7))
+                //SLIDE -> HIGH
+                .lineToSplineHeading(new Pose2d(36 ,-7,Math.toRadians(-135)))
+                .forward(7)
+                // OUTTAKE
+                .lineToSplineHeading(new Pose2d(36 ,-7,Math.toRadians(0)))
+                //SLIDE DOWN
+                .lineToConstantHeading(new Vector2d(56,-7))
+
+                //INTAKE
+                */
+
+                //PARK
+
                 .build();
 
 
