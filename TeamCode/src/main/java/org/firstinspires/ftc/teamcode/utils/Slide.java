@@ -97,6 +97,7 @@ public class Slide {
                 }
             }
         }
+        //s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     public void setConeLevel(int level){

@@ -5,6 +5,7 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -17,8 +18,8 @@ import org.firstinspires.ftc.teamcode.utils.AprilTags;
 import org.firstinspires.ftc.teamcode.utils.RubberBandIntake;
 import org.firstinspires.ftc.teamcode.utils.Slide;
 
-@Autonomous(name = "PARKING_AUTO")
-public class ParkingAuto extends LinearOpMode {
+@Autonomous(name = "PARKING_ONLY")
+public class parkOnly extends LinearOpMode {
     private SampleMecanumDrive drive;
     private AprilTags aprilTags;
     private int detectedTag;
@@ -49,19 +50,20 @@ public class ParkingAuto extends LinearOpMode {
 
         TrajectorySequence parkLeft = drive.trajectorySequenceBuilder(startPose)
                 //TODO: CREATE LEFT PARKING TRAJECTORY
-                .back(26)
-                .strafeLeft(30)
+                .back(25)
+                .strafeLeft(35)
                 .build();
 
         TrajectorySequence parkMiddle = drive.trajectorySequenceBuilder(startPose)
                 //TODO: CREATE MIDDLE PARKING TRAJECTORY
-                .strafeLeft(30)
+                .strafeLeft(35)
                 .build();
+
 
         TrajectorySequence parkRight = drive.trajectorySequenceBuilder(startPose)
                 //TODO: CREATE RIGHT PARKING TRAJECTORY
-                .forward(26)
-                .strafeLeft(30)
+                .forward(21)
+                .strafeLeft(35)
                 .build();
 
         if (detectedTag == 1) {
