@@ -18,7 +18,6 @@ import org.firstinspires.ftc.teamcode.utils.IMU;
 import org.firstinspires.ftc.teamcode.utils.PID;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.firstinspires.ftc.teamcode.utils.Slide;
-
 @Disabled
 @Autonomous(name = "pick up cone")
 public class conedetect extends LinearOpMode {

@@ -10,7 +10,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad.LedEffect;
 import com.qualcomm.robotcore.hardware.Gamepad.RumbleEffect;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
 @Disabled
 @TeleOp(name = "Test Teleop", group = "teleop")
 public class teleopTestDr extends LinearOpMode {

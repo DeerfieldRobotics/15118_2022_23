@@ -9,7 +9,6 @@ import org.firstinspires.ftc.teamcode.opencvpipelines.RedConeDetection;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
-
 @Disabled
 @Autonomous(name = "redconetest")
 public class redconetest extends LinearOpMode {

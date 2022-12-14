@@ -9,7 +9,6 @@ import org.firstinspires.ftc.teamcode.opencvpipelines.TestPipeline;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
-
 @Disabled
 @Autonomous(name = "conetestjank")
 public class ConeTest2 extends LinearOpMode {

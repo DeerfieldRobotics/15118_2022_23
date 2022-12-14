@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.utils.IMUDrivetrain;
-
 @Disabled
 @Autonomous(name = "IMUDrivetrainTester")
 public class IMUDrivetrainTester extends LinearOpMode {

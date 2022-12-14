@@ -34,7 +34,6 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
-
 @Disabled
 @Autonomous
 public class AprilTagDemo extends LinearOpMode

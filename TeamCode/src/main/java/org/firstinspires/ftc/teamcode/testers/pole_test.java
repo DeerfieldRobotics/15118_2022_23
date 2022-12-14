@@ -49,7 +49,6 @@ public class pole_test extends LinearOpMode {
             telemetry.addData("left",detector.getLeft());
             telemetry.addData("right",detector.getRight());
             telemetry.update();
-            Thread.sleep(100);
         }
     }
 }

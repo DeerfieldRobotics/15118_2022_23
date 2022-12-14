@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.utils.Drivetrain;
-
 @Disabled
 @TeleOp(name = "slide tester", group = "slidetester")
 public class slidetester extends LinearOpMode{

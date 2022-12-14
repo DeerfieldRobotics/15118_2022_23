@@ -8,7 +8,6 @@ import org.firstinspires.ftc.teamcode.utils.AprilTags;
 import org.firstinspires.ftc.teamcode.utils.Drivetrain;
 import org.firstinspires.ftc.teamcode.utils.Robot;
 import org.openftc.easyopencv.OpenCvCamera;
-
 @Disabled
 @Autonomous(name = "AUTO TEST")
 public class autoTest extends LinearOpMode {

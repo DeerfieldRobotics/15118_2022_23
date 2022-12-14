@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
-
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
@@ -10,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.utils.AprilTags;
 import org.firstinspires.ftc.teamcode.utils.Drivetrain;
 import org.firstinspires.ftc.teamcode.utils.RubberBandIntake;
@@ -23,7 +23,7 @@ public class Horse extends LinearOpMode {
     public SampleMecanumDrive drive;
     public RubberBandIntake intake;
     public Slide slide;
-    public Pose2d startPose = new Pose2d(-35, 62, Math.toRadians(-90));;
+    public Pose2d startPose = new Pose2d(-35, 63, Math.toRadians(180));;
 
 
     @Override
@@ -33,7 +33,8 @@ public class Horse extends LinearOpMode {
 
         while(opModeInInit()){
             detectedID = aprilTags.getID();
-            drive.setPoseEstimate(startPose);
+            telemetry.addLine("TAG: " + detectedID);
+            telemetry.update();
         }
 
         waitForStart();
@@ -44,11 +45,41 @@ public class Horse extends LinearOpMode {
 
         if (isStopRequested()) return;
 
+        drive.setPoseEstimate(startPose);
         runtime.reset();
 
-        drive.setPoseEstimate(startPose);
+        TrajectorySequence terminal = drive.trajectorySequenceBuilder(startPose)
+                .splineTo(new Vector2d(-60, 63), Math.toRadians(180))
+                .addDisplacementMarker(() -> {
+                    slide.setSlideLevel(1);
+                    while(runtime.milliseconds() < 1000)
+                        intake.intake(-1);
+                })
+                .lineToConstantHeading(new Vector2d(-59 ,32))
+                .build();
 
-        terminal();
+        TrajectorySequence lowPole = drive.trajectorySequenceBuilder(terminal.end())
+                .splineToSplineHeading(new Pose2d(-58 ,12,Math.toRadians(180)),Math.toRadians(-100))
+                .lineToConstantHeading(new Vector2d(-46 ,12))
+                .lineToSplineHeading(new Pose2d(-36 ,12,Math.toRadians(135)))
+                .forward(7)
+                .lineToSplineHeading(new Pose2d(-36 ,12, Math.toRadians(180)))
+                .lineToConstantHeading(new Vector2d(-58,12))
+
+                .build();
+
+
+        TrajectorySequence highPole= drive.trajectorySequenceBuilder(lowPole.end())
+                .lineToConstantHeading(new Vector2d(-38,12))
+                .lineToSplineHeading(new Pose2d(-36 ,12,Math.toRadians(-45)))
+                .forward(7)
+                .lineToSplineHeading(new Pose2d(-36 ,12,Math.toRadians(180)))
+                .lineToConstantHeading(new Vector2d(-58,12))
+                .build();
+
+        drive.followTrajectorySequence(terminal);
+        drive.followTrajectorySequence(lowPole);
+        drive.followTrajectorySequence(highPole);
     }
 
     public void initialize(){
@@ -61,7 +92,7 @@ public class Horse extends LinearOpMode {
     }
 
     public void park(int id){
-        Trajectory parkingPath= drive.trajectoryBuilder(new Pose2d(-35,11,Math.toRadians(180)))
+        Trajectory parkingPath= drive.trajectoryBuilder(new Pose2d(-35,11, Math.toRadians(180)))
                 .build();
         switch(id){
             case 1:
@@ -87,31 +118,6 @@ public class Horse extends LinearOpMode {
                 break;
         }
         drive.followTrajectory(parkingPath);
-    }
-
-    public void terminal(){
-        Trajectory terminal = drive.trajectoryBuilder(startPose)
-                .splineTo(new Vector2d(-35, 60), Math.toRadians(-90))
-                .splineTo(new Vector2d(-39, 58), Math.toRadians(180))
-                .splineTo(new Vector2d(-60, 58), Math.toRadians(180))
-                .build();
-
-        drive.followTrajectory(terminal);
-    }
-
-    public void capLow(){
-        Trajectory lowPole = drive.trajectoryBuilder(new Pose2d(-60,59,Math.toRadians(180)))
-                .lineToConstantHeading(new Vector2d(-59 ,32))
-                .splineToSplineHeading(new Pose2d(-58 ,12,Math.toRadians(180)),Math.toRadians(-100))
-                .lineToConstantHeading(new Vector2d(-46 ,12))
-                .lineToSplineHeading(new Pose2d(-36 ,12,Math.toRadians(135)))
-                .forward(7)
-                .lineToSplineHeading(new Pose2d(-36 ,12, Math.toRadians(180)))
-                .lineToConstantHeading(new Vector2d(-58,12))
-
-                .build();
-
-        drive.followTrajectory(lowPole);
     }
 
     public void capHigh(int intakeHeight){

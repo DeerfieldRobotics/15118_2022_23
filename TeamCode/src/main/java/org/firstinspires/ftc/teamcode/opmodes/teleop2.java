@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.utils.Drivetrain;
 import org.firstinspires.ftc.teamcode.utils.RubberBandIntake;
 import org.firstinspires.ftc.teamcode.utils.Slide;
 
-@TeleOp(name = "TELEOP")
+@TeleOp(name = "TELEOP WORKING")
 public class teleop2 extends LinearOpMode {
     private Drivetrain drivetrain;
     private ElapsedTime runtime;
@@ -80,8 +80,6 @@ public class teleop2 extends LinearOpMode {
 //                    slide.setSlideLevel(3);
 //                slide.setPower(1);
                 slide.setSlideLevel(3);
-
-
             } else if (gamepad2.circle) {
 //                while(opModeIsActive())
 //                    slide.setSlideLevel(0);
