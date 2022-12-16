@@ -2,20 +2,15 @@ package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.checkerframework.checker.units.qual.Current;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
-import org.firstinspires.ftc.teamcode.utils.Claw;
 import org.firstinspires.ftc.teamcode.utils.Drivetrain;
 import org.firstinspires.ftc.teamcode.utils.RubberBandIntake;
 import org.firstinspires.ftc.teamcode.utils.Slide;
 
-@TeleOp(name = "TELEOP_WORKING")
+@TeleOp(name = "你的妈妈你的妈妈你的妈妈你的妈妈你的妈妈")
 public class teleop2 extends LinearOpMode {
     private Drivetrain drivetrain;
     private ElapsedTime runtime;
@@ -58,37 +53,28 @@ public class teleop2 extends LinearOpMode {
 
             slide.setPower(-gamepad2.right_stick_y);
 
+            if(gamepad2.right_stick_y > 0) manual = true;
+
             if(slide.getAmperage() > 7) {
                 slide.stop();
                 telemetry.addLine("CURRENT LIMIT");
             }
 
-
-
             if(gamepad2.cross){
-//                while(opModeIsActive())
-//                    slide.setSlideLevel(1);
-                slide.setSlideLevel(1);
+                slide.targetLevel = 1;
+                manual = false;
             } else if(gamepad2.square) {
-//                while(opModeIsActive())
-//                    slide.setSlideLevel(2);
-                slide.setSlideLevel(2);
-
-//                slide.setPower(1);
+                slide.targetLevel = 2;
+                manual = false;
             } else if(gamepad2.triangle) {
-//                while(opModeIsActive())
-//                    slide.setSlideLevel(3);
-//                slide.setPower(1);
-                slide.setSlideLevel(3);
-
-
+                slide.targetLevel =3;
+                manual = false;
             } else if (gamepad2.circle) {
-//                while(opModeIsActive())
-//                    slide.setSlideLevel(0);
-//                slide.setPower(1);
-                slide.setSlideLevel(0);
-
+                slide.targetLevel = 0;
+                manual = false;
             }
+
+            if(!manual) slide.update();
 
 //            if(gamepad2.cross){
 //                slide.s.setTargetPosition(low);
@@ -125,6 +111,7 @@ public class teleop2 extends LinearOpMode {
         drivetrain = new Drivetrain(hardwareMap);
         intake = new RubberBandIntake(hardwareMap);
         slide.s.setDirection(DcMotorSimple.Direction.REVERSE);
+        manual = true;
     }
 
 }

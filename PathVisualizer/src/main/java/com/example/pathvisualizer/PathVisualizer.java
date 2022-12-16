@@ -106,26 +106,19 @@ public class PathVisualizer {
 //
 //                );
 
-                    drive.trajectorySequenceBuilder(new Pose2d(34,-63, Math.toRadians(180)))
+                    drive.trajectorySequenceBuilder(new Pose2d(36,-63, Math.toRadians(180)))
                             // RIGHT
+//                            .splineToSplineHeading(new Pose2d(36,-17,Math.toRadians(90)), Math.toRadians(90))
+//                            .splineTo(new Vector2d(29, -6), Math.toRadians(135))
 
-                            .lineToLinearHeading(new Pose2d(34,-17,Math.toRadians(90)))
-                            .splineTo(new Vector2d(24,-9),Math.toRadians(120))
 
+                            .strafeRight(2)
+                            .forward(6)
+                            .splineTo(new Vector2d(19.5,-7.5),Math.toRadians(60))
 
-//                            .strafeRight(3)
-//                            .splineToSplineHeading(new Pose2d(44,-11.5,Math.toRadians(0)), Math.toRadians(0))
-//                            .forward(16)
-//
-//
-//                            .lineToSplineHeading(new Pose2d(40,-11.5, Math.toRadians(-135)))
-//                            .splineToSplineHeading(new Pose2d(29,-6, Math.toRadians(135)), Math.toRadians(135))
-//                            .lineToSplineHeading(new Pose2d(47,-11,Math.toRadians(-90)))
-//                            .splineToSplineHeading(new Pose2d(60,-11.5, Math.toRadians(0)), Math.toRadians(0))
-//
-//                            .lineToSplineHeading(new Pose2d(40,-11.5, Math.toRadians(-135)))
-//                            .splineToSplineHeading(new Pose2d(29,-6, Math.toRadians(135)), Math.toRadians(135))
-
+                            .strafeRight(10)
+                            .splineToSplineHeading(new Pose2d(40,-12,Math.toRadians(0)), Math.toRadians(0))
+                            .forward(19)
                             .build()
                             );
 

@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.utils;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
@@ -15,10 +14,13 @@ public class Slide {
 
     private final float speed = 1;
     //TODO: tune these values
-    public final static int low = 1234;
-    public final static int medium = 2252;
-    public final static int high = 3480;
-    public int targetPos;
+    public final static int LOW = 1234;
+    public final static int MEDIUM = 2252;
+    public final static int HIGH = 3480;
+
+    public final int[] heights= {0,1234,2252,3480};
+
+    public int targetLevel = 0;
 
 
     public final static int cone1 = 0;
@@ -58,6 +60,7 @@ public class Slide {
         s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         s.setPower(speed);
     }
+
     public void setSlideLevel(int level) {
         if (level == 0) {
             //maybe make it run down until it hits limit switch and then reset
@@ -65,34 +68,34 @@ public class Slide {
                 s.setPower(-1);
             }
         } else if (level == 1) {
-            if(s.getCurrentPosition() < Slide.low) {
-                while (s.getCurrentPosition() < Slide.low) {
+            if(s.getCurrentPosition() < Slide.LOW) {
+                while (s.getCurrentPosition() < Slide.LOW) {
                     s.setPower(1);
 
                 }
             } else{
-                while (s.getCurrentPosition() > Slide.low) {
+                while (s.getCurrentPosition() > Slide.LOW) {
                     s.setPower(-1);
                 }
             }
         } else if (level == 2) {
-            if(s.getCurrentPosition() < Slide.medium) {
-                while (s.getCurrentPosition() < Slide.medium) {
+            if(s.getCurrentPosition() < Slide.MEDIUM) {
+                while (s.getCurrentPosition() < Slide.MEDIUM) {
                     s.setPower(1);
                 }
             } else{
-                while (s.getCurrentPosition() > Slide.medium) {
+                while (s.getCurrentPosition() > Slide.MEDIUM) {
                     s.setPower(-1);
                 }
             }
         } else if (level == 3) {
-            if(s.getCurrentPosition() < Slide.high) {
-                while (s.getCurrentPosition() < Slide.high) {
+            if(s.getCurrentPosition() < Slide.HIGH) {
+                while (s.getCurrentPosition() < Slide.HIGH) {
                     s.setPower(1);
 
                 }
             } else{
-                while (s.getCurrentPosition() > Slide.high) {
+                while (s.getCurrentPosition() > Slide.HIGH) {
                     s.setPower(-1);
                 }
             }
@@ -145,8 +148,8 @@ public class Slide {
     }
 
     public void update() {
-        if(Math.abs(targetPos - s.getCurrentPosition()) > 10) {
-            s.setTargetPosition(targetPos);
+        if(Math.abs(targetLevel - s.getCurrentPosition()) > 10) {
+            s.setTargetPosition(targetLevel);
             s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             s.setPower(1);
         }
