@@ -109,24 +109,22 @@ public class PathVisualizer {
                     drive.trajectorySequenceBuilder(new Pose2d(34,-63, Math.toRadians(180)))
                             // RIGHT
 
-                            .strafeRight(3)
-                            .lineToSplineHeading(new Pose2d(28,-60, Math.toRadians(180)))
-                            .splineTo(new Vector2d(16,-14), Math.toRadians(63))
-                            .forward(7)
+                            .lineToLinearHeading(new Pose2d(34,-17,Math.toRadians(90)))
+                            .splineTo(new Vector2d(24,-9),Math.toRadians(120))
 
 
-                            .strafeRight(3)
-                            .splineToSplineHeading(new Pose2d(44,-11.5,Math.toRadians(0)), Math.toRadians(0))
-                            .forward(16)
-
-
-                            .lineToSplineHeading(new Pose2d(40,-11.5, Math.toRadians(-135)))
-                            .splineToSplineHeading(new Pose2d(29,-6, Math.toRadians(135)), Math.toRadians(135))
-                            .lineToSplineHeading(new Pose2d(47,-11,Math.toRadians(-90)))
-                            .splineToSplineHeading(new Pose2d(60,-11.5, Math.toRadians(0)), Math.toRadians(0))
-
-                            .lineToSplineHeading(new Pose2d(40,-11.5, Math.toRadians(-135)))
-                            .splineToSplineHeading(new Pose2d(29,-6, Math.toRadians(135)), Math.toRadians(135))
+//                            .strafeRight(3)
+//                            .splineToSplineHeading(new Pose2d(44,-11.5,Math.toRadians(0)), Math.toRadians(0))
+//                            .forward(16)
+//
+//
+//                            .lineToSplineHeading(new Pose2d(40,-11.5, Math.toRadians(-135)))
+//                            .splineToSplineHeading(new Pose2d(29,-6, Math.toRadians(135)), Math.toRadians(135))
+//                            .lineToSplineHeading(new Pose2d(47,-11,Math.toRadians(-90)))
+//                            .splineToSplineHeading(new Pose2d(60,-11.5, Math.toRadians(0)), Math.toRadians(0))
+//
+//                            .lineToSplineHeading(new Pose2d(40,-11.5, Math.toRadians(-135)))
+//                            .splineToSplineHeading(new Pose2d(29,-6, Math.toRadians(135)), Math.toRadians(135))
 
                             .build()
                             );
