@@ -19,66 +19,67 @@ public class PathVisualizer {
                 .setConstraints(35, 40, Math.toRadians(180), Math.toRadians(180), 14.55)
                 .followTrajectorySequence(drive ->
 
-//                        drive.trajectorySequenceBuilder(new Pose2d(-34,63, Math.toRadians(180)))
-//                                // RIGHT
+//                        drive.trajectorySequenceBuilder(new Pose2d(-34,63, Math.toRadians(0)))
+//                                // BLUE RIGHT
 //
-//                                .strafeLeft(2)
-//                                .forward(27)
-//                                .back(2.5)
-//                                .strafeLeft(49.5)
-////                                .back(2)
-//
-//
-//
-//                                .lineToLinearHeading(new Pose2d(-47, 11, Math.toRadians(90)))
-//                                .forward(4)
-//                                .back(4)
-//                                .lineToLinearHeading(new Pose2d(-60, 11, Math.toRadians(180)))
-////                                .forward(2)
-//
-//
-//                                .back(17)
-//                                .lineToSplineHeading(new Pose2d(-34, 11, Math.toRadians(-45)))
+//                                .strafeRight(3)
+//                                .lineToSplineHeading(new Pose2d(-28,60, Math.toRadians(0)))
+//                                .splineTo(new Vector2d(-16,14), Math.toRadians(-117))
 //                                .forward(7)
 //
-//                                .lineToSplineHeading(new Pose2d(-34, 11, Math.toRadians(180)))
+//
+//                                .strafeRight(3)
+//                                .splineToSplineHeading(new Pose2d(-44,11.5,Math.toRadians(180)), Math.toRadians(180))
+//                                .forward(16)
+//
+//
+//                                .lineToSplineHeading(new Pose2d(-40,11.5, Math.toRadians(45)))
+//                                .splineToSplineHeading(new Pose2d(-29,6, Math.toRadians(-45)), Math.toRadians(-45))
+//                                .lineToSplineHeading(new Pose2d(-47,11,Math.toRadians(90)))
+//                                .splineToSplineHeading(new Pose2d(-60,11.5, Math.toRadians(180)), Math.toRadians(180))
+//
+//                                .lineToSplineHeading(new Pose2d(-40,11.5, Math.toRadians(45)))
+//                                .splineToSplineHeading(new Pose2d(-29,6, Math.toRadians(-45)), Math.toRadians(-45))
+//
 //                                .build()
-//                              };
-
-                                drive.trajectorySequenceBuilder(new Pose2d(34,63, Math.toRadians(180)))
-                                        // LEFT BLUE
-                                        .strafeLeft(3)
-                                        .lineToSplineHeading(new Pose2d(28,60, Math.toRadians(180)))
-                                        .splineTo(new Vector2d(16,14), Math.toRadians(-63))
-                                        .forward(7)
+//                );
 
 
-                                        .strafeLeft(3)
-                                        .splineToSplineHeading(new Pose2d(44,11.5,Math.toRadians(0)), Math.toRadians(0))
-                                        .forward(16)
-
-                                        .waitSeconds(0.2)
-
-                                        .lineToSplineHeading(new Pose2d(40,11.5, Math.toRadians(135)))
-                                        .splineToSplineHeading(new Pose2d(29,6, Math.toRadians(-135)), Math.toRadians(-135))
-                                        .lineToSplineHeading(new Pose2d(47,11,Math.toRadians(90)))
-                                        .splineToSplineHeading(new Pose2d(60,11.5, Math.toRadians(0)), Math.toRadians(0))
-
-                                        .waitSeconds(0.2)
-
-                                        .lineToSplineHeading(new Pose2d(40,11.5, Math.toRadians(135)))
-                                        .splineToSplineHeading(new Pose2d(29,6, Math.toRadians(-135)), Math.toRadians(-135))
-                                        .lineToSplineHeading(new Pose2d(47,11,Math.toRadians(90)))
-                                        .splineToSplineHeading(new Pose2d(60,11.5, Math.toRadians(0)), Math.toRadians(0))
-                                        .waitSeconds(0.2)
-
-                                        .lineToSplineHeading(new Pose2d(40,11.5, Math.toRadians(135)))
-                                        .splineToSplineHeading(new Pose2d(29,6, Math.toRadians(-135)), Math.toRadians(-135))
-
-                                        .build()
-                );
+//                                drive.trajectorySequenceBuilder(new Pose2d(34,63, Math.toRadians(180)))
+//                                        //  BLUE LEFT
+//                                        .strafeLeft(3)
+//                                        .lineToSplineHeading(new Pose2d(28,60, Math.toRadians(180)))
+//                                        .splineTo(new Vector2d(16,14), Math.toRadians(-63))
+//                                        .forward(7)
+//
+//
+//                                        .strafeLeft(3)
+//                                        .splineToSplineHeading(new Pose2d(44,11.5,Math.toRadians(0)), Math.toRadians(0))
+//                                        .forward(16)
+//
+//                                        .waitSeconds(0.2)
+//
+//                                        .lineToSplineHeading(new Pose2d(40,11.5, Math.toRadians(135)))
+//                                        .splineToSplineHeading(new Pose2d(29,6, Math.toRadians(-135)), Math.toRadians(-135))
+//                                        .lineToSplineHeading(new Pose2d(47,11,Math.toRadians(90)))
+//                                        .splineToSplineHeading(new Pose2d(60,11.5, Math.toRadians(0)), Math.toRadians(0))
+//
+//                                        .waitSeconds(0.2)
+//
+//                                        .lineToSplineHeading(new Pose2d(40,11.5, Math.toRadians(135)))
+//                                        .splineToSplineHeading(new Pose2d(29,6, Math.toRadians(-135)), Math.toRadians(-135))
+//                                        .lineToSplineHeading(new Pose2d(47,11,Math.toRadians(90)))
+//                                        .splineToSplineHeading(new Pose2d(60,11.5, Math.toRadians(0)), Math.toRadians(0))
+//                                        .waitSeconds(0.2)
+//
+//                                        .lineToSplineHeading(new Pose2d(40,11.5, Math.toRadians(135)))
+//                                        .splineToSplineHeading(new Pose2d(29,6, Math.toRadians(-135)), Math.toRadians(-135))
+//
+//                                        .build()
+//                );
 
 //                                drive.trajectorySequenceBuilder(new Pose2d(-34,-63, Math.toRadians(0)))
+        //                                 RED LEFT
 //                                        .strafeLeft(3)
 //                                        .lineToSplineHeading(new Pose2d(-31,-60, Math.toRadians(0)))
 //                                        .splineTo(new Vector2d(-16,-14), Math.toRadians(117))
@@ -104,6 +105,31 @@ public class PathVisualizer {
 //                                        .build()
 //
 //                );
+
+                    drive.trajectorySequenceBuilder(new Pose2d(34,-63, Math.toRadians(180)))
+                            // RIGHT
+
+                            .strafeRight(3)
+                            .lineToSplineHeading(new Pose2d(28,-60, Math.toRadians(180)))
+                            .splineTo(new Vector2d(16,-14), Math.toRadians(63))
+                            .forward(7)
+
+
+                            .strafeRight(3)
+                            .splineToSplineHeading(new Pose2d(44,-11.5,Math.toRadians(0)), Math.toRadians(0))
+                            .forward(16)
+
+
+                            .lineToSplineHeading(new Pose2d(40,-11.5, Math.toRadians(-135)))
+                            .splineToSplineHeading(new Pose2d(29,-6, Math.toRadians(135)), Math.toRadians(135))
+                            .lineToSplineHeading(new Pose2d(47,-11,Math.toRadians(-90)))
+                            .splineToSplineHeading(new Pose2d(60,-11.5, Math.toRadians(0)), Math.toRadians(0))
+
+                            .lineToSplineHeading(new Pose2d(40,-11.5, Math.toRadians(-135)))
+                            .splineToSplineHeading(new Pose2d(29,-6, Math.toRadians(135)), Math.toRadians(135))
+
+                            .build()
+                            );
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_OFFICIAL)
                 .setDarkMode(true)
