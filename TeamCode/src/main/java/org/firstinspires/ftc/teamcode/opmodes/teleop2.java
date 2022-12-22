@@ -60,22 +60,6 @@ public class teleop2 extends LinearOpMode {
                 telemetry.addLine("CURRENT LIMIT");
             }
 
-            if(gamepad2.cross){
-                slide.targetLevel = 1;
-                manual = false;
-            } else if(gamepad2.square) {
-                slide.targetLevel = 2;
-                manual = false;
-            } else if(gamepad2.triangle) {
-                slide.targetLevel =3;
-                manual = false;
-            } else if (gamepad2.circle) {
-                slide.targetLevel = 0;
-                manual = false;
-            }
-
-            if(!manual) slide.update();
-
 //            if(gamepad2.cross){
 //                slide.s.setTargetPosition(low);
 //                slide.s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
