@@ -61,6 +61,10 @@ public class Slide {
         s.setPower(speed);
     }
 
+    public void updateTarget(int target){
+        targetLevel = target;
+    }
+
     public void setSlideLevel(int level) {
         if (level == 0) {
             //maybe make it run down until it hits limit switch and then reset
@@ -152,6 +156,8 @@ public class Slide {
             s.setTargetPosition(targetLevel);
             s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             s.setPower(1);
+        } else{
+            s.setPower(0);
         }
     }
 }
