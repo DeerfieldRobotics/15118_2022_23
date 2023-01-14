@@ -43,6 +43,7 @@ public class rightAuto extends LinearOpMode {
         drive.setPoseEstimate(startPose);
 
         TrajectorySequence groundStation = drive.trajectorySequenceBuilder(startPose)
+                .strafeLeft(2)
                 .forward(23)
                 .addTemporalMarker(0.75, () -> {
                     telemetry.addLine("TEMPORAL MARKER");
@@ -74,7 +75,6 @@ public class rightAuto extends LinearOpMode {
                 //TODO: CREATE RIGHT PARKING TRAJECTORY
                 .back(3)
                 .strafeLeft(35)
-
                 .build();
 
         drive.followTrajectorySequence(groundStation);

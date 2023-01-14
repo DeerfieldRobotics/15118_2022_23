@@ -19,7 +19,7 @@ public class leftAuto extends LinearOpMode {
 
     public void initialize() {
         drive = new SampleMecanumDrive(hardwareMap);
-        aprilTags = new AprilTags(hardwareMap, "leftCam");
+        aprilTags = new AprilTags(hardwareMap, "rightCam");
         rubberBandIntake = new RubberBandIntake(hardwareMap);
 
         while(opModeInInit()) {
@@ -42,7 +42,9 @@ public class leftAuto extends LinearOpMode {
         Pose2d startPose = new Pose2d(38, -60, Math.toRadians(0));
         drive.setPoseEstimate(startPose);
 
+        //TODO: CHANGE PATH TO WORK WITH LEFT TERMINAL
         TrajectorySequence groundStation = drive.trajectorySequenceBuilder(startPose)
+                /*
                 .strafeLeft(9)
                 .turn(Math.toRadians(180))
                 .forward(24)
@@ -54,6 +56,19 @@ public class leftAuto extends LinearOpMode {
                     rubberBandIntake.intake(0);
                 })
                 .back(3)
+                .build();
+                */
+                .strafeRight(2)
+                .forward(23)
+                .addTemporalMarker(0.75, () -> {
+                    telemetry.update();
+                    rubberBandIntake.intake(-1);
+                })
+                .addTemporalMarker(2.25, () -> {
+                    telemetry.update();
+                    rubberBandIntake.intake(0);
+                })
+                .waitSeconds(1)
                 .build();
 
         TrajectorySequence parkLeft = drive.trajectorySequenceBuilder(groundStation.end())
