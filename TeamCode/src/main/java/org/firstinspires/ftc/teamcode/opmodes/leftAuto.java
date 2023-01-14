@@ -44,22 +44,8 @@ public class leftAuto extends LinearOpMode {
 
         //TODO: CHANGE PATH TO WORK WITH LEFT TERMINAL
         TrajectorySequence groundStation = drive.trajectorySequenceBuilder(startPose)
-                /*
-                .strafeLeft(9)
-                .turn(Math.toRadians(180))
-                .forward(24)
-                //.strafeRight(2)
-                .addTemporalMarker(4, () -> {
-                    rubberBandIntake.intake(-1);
-                })
-                .addTemporalMarker(6, () -> {
-                    rubberBandIntake.intake(0);
-                })
-                .back(3)
-                .build();
-                */
                 .strafeRight(2)
-                .forward(23)
+                .forward(27)
                 .addTemporalMarker(0.75, () -> {
                     telemetry.update();
                     rubberBandIntake.intake(-1);
@@ -69,22 +55,25 @@ public class leftAuto extends LinearOpMode {
                     rubberBandIntake.intake(0);
                 })
                 .waitSeconds(1)
+
                 .build();
 
         TrajectorySequence parkLeft = drive.trajectorySequenceBuilder(groundStation.end())
                 //TODO: CREATE LEFT PARKING TRAJECTORY
+                .back(5)
                 .strafeRight(30)
+                .forward(5)
                 .build();
 
         TrajectorySequence parkMiddle = drive.trajectorySequenceBuilder(groundStation.end())
                 //TODO: CREATE MIDDLE PARKING TRAJECTORY
                 .back(21)
-                .strafeRight(27)
+                .strafeRight(35)
                 .build();
 
         TrajectorySequence parkRight = drive.trajectorySequenceBuilder(groundStation.end())
                 //TODO: CREATE RIGHT PARKING TRAJECTORY
-                .back(45)
+                .back(44)
                 .strafeRight(32)
                 .build();
 

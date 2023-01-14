@@ -50,7 +50,8 @@ public class parkOnly extends LinearOpMode {
 
         TrajectorySequence parkLeft = drive.trajectorySequenceBuilder(startPose)
                 //TODO: CREATE LEFT PARKING TRAJECTORY
-                .back(25)
+                .strafeLeft(2)
+                .back(19)
                 .strafeLeft(35)
                 .build();
 
@@ -62,6 +63,7 @@ public class parkOnly extends LinearOpMode {
 
         TrajectorySequence parkRight = drive.trajectorySequenceBuilder(startPose)
                 //TODO: CREATE RIGHT PARKING TRAJECTORY
+                .strafeLeft(2)
                 .forward(21)
                 .strafeLeft(35)
                 .build();

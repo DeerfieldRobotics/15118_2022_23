@@ -11,6 +11,8 @@ public class RubberBandIntake {
     private HardwareMap hw;
     private CRServoImpl frontServo, backServo;
 
+    private int power;
+
     private double powerMult = 0.8;
 
     public RubberBandIntake (HardwareMap hardwaremap) {
@@ -37,4 +39,11 @@ public class RubberBandIntake {
         backServo.setPower(0);
     }
 
+    public void updatePower(int p){
+        power = p;
+    }
+
+    public void update() {
+        intake(power);
+    }
 }

@@ -60,7 +60,7 @@ public class rightAuto extends LinearOpMode {
 
         TrajectorySequence parkLeft = drive.trajectorySequenceBuilder(groundStation.end())
                 //TODO: CREATE LEFT PARKING TRAJECTORY
-                .back(47)
+                .back(44)
                 .strafeLeft(35)
                 .build();
 
