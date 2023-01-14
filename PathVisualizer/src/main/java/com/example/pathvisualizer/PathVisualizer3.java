@@ -16,10 +16,18 @@ public class PathVisualizer3 {
                 .setConstraints(35, 30, Math.toRadians(180), Math.toRadians(180), 14.55)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(new Pose2d(36,-63, Math.toRadians(180)))
-                                .strafeRight(2)
+                                .strafeRight(3)
                                 .forward(3)
                                 .splineTo(new Vector2d(14,-50), Math.toRadians(115))
-                                .splineTo(new Vector2d(4,-30), Math.toRadians(120))
+                                .splineTo(new Vector2d(4,-33), Math.toRadians(145))
+
+
+                                .forward(2)
+
+                                .back(10)
+                                .turn(Math.toRadians(-53))
+
+                                .strafeRight(3)
                                 .build()
                 );
 
