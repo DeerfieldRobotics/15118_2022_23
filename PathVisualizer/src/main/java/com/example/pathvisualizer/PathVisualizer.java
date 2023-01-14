@@ -114,7 +114,7 @@ public class PathVisualizer {
 
                             .strafeRight(2)
                             .forward(6)
-                            .splineTo(new Vector2d(19.5,-7.5),Math.toRadians(60))
+                            .splineTo(new Vector2d(17,-7.5),Math.toRadians(20))
 
                             .strafeRight(10)
                             .splineToSplineHeading(new Pose2d(40,-12,Math.toRadians(0)), Math.toRadians(0))
