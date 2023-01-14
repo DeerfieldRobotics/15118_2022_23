@@ -79,37 +79,37 @@ public class leftAutoAsync extends OpMode {
             path = drive.trajectorySequenceBuilder(startPose)
                     .strafeRight(2)
                     .forward(28)
-                    .addTemporalMarker(0.75, () -> {
+                    .addTemporalMarker(3, () -> {
                         telemetry.update();
                         rubberBandIntake.updatePower(-1);
                     })
 
-                    .addTemporalMarker(2.75, () -> {
+                    .addTemporalMarker(5, () -> {
                         rubberBandIntake.updatePower(0);
                         telemetry.update();
                         s.updateTarget(-600);
                     })
                     //park
                     .waitSeconds(2.5)
-                    .back(21)
+                    .back(27)
                     .strafeRight(35)
                     .build();
         } else{
             path = drive.trajectorySequenceBuilder(startPose)
                     .strafeRight(2)
                     .forward(28)
-                    .addTemporalMarker(0.75, () -> {
+                    .addTemporalMarker(3, () -> {
                         telemetry.update();
                         rubberBandIntake.updatePower(-1);
                     })
-                    .addTemporalMarker(2.75, () -> {
+                    .addTemporalMarker(5, () -> {
                         rubberBandIntake.updatePower(0);
                         telemetry.update();
                         s.updateTarget(-600);
                     })
                     //park
                     .waitSeconds(2.5)
-                    .back(44)
+                    .back(47)
                     .strafeRight(32)
                     .build();
         }

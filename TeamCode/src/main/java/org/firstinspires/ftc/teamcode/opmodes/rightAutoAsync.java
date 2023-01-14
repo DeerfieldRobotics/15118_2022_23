@@ -64,7 +64,7 @@ public class rightAutoAsync extends OpMode {
                         telemetry.update();
                         rubberBandIntake.updatePower(-1);
                     })
-                    .addTemporalMarker(5, () -> {
+                    .addTemporalMarker(4, () -> {
                         rubberBandIntake.updatePower(0);
                         telemetry.update();
                         s.updateTarget(-600);
@@ -72,7 +72,7 @@ public class rightAutoAsync extends OpMode {
                     //park
                     .waitSeconds(1)
                     .back(5)
-                    .strafeLeft(30)
+                    .strafeLeft(35)
                     .forward(5)
                     .build();
         } else if (detectedTag == 2) {
@@ -91,7 +91,7 @@ public class rightAutoAsync extends OpMode {
                     })
                     //park
                     .waitSeconds(2.5)
-                    .back(21)
+                    .back(24)
                     .strafeLeft(35)
                     .build();
         } else{
@@ -109,7 +109,7 @@ public class rightAutoAsync extends OpMode {
                     })
                     //park
                     .waitSeconds(2.5)
-                    .back(44)
+                    .back(47)
                     .strafeLeft(32)
                     .build();
         }
