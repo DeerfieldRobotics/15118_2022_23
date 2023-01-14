@@ -24,7 +24,6 @@ public class PathVisualizer2 {
                                         .splineToSplineHeading(new Pose2d(32,-9, Math.toRadians(90)), Math.toRadians(180))
                                         .splineToConstantHeading(new Vector2d(24,-9), Math.toRadians(180))
 
-
                                         .strafeRight(0.1)
                                         .splineToConstantHeading(new Vector2d(32,-9), Math.toRadians(0))
                                         .splineToSplineHeading(new Pose2d(43,-12, Math.toRadians(0)), Math.toRadians(0))
