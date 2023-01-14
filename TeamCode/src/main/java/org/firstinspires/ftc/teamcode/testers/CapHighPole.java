@@ -25,7 +25,7 @@ public class CapHighPole extends OpMode {
     public void init() {
         intake = new RubberBandIntake(hardwareMap);
         drive = new SampleMecanumDrive(hardwareMap);
-        aprilTags = new AprilTags(hardwareMap);
+        aprilTags = new AprilTags(hardwareMap, "leftCam");
         slide = new Slide(hardwareMap);
 
         Pose2d startPose = new Pose2d(60, -12, Math.toRadians(0));

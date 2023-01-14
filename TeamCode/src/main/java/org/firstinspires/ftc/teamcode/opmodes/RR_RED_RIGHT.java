@@ -29,7 +29,7 @@ public class RR_RED_RIGHT extends LinearOpMode {
     public void initialize() {
         drive = new SampleMecanumDrive(hardwareMap);
         rubberBandIntake = new RubberBandIntake(hardwareMap);
-        aprilTags = new AprilTags(hardwareMap);
+        aprilTags = new AprilTags(hardwareMap, "leftCam");
         slide = new Slide(hardwareMap);
         slide.getMotor().setDirection(DcMotorSimple.Direction.REVERSE);
 

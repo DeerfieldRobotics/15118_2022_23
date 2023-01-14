@@ -27,7 +27,7 @@ public class parkOnly extends LinearOpMode {
 
     public void initialize() {
         drive = new SampleMecanumDrive(hardwareMap);
-        aprilTags = new AprilTags(hardwareMap);
+        aprilTags = new AprilTags(hardwareMap, "leftCam");
 
         while(opModeInInit()) {
             detectedTag = aprilTags.getID();

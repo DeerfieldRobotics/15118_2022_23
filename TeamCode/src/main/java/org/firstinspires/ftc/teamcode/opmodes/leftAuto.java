@@ -19,7 +19,7 @@ public class leftAuto extends LinearOpMode {
 
     public void initialize() {
         drive = new SampleMecanumDrive(hardwareMap);
-        aprilTags = new AprilTags(hardwareMap);
+        aprilTags = new AprilTags(hardwareMap, "leftCam");
         rubberBandIntake = new RubberBandIntake(hardwareMap);
 
         while(opModeInInit()) {

@@ -84,7 +84,7 @@ public class Horse extends LinearOpMode {
 
     public void initialize(){
         drivetrain = new Drivetrain(hardwareMap);
-        aprilTags = new AprilTags(hardwareMap);
+        aprilTags = new AprilTags(hardwareMap, "leftCam");
         runtime = new ElapsedTime();
         drive = new SampleMecanumDrive(hardwareMap);
         intake = new RubberBandIntake(hardwareMap);

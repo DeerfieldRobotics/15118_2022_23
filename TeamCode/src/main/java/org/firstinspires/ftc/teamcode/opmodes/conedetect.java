@@ -77,7 +77,7 @@ public class conedetect extends LinearOpMode {
         slide.setDirection(DcMotorSimple.Direction.REVERSE);
         c =new Claw(hardwareMap);
 
-        aprilTags = new AprilTags(hardwareMap);
+        aprilTags = new AprilTags(hardwareMap, "leftCam");
         while(opModeIsActive()){
             while(true){
                 if(setOrientation()){

@@ -20,7 +20,7 @@ public class Robot {
         drivetrain = new Drivetrain(hwMap);
         slide = new Slide(hwMap);
         // -> INSERT INTAKE CLASS
-        aprilT = new AprilTags(hwMap);
+        aprilT = new AprilTags(hwMap, "leftCam");
     }
 
     public int getAprilTag(){
