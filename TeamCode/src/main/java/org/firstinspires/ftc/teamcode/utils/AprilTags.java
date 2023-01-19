@@ -62,10 +62,10 @@ public class AprilTags
     final float THRESHOLD_HIGH_DECIMATION_RANGE_METERS = 1.0f;
     final int THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION = 4;
 
-    public AprilTags(HardwareMap hw){
+    public AprilTags(HardwareMap hw, String camName){
         //make camera
         int cameraMonitorViewId = hw.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hw.appContext.getPackageName());
-        frontCamera = OpenCvCameraFactory.getInstance().createWebcam(hw.get(WebcamName.class, "frontWeb"), cameraMonitorViewId);
+        frontCamera = OpenCvCameraFactory.getInstance().createWebcam(hw.get(WebcamName.class, camName), cameraMonitorViewId);
         initialize();
     }
     public void initialize(){

@@ -9,8 +9,10 @@ import com.acmerobotics.roadrunner.profile.MotionProfileGenerator;
 import com.acmerobotics.roadrunner.profile.MotionState;
 import com.acmerobotics.roadrunner.util.NanoClock;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
@@ -50,7 +52,8 @@ import static org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants.kV;
 @Config
 @Autonomous(group = "drive")
 public class DriveVelocityPIDTuner extends LinearOpMode {
-    public static double DISTANCE = 72; // in
+    ElapsedTime runtime;
+    public static double DISTANCE = 17; // in
 
     enum Mode {
         DRIVER_MODE,
@@ -90,6 +93,12 @@ public class DriveVelocityPIDTuner extends LinearOpMode {
         telemetry.clearAll();
 
         waitForStart();
+
+        runtime = new ElapsedTime();
+
+        while(runtime.milliseconds() < 4000){
+            drive.setMotorPowers(0,0,0,0);
+        }
 
         if (isStopRequested()) return;
 

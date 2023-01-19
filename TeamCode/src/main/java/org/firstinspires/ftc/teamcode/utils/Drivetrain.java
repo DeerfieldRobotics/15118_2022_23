@@ -87,6 +87,12 @@ public class Drivetrain
         bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
+    public void no_encoder(){
+        fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
 
     public void run_using_encoder(){
         fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -178,9 +184,7 @@ public class Drivetrain
 
 
     public boolean isBusy(){
-        return fl.isBusy() && fr.isBusy();
+        return fl.isBusy() && fr.isBusy() && bl.isBusy() && br.isBusy();
     }
-
-
 
 }

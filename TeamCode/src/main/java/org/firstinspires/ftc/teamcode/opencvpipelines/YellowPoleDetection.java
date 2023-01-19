@@ -7,11 +7,14 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class YellowPoleDetection extends OpenCvPipeline {
 
 
-    Scalar low = new Scalar(20, 150, 150);
-    Scalar high = new Scalar(35, 255, 255);
+    Scalar high = new Scalar(255, 255, 60);
+    Scalar low = new Scalar(150, 120, 0);
 
 
     private int maxWidth, min, max, left, right;
@@ -33,43 +36,54 @@ public class YellowPoleDetection extends OpenCvPipeline {
         maxWidth = 0;
         min = workingMatrix.width();
         max = 0;
-        /*
-        for(int y = 0; y < workingMatrix.height();y++) {
-            int min = workingMatrix.width();
-            int max = 0;
-            for(int x = 0; x<workingMatrix.width() && (min == workingMatrix.width() || max == 0);x++){
 
-                if(min == workingMatrix.width()&&workingMatrix.get(y,x)[0]==1) {
+
+
+        int x = workingMatrix.width()/2, y = 0;
+
+        int currentMax = 0;
+        int[] pole;
+
+        while(y < workingMatrix.height()){
+            while(x > workingMatrix.width()/4){
+                if(workingMatrix.get(x,y)[0] >= low.val[0]
+                    && workingMatrix.get(x,y)[1] >= low.val[1]
+                    && workingMatrix.get(x,y)[2] >= low.val[2]
+                    && workingMatrix.get(x,y)[2] <= high.val[2]
+                        ){
                     min = x;
                 }
-                if(max == 0&&workingMatrix.get(y,workingMatrix.width()-1-x)[0]==1) {
+
+                x -= 50;
+            }
+
+            while(x < 3 * workingMatrix.width()/4){
+                if(workingMatrix.get(x,y)[0] >= low.val[0]
+                        && workingMatrix.get(x,y)[1] >= low.val[1]
+                        && workingMatrix.get(x,y)[2] >= low.val[2]
+                        && workingMatrix.get(x,y)[2] <= high.val[2]
+                            ){
                     max = x;
                 }
+                x += 50;
             }
 
-            if(max-min>maxWidth) {
-                maxWidth = max - min;
-                Min = min;
-                Max = max;
-            }
-        }
-        */
-        for(int x = 0; x<workingMatrix.width() &&(min == workingMatrix.width() || max == 0); x++){
+            currentMax = max-min;
 
-            if(min == workingMatrix.width()&&workingMatrix.get(0,x)[0]!=0) {
-                min = x;
-                left = x;
+            if(currentMax > max){
+
             }
-            if(max == 0&&workingMatrix.get(0,workingMatrix.width()-1-x)[0]!=0) {
-                max = workingMatrix.width()-1-x;
-                right = x;
-            }
+
+            y+= 75;
         }
+
+
+
         maxWidth = max -min;
 
 
-        Imgproc.drawMarker(workingMatrix, new Point(min, 0), new Scalar(100,255,0));
-        Imgproc.drawMarker(workingMatrix, new Point(max, 0), new Scalar(100,255,0));
+        Imgproc.drawMarker(workingMatrix, new Point(min, 0), new Scalar(0,255,0));
+        Imgproc.drawMarker(workingMatrix, new Point(max, 0), new Scalar(0,255,0));
 
         return workingMatrix;
     }

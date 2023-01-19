@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.testers;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -11,6 +12,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
+@Disabled
 @Autonomous(name = "poletest")
 public class pole_test extends LinearOpMode {
     //OpenCvCamera frontCamera;
@@ -47,7 +49,6 @@ public class pole_test extends LinearOpMode {
             telemetry.addData("left",detector.getLeft());
             telemetry.addData("right",detector.getRight());
             telemetry.update();
-            Thread.sleep(100);
         }
     }
 }
