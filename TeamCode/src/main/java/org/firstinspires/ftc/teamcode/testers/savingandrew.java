@@ -20,6 +20,10 @@ public class savingandrew extends LinearOpMode {
         DcMotorEx br = (DcMotorEx)hardwareMap.get(DcMotor.class, "br");
         DcMotorEx bl = (DcMotorEx)hardwareMap.get(DcMotor.class, "bl");
 
+        DcMotor e0 = hardwareMap.get(DcMotor.class, "leftEncoder");
+        DcMotor e1 = hardwareMap.get(DcMotor.class, "rightEncoder");
+        DcMotor e2 = hardwareMap.get(DcMotor.class, "middleEncoder");
+
         fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -37,6 +41,9 @@ public class savingandrew extends LinearOpMode {
             telemetry.addData("fr", fr.getCurrentPosition());
             telemetry.addData("bl", bl.getCurrentPosition());
             telemetry.addData("br", br.getCurrentPosition());
+            telemetry.addData("left", e0.getCurrentPosition());
+            telemetry.addData("right", e1.getCurrentPosition());
+            telemetry.addData("middle", e2.getCurrentPosition());
             telemetry.update();
 
         }
