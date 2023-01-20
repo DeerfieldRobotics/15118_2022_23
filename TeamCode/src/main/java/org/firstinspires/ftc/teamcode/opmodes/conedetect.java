@@ -7,16 +7,13 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.opencvpipelines.ConeDetectionPipeline;
 import org.firstinspires.ftc.teamcode.opencvpipelines.AprilTagDetectionPipeline;
 import org.firstinspires.ftc.teamcode.opencvpipelines.BetterRedConeDetection;
 import org.firstinspires.ftc.teamcode.utils.AprilTags;
-import org.firstinspires.ftc.teamcode.utils.Claw;
 import org.firstinspires.ftc.teamcode.utils.Drivetrain;
 import org.firstinspires.ftc.teamcode.utils.IMU;
 import org.firstinspires.ftc.teamcode.utils.PID;
 import org.openftc.easyopencv.OpenCvCamera;
-import org.firstinspires.ftc.teamcode.utils.Slide;
 
 @Autonomous(name = "pick up cone")
 
