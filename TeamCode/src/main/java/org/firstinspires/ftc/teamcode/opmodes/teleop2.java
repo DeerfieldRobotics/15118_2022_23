@@ -18,8 +18,8 @@ public class teleop2 extends LinearOpMode {
     private RubberBandIntake intake;
 
     private double turnMult = 0.65;
-    private final double forwardMult = 0.8;
-    private final double strafeMult = 0.85;
+    private final double forwardMult = 0.7;
+    private final double strafeMult = 0.9;
     private double speedMult;
 
     private boolean manual;
@@ -32,7 +32,7 @@ public class teleop2 extends LinearOpMode {
         //start timer
 
         while(opModeIsActive()) {
-            speedMult = 1+0.3 * gamepad1.right_trigger-0.7*gamepad1.left_trigger;
+            speedMult = .8+0.3 * gamepad1.right_trigger-0.5*gamepad1.left_trigger;
 
             //movement
             if(gamepad1.right_stick_x != 0 || gamepad1.left_stick_y != 0||gamepad1.left_stick_x!=0) {
@@ -51,14 +51,15 @@ public class teleop2 extends LinearOpMode {
 
             intake.intake(gamepad2.right_trigger-gamepad2.left_trigger);
 
-            slide.setPower(-gamepad2.right_stick_y);
+            if(Math.abs(-gamepad2.right_stick_y) > 0) {
+                slide.setPower(-gamepad2.right_stick_y);
+            } else {
+                slide.setPower(0.001);
+            }
+
 
             if(gamepad2.right_stick_y > 0) manual = true;
 
-            if(slide.getAmperage() > 7) {
-                slide.stop();
-                telemetry.addLine("CURRENT LIMIT");
-            }
 
 //            if(gamepad2.cross){
 //                slide.s.setTargetPosition(low);

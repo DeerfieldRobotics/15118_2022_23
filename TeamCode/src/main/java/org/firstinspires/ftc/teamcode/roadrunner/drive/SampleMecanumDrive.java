@@ -54,9 +54,9 @@ import static org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants.TRA
 @Config
 public class SampleMecanumDrive extends MecanumDrive {
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0.5, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0.25, 0, 0 );
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(4, 0, 0 );
 
-    public static double LATERAL_MULTIPLIER = 1.08821;
+    public static double LATERAL_MULTIPLIER = 1.338;
 
     public static double VX_WEIGHT = 1;
     public static double VY_WEIGHT = 1;
@@ -118,6 +118,7 @@ public class SampleMecanumDrive extends MecanumDrive {
 
         leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 
