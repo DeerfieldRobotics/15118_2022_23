@@ -28,9 +28,7 @@ public class Slide {
 //    public final static int cone3 = ;
 //    public final static int cone4 = ;
 //    public final static int cone5 = ;
-    
-    public final static int slideMin = 1000;
-    public final static int slideFlipLimit = 500;
+
 
     int target = 0;
 
@@ -127,6 +125,7 @@ public class Slide {
     }
 
     public void move(double amount) {
+
         s.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE); //static power
         s.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         s.setPower(amount);
