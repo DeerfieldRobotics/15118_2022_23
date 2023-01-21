@@ -52,7 +52,7 @@ public class coneAutoLeftSide extends OpMode {
                     .splineTo(new Vector2d(-14,-50), Math.toRadians(65))
                     .splineTo(new Vector2d(-4,-33), Math.toRadians(35))
                     .addTemporalMarker(3, () -> {
-                        s.updateTarget(-3400);
+                        s.setTarget(-3400);
                     })
 
                     .forward(2)
@@ -68,7 +68,7 @@ public class coneAutoLeftSide extends OpMode {
                     .back(10)
                     .turn(Math.toRadians(55))
                     .addDisplacementMarker(() ->{
-                        s.updateTarget(0);
+                        s.setTarget(0);
                     })
                     .strafeLeft(27)
                     .build();
@@ -79,7 +79,7 @@ public class coneAutoLeftSide extends OpMode {
                     .splineTo(new Vector2d(-14,-50), Math.toRadians(65))
                     .splineTo(new Vector2d(-4,-33), Math.toRadians(35))
                     .addTemporalMarker(3, () -> {
-                        s.updateTarget(-3400);
+                        s.setTarget(-3400);
                     })
 
                     .forward(2)
@@ -95,7 +95,7 @@ public class coneAutoLeftSide extends OpMode {
                     .back(10)
                     .turn(Math.toRadians(55))
                     .addDisplacementMarker(() ->{
-                        s.updateTarget(0);
+                        s.setTarget(0);
                     })
                     .strafeLeft(15)
                     .build();
@@ -106,7 +106,7 @@ public class coneAutoLeftSide extends OpMode {
                     .splineTo(new Vector2d(-14,-50), Math.toRadians(65))
                     .splineTo(new Vector2d(-4,-33), Math.toRadians(35))
                     .addTemporalMarker(3, () -> {
-                        s.updateTarget(-3400);
+                        s.setTarget(-3400);
                     })
 
                     .forward(2)
@@ -122,7 +122,7 @@ public class coneAutoLeftSide extends OpMode {
                     .back(10)
                     .turn(Math.toRadians(55))
                     .addDisplacementMarker(() ->{
-                        s.updateTarget(0);
+                        s.setTarget(0);
                     })
                     .strafeLeft(3)
                     .build();

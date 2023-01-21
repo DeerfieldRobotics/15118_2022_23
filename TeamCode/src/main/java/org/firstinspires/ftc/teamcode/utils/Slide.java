@@ -61,7 +61,7 @@ public class Slide {
         s.setPower(speed);
     }
 
-    public void updateTarget(int target){
+    public void setTarget(int target){
         targetLevel = target;
     }
 
@@ -156,7 +156,7 @@ public class Slide {
             s.setTargetPosition(targetLevel);
             s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             s.setPower(1);
-        } else{
+        } else {
             s.setPower(0);
         }
     }

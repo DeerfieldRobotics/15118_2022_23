@@ -10,8 +10,8 @@ import org.firstinspires.ftc.teamcode.utils.Drivetrain;
 import org.firstinspires.ftc.teamcode.utils.RubberBandIntake;
 import org.firstinspires.ftc.teamcode.utils.Slide;
 
-@TeleOp(name = "你的妈妈你的妈妈你的妈妈你的妈妈你的妈妈")
-public class teleop2 extends LinearOpMode {
+@TeleOp(name = "MAIN_TELEOP")
+public class teleop_main extends LinearOpMode {
     private Drivetrain drivetrain;
     private ElapsedTime runtime;
     private Slide slide;

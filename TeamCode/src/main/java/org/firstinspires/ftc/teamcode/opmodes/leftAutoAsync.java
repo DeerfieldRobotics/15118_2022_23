@@ -67,7 +67,7 @@ public class leftAutoAsync extends OpMode {
                     .addTemporalMarker(5, () -> {
                         rubberBandIntake.updatePower(0);
                         telemetry.update();
-                        s.updateTarget(-600);
+                        s.setTarget(-600);
                     })
                     //park
                     .waitSeconds(1)
@@ -87,7 +87,7 @@ public class leftAutoAsync extends OpMode {
                     .addTemporalMarker(5, () -> {
                         rubberBandIntake.updatePower(0);
                         telemetry.update();
-                        s.updateTarget(-600);
+                        s.setTarget(-600);
                     })
                     //park
                     .waitSeconds(2.5)
@@ -105,7 +105,7 @@ public class leftAutoAsync extends OpMode {
                     .addTemporalMarker(5, () -> {
                         rubberBandIntake.updatePower(0);
                         telemetry.update();
-                        s.updateTarget(-600);
+                        s.setTarget(-600);
                     })
                     //park
                     .waitSeconds(2.5)

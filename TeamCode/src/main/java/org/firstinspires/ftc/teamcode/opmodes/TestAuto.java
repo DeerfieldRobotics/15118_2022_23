@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.utils.AprilTags;
 import org.firstinspires.ftc.teamcode.utils.RubberBandIntake;
 import org.firstinspires.ftc.teamcode.utils.Slide;
 
-@Autonomous(name = "TestAuto")
+@Autonomous(name = "NEW_AUTO")
 public class TestAuto extends OpMode {
     private SampleMecanumDrive drive;
     private RubberBandIntake rubberBandIntake;
@@ -37,34 +37,81 @@ public class TestAuto extends OpMode {
     }
 
     public void start() {
-        Pose2d startPose = new Pose2d(38, -60, Math.toRadians(0));
+        Pose2d startPose = new Pose2d(-36, -63, Math.toRadians(0));
         drive.setPoseEstimate(startPose);
 
-        TrajectorySequence coneCycle = drive.trajectorySequenceBuilder(startPose)
-                .forward(21)
-                .addTemporalMarker(1, () -> {
-                    rubberBandIntake.intake(-1);
-                })
-                .addTemporalMarker(2.25, () -> {
-                    rubberBandIntake.intake(0);
-                })
-                .back(2)
-                .strafeLeft(20)
-                .splineTo(new Vector2d(56, -7), Math.toRadians(90))
-                //GET FROM CONE STACK
-                .addTemporalMarker(7, () -> {
-                    while(slide.s.getCurrentPosition() < 565) {
-                        slide.s.setZeroPowerBehavior(DcMotorImplEx.ZeroPowerBehavior.BRAKE);
-                        slide.s.setTargetPosition(565);
-                        slide.s.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                        slide.s.setPower(1);
-                    }
-                    slide.setPower(0.1);
-                })
-                .forward(2)
-                .back(15)
+        TrajectorySequence strafeLeft = drive.trajectorySequenceBuilder(startPose)
+                .strafeLeft(2)
                 .build();
 
+        TrajectorySequence coneCycle = drive.trajectorySequenceBuilder(strafeLeft.end())
+                .splineTo(new Vector2d(-17, -48), Math.toRadians(90))
+                .splineTo(new Vector2d(-9, -29), Math.toRadians(50))
+
+                //RAISE SLIDE
+                .addTemporalMarker(0.5, () -> {
+                    slide.setPower(1);
+                    slide.setTarget(3200);
+                })
+                //OUTTAKE CONE
+                .addTemporalMarker(3, () -> {
+                    rubberBandIntake.updatePower(-1);
+                })
+                //STOP OUTTAKE
+                .addTemporalMarker(4.5, () -> {
+                    rubberBandIntake.updatePower(0);
+                })
+                .waitSeconds(.5)
+                //LOWER SLIDE
+                .addTemporalMarker(5.5, () -> {
+                    slide.setPower(1);
+                    slide.setTarget(500);
+                })
+
+                .setReversed(true)
+                .splineTo(new Vector2d(-14, -35), Math.toRadians(270))
+                .setReversed(false)
+
+                .splineTo(new Vector2d(-23, -12), Math.toRadians(180))
+                //.forward(35)
+                //.splineTo(new Vector2d(-40,-14), Math.toRadians(180))
+                .splineTo(new Vector2d(-64, -16), Math.toRadians(180))
+
+                .turn(Math.toRadians(5))
+                .strafeLeft(3)
+
+                .addTemporalMarker(() -> {
+                    rubberBandIntake.updatePower(1);
+                })
+
+                .forward(4)
+                .waitSeconds(1.5)
+                .addTemporalMarker( () -> {
+                    slide.setPower(1);
+                    slide.setTarget(1000);
+                })
+                /*
+                .addTemporalMarker(10, () -> {
+                    rubberBandIntake.updatePower(0);
+                })
+                .addTemporalMarker(11, () -> {
+                    slide.setPower(1);
+                    slide.setTarget(1000);
+                })
+                */
+
+                .build();
+
+        /*TrajectorySequence leftPark = drive.trajectorySequenceBuilder(coneCycle.end())
+                .build();
+
+        TrajectorySequence midPark = drive.trajectorySequenceBuilder(coneCycle.end())
+                .build();
+
+        TrajectorySequence rightPark = drive.trajectorySequenceBuilder(coneCycle.end())
+                .build();
+        */
+        drive.followTrajectorySequence(strafeLeft);
         drive.followTrajectorySequenceAsync(coneCycle);
     }
 
@@ -72,5 +119,6 @@ public class TestAuto extends OpMode {
     public void loop() {
         drive.update();
         slide.update();
+        rubberBandIntake.update();
     }
 }

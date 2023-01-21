@@ -52,7 +52,7 @@ public class coneAuto extends OpMode {
                     .splineTo(new Vector2d(14,-50), Math.toRadians(115))
                     .splineTo(new Vector2d(5,-33), Math.toRadians(142))
                     .addTemporalMarker(3, () -> {
-                        s.updateTarget(-3400);
+                        s.setTarget(-3400);
                     })
 
                     .forward(2)
@@ -68,7 +68,7 @@ public class coneAuto extends OpMode {
                     .back(10)
                     .turn(Math.toRadians(-53))
                     .addDisplacementMarker(() ->{
-                        s.updateTarget(0);
+                        s.setTarget(0);
                     })
                     .strafeRight(27)
                     .build();
@@ -79,7 +79,7 @@ public class coneAuto extends OpMode {
                     .splineTo(new Vector2d(14,-50), Math.toRadians(115))
                     .splineTo(new Vector2d(5,-33), Math.toRadians(142))
                     .addTemporalMarker(3, () -> {
-                        s.updateTarget(-3400);
+                        s.setTarget(-3400);
                     })
 
                     .forward(2)
@@ -98,7 +98,7 @@ public class coneAuto extends OpMode {
                     .turn(Math.toRadians(-53))
                     .back(14)
                     .addDisplacementMarker(() ->{
-                        s.updateTarget(0);
+                        s.setTarget(0);
                     })
                     .strafeRight(15)
                     .build();
@@ -109,7 +109,7 @@ public class coneAuto extends OpMode {
                     .splineTo(new Vector2d(14,-50), Math.toRadians(115))
                     .splineTo(new Vector2d(5,-33), Math.toRadians(142))
                     .addTemporalMarker(3, () -> {
-                        s.updateTarget(-3400);
+                        s.setTarget(-3400);
                     })
 
                     .forward(2)
@@ -125,7 +125,7 @@ public class coneAuto extends OpMode {
                     .back(10)
                     .turn(Math.toRadians(-53))
                     .addDisplacementMarker(() ->{
-                        s.updateTarget(0);
+                        s.setTarget(0);
                     })
                     .strafeRight(3)
                     .build();
