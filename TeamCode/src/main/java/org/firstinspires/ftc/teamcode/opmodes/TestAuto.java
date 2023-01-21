@@ -61,44 +61,37 @@ public class TestAuto extends OpMode {
                 .addTemporalMarker(4.5, () -> {
                     rubberBandIntake.updatePower(0);
                 })
-                .waitSeconds(.5)
+                //.waitSeconds(.5)
                 //LOWER SLIDE
                 .addTemporalMarker(5.5, () -> {
                     slide.setPower(1);
-                    slide.setTarget(500);
+                    slide.setTarget(1000);
                 })
 
                 .setReversed(true)
-                .splineTo(new Vector2d(-14, -35), Math.toRadians(270))
+                .splineTo(new Vector2d(-17, -35), Math.toRadians(270))
                 .setReversed(false)
 
                 .splineTo(new Vector2d(-23, -12), Math.toRadians(180))
-                //.forward(35)
-                //.splineTo(new Vector2d(-40,-14), Math.toRadians(180))
-                .splineTo(new Vector2d(-64, -16), Math.toRadians(180))
-
-                .turn(Math.toRadians(5))
-                .strafeLeft(3)
-
-                .addTemporalMarker(() -> {
-                    rubberBandIntake.updatePower(1);
-                })
+                //.waitSeconds(4)
+                .splineTo(new Vector2d(-47, -13), Math.toRadians(180))
+                .splineTo(new Vector2d(-62, -17), Math.toRadians(180))
 
                 .forward(4)
-                .waitSeconds(1.5)
-                .addTemporalMarker( () -> {
-                    slide.setPower(1);
-                    slide.setTarget(1000);
+
+                //DROP INTAKE ONTO CONE STACK
+                .addTemporalMarker(() -> {
+                    rubberBandIntake.updatePower(1);
+                    slide.setPower(.3);
+                    slide.setTarget(500);
                 })
-                /*
-                .addTemporalMarker(10, () -> {
+                .waitSeconds(2)
+                //PICKUP INTAKE
+                .addTemporalMarker(() -> {
+                    slide.setPower(.5);
+                    slide.setTarget(1000);
                     rubberBandIntake.updatePower(0);
                 })
-                .addTemporalMarker(11, () -> {
-                    slide.setPower(1);
-                    slide.setTarget(1000);
-                })
-                */
 
                 .build();
 
