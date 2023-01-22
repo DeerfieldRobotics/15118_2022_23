@@ -18,28 +18,48 @@ public class PathVisualizer {
                 //.setStartPose(new Pose2d(50, 50))
                 .setConstraints(30, 30, Math.toRadians(180), Math.toRadians(180), 13.5)
                 .followTrajectorySequence(drive ->
-                    drive.trajectorySequenceBuilder(new Pose2d(-36,-63, Math.toRadians(0)))
-                            .splineTo(new Vector2d(-17, -48), Math.toRadians(90))
-                            .splineTo(new Vector2d(-9, -29), Math.toRadians(50))
-
-                            .setReversed(true)
-                            .splineTo(new Vector2d(-14, -35), Math.toRadians(270))
-                            .setReversed(false)
-
-                            .splineTo(new Vector2d(-23, -12), Math.toRadians(180))
-                            .splineTo(new Vector2d(-62,-12), Math.toRadians(180))
+                    drive.trajectorySequenceBuilder(new Pose2d(59,-12, Math.toRadians(0)))
+                            .back(20)
+                            .lineToSplineHeading(new Pose2d(30, -12, Math.toRadians(90)))
+                            .setTangent(150)
+                            .splineToSplineHeading(new Pose2d(24, -11, Math.toRadians(90)), Math.toRadians(150))
 
 
-                            /*
-                            .addTemporalMarker(10, () -> {
-                                rubberBandIntake.updatePower(0);
-                            })
-                            .addTemporalMarker(11, () -> {
-                                slide.setPower(1);
-                                slide.setTarget(1000);
-                            })
-                            */
-
+//                            .splineTo(new Vector2d(17, -48), Math.toRadians(90))
+//                            .splineTo(new Vector2d(9, -29), Math.toRadians(130))
+//
+//                            //RAISE SLIDE
+//
+//                            //OUTTAKE CONE
+//
+//
+//                            .setReversed(true)
+//                            .splineTo(new Vector2d(17, -35), Math.toRadians(270))
+//                            .setReversed(false)
+//
+//                            .splineTo(new Vector2d(23, -12), Math.toRadians(0))
+//                            //.waitSeconds(4)
+//                            //.splineTo(new Vector2d(-47, -13), Math.toRadians(180))
+//                            .lineToSplineHeading(new Pose2d(61.75,-17,Math.toRadians(2)))
+//                            // .splineTo(new Vector2d(-63, -17.5), Math.toRadians(180))
+//
+//                            .forward(4)
+//
+//                            //START OF CONE CYCEL
+//                            //DROP INTAKE ONTO CONE STACK
+//
+//                            .waitSeconds(2)
+//                            //PICKUP INTAKE
+//
+//                            .back(5)
+//                            //SPLINE TO POLE
+//                            .splineToSplineHeading(new Pose2d(28.5,-7.5,Math.toRadians(100)),Math.toRadians(150))
+//
+//
+//
+//
+//                            .back(3)
+//                            .lineToSplineHeading(new Pose2d(60,-13,Math.toRadians(90)))
                             .build()
 
 

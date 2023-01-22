@@ -2,26 +2,18 @@ package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.checkerframework.checker.units.qual.A;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequence;
-import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.utils.AprilTags;
 import org.firstinspires.ftc.teamcode.utils.RubberBandIntake;
 import org.firstinspires.ftc.teamcode.utils.Slide;
 
-@Autonomous(name = "NEW_AUTO")
-public class TestAuto extends OpMode {
+@Autonomous(name = "NEW_AUTO_RIGHT")
+public class TestAutoRight extends OpMode {
     private SampleMecanumDrive drive;
     private RubberBandIntake rubberBandIntake;
     private Slide slide;
@@ -33,7 +25,7 @@ public class TestAuto extends OpMode {
     public void init() {
         drive = new SampleMecanumDrive(hardwareMap);
         rubberBandIntake = new RubberBandIntake(hardwareMap);
-        aprilTags = new AprilTags(hardwareMap, "leftCam");
+        aprilTags = new AprilTags(hardwareMap, "rightCam");
 
         slide = new Slide(hardwareMap);
         slide.getMotor().setDirection(DcMotorSimple.Direction.REVERSE);
@@ -47,18 +39,18 @@ public class TestAuto extends OpMode {
     }
 
     public void start() {
-        Pose2d startPose = new Pose2d(-36, -63, Math.toRadians(0));
+        Pose2d startPose = new Pose2d(36, -63, Math.toRadians(180));
         drive.setPoseEstimate(startPose);
 
         TrajectorySequence strafeLeft = drive.trajectorySequenceBuilder(startPose)
-                .strafeLeft(2)
+                .strafeRight(2)
                 .build();
 
 
 
         leftPark = drive.trajectorySequenceBuilder(strafeLeft.end())
-                .splineTo(new Vector2d(-17, -48), Math.toRadians(90))
-                .splineTo(new Vector2d(-9, -29), Math.toRadians(50))
+                .splineTo(new Vector2d(17, -48), Math.toRadians(90))
+                .splineTo(new Vector2d(9, -29), Math.toRadians(130))
 
                 //RAISE SLIDE
                 .addTemporalMarker(0.5, () -> {
@@ -81,13 +73,13 @@ public class TestAuto extends OpMode {
                 })
 
                 .setReversed(true)
-                .splineTo(new Vector2d(-17, -35), Math.toRadians(270))
+                .splineTo(new Vector2d(17, -35), Math.toRadians(270))
                 .setReversed(false)
 
-                .splineTo(new Vector2d(-23, -12), Math.toRadians(180))
+                .splineTo(new Vector2d(23, -12), Math.toRadians(0))
                 //.waitSeconds(4)
                 //.splineTo(new Vector2d(-47, -13), Math.toRadians(180))
-                .lineToSplineHeading(new Pose2d(-62,-15,Math.toRadians(182)))
+                .lineToSplineHeading(new Pose2d(61.75,-17,Math.toRadians(2)))
                 // .splineTo(new Vector2d(-63, -17.5), Math.toRadians(180))
 
                 .forward(4)
@@ -108,7 +100,7 @@ public class TestAuto extends OpMode {
                 })
                 .back(5)
                 //SPLINE TO POLE
-                .splineToSplineHeading(new Pose2d(-28.5,-7.5,Math.toRadians(80)),Math.toRadians(30))
+                .splineToSplineHeading(new Pose2d(28.5,-7.5,Math.toRadians(100)),Math.toRadians(150))
 
                 .addTemporalMarker(13, () -> {
                     slide.setPower(1);
@@ -126,14 +118,13 @@ public class TestAuto extends OpMode {
                     slide.setTarget(0);
                     slide.setPower(0);
                 })
-                //park
-                .lineToSplineHeading(new Pose2d(-60,-13,Math.toRadians(90)))
+                .lineToSplineHeading(new Pose2d(60,-13,Math.toRadians(90)))
                 .build();
 
         midPark = drive.trajectorySequenceBuilder(strafeLeft.end())
 
-                .splineTo(new Vector2d(-17, -48), Math.toRadians(90))
-                .splineTo(new Vector2d(-9, -29), Math.toRadians(50))
+                .splineTo(new Vector2d(17, -48), Math.toRadians(90))
+                .splineTo(new Vector2d(9, -29), Math.toRadians(130))
 
                 //RAISE SLIDE
                 .addTemporalMarker(0.5, () -> {
@@ -156,13 +147,13 @@ public class TestAuto extends OpMode {
                 })
 
                 .setReversed(true)
-                .splineTo(new Vector2d(-17, -35), Math.toRadians(270))
+                .splineTo(new Vector2d(17, -35), Math.toRadians(270))
                 .setReversed(false)
 
-                .splineTo(new Vector2d(-23, -12), Math.toRadians(180))
+                .splineTo(new Vector2d(23, -12), Math.toRadians(0))
                 //.waitSeconds(4)
                 //.splineTo(new Vector2d(-47, -13), Math.toRadians(180))
-                .lineToSplineHeading(new Pose2d(-62,-15,Math.toRadians(182)))
+                .lineToSplineHeading(new Pose2d(61.75,-17,Math.toRadians(2)))
                 // .splineTo(new Vector2d(-63, -17.5), Math.toRadians(180))
 
                 .forward(4)
@@ -183,7 +174,7 @@ public class TestAuto extends OpMode {
                 })
                 .back(5)
                 //SPLINE TO POLE
-                .splineToSplineHeading(new Pose2d(-28.5,-7.5,Math.toRadians(80)),Math.toRadians(30))
+                .splineToSplineHeading(new Pose2d(28.5,-7.5,Math.toRadians(100)),Math.toRadians(150))
 
                 .addTemporalMarker(13, () -> {
                     slide.setPower(1);
@@ -201,15 +192,14 @@ public class TestAuto extends OpMode {
                     slide.setTarget(0);
                     slide.setPower(0);
                 })
-                //park
-                .lineToSplineHeading(new Pose2d(-40,-13,Math.toRadians(90)))
+                .lineToSplineHeading(new Pose2d(40,-13,Math.toRadians(90)))
                 .build();
 
         rightPark = drive.trajectorySequenceBuilder(strafeLeft.end())
 
 
-                .splineTo(new Vector2d(-17, -48), Math.toRadians(90))
-                .splineTo(new Vector2d(-9, -29), Math.toRadians(50))
+                .splineTo(new Vector2d(17, -48), Math.toRadians(90))
+                .splineTo(new Vector2d(9, -29), Math.toRadians(130))
 
                 //RAISE SLIDE
                 .addTemporalMarker(0.5, () -> {
@@ -232,13 +222,13 @@ public class TestAuto extends OpMode {
                 })
 
                 .setReversed(true)
-                .splineTo(new Vector2d(-17, -35), Math.toRadians(270))
+                .splineTo(new Vector2d(17, -35), Math.toRadians(270))
                 .setReversed(false)
 
-                .splineTo(new Vector2d(-23, -12), Math.toRadians(180))
+                .splineTo(new Vector2d(23, -12), Math.toRadians(0))
                 //.waitSeconds(4)
                 //.splineTo(new Vector2d(-47, -13), Math.toRadians(180))
-                .lineToSplineHeading(new Pose2d(-62,-15,Math.toRadians(182)))
+                .lineToSplineHeading(new Pose2d(61.75,-17,Math.toRadians(2)))
                 // .splineTo(new Vector2d(-63, -17.5), Math.toRadians(180))
 
                 .forward(4)
@@ -259,7 +249,7 @@ public class TestAuto extends OpMode {
                 })
                 .back(5)
                 //SPLINE TO POLE
-                .splineToSplineHeading(new Pose2d(-28.5,-7.5,Math.toRadians(80)),Math.toRadians(30))
+                .splineToSplineHeading(new Pose2d(28.5,-7.5,Math.toRadians(100)),Math.toRadians(150))
 
                 .addTemporalMarker(13, () -> {
                     slide.setPower(1);
@@ -277,7 +267,7 @@ public class TestAuto extends OpMode {
                     slide.setTarget(0);
                     slide.setPower(0);
                 })
-                .lineToSplineHeading(new Pose2d(-14,-13, Math.toRadians(90)))
+                .lineToSplineHeading(new Pose2d(14,-13, Math.toRadians(90)))
                 .build();
 
         drive.followTrajectorySequence(strafeLeft);
