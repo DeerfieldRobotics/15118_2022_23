@@ -49,10 +49,8 @@ public class newAuto extends OpMode {
                 .strafeRight(2)
                 .forward(6)
                 .splineTo(new Vector2d(19.5,-7.5),Math.toRadians(60))
-
-                .strafeRight(10)
-                .splineToSplineHeading(new Pose2d(40,-12,Math.toRadians(0)), Math.toRadians(0))
-                .forward(19)
+                .lineToSplineHeading(new Pose2d(14,-10,Math.toRadians(0)))
+                .lineToSplineHeading(new Pose2d(59,-12,Math.toRadians(0)))
 
 //                .addDisplacementMarker(() -> drive.followTrajectoryAsync(cycle))
 //                .addDisplacementMarker(() -> drive.followTrajectoryAsync(cycle))
