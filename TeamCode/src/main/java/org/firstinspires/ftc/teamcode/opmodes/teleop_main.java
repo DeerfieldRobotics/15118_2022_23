@@ -65,9 +65,10 @@ public class teleop_main extends LinearOpMode {
             intake.intake(gamepad2.right_trigger-gamepad2.left_trigger);
 
             if(Math.abs(-gamepad2.right_stick_y) > 0) {
+                manual = false;
                 slide.setPower(-gamepad2.right_stick_y);
             } else {
-                slide.setPower(0.001);
+                if(!manual) slide.setPower(0.001);
             }
 
 
