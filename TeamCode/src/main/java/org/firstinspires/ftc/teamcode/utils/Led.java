@@ -5,7 +5,7 @@ import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Led {
-    RevBlinkinLedDriver led;
+    public RevBlinkinLedDriver led;
 
     public Led (HardwareMap hw) {
         led = hw.get(RevBlinkinLedDriver.class, "led");

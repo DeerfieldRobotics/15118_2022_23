@@ -12,12 +12,12 @@ public class distanceTest extends LinearOpMode {
     private Rev2mDistanceSensor dist1; //left
     private Rev2mDistanceSensor dist2; //right
 
-    private static final double sensorWidth = 50; //distance between sensors
-    private static final double sensorAngle = 15; //angle of sensor away from midline of robot in degrees
-    private static final double targetRadius = 3; //radius of target cylinder
+    private static final double sensorWidth = 130.36; //distance between sensors
+    private static final double sensorAngle = 42.6; //angle of sensor away from midline of robot in degrees
+    private static final double targetRadius = 41.1385; //radius of target circle
     private static final double targetDistance = (sensorWidth/2-targetRadius)/Math.cos(Math.toRadians(sensorAngle)); //target distance for each distance sensor to be in optimal position
 
-    private static final double error = 2; //millimeters of acceptable error
+    private static final double error = 12; //millimeters of acceptable error
     public static final double sensingRange = 150;
 
     @Override
@@ -42,16 +42,16 @@ public class distanceTest extends LinearOpMode {
                 telemetry.addLine("rotate left, out of range");
             }
             else {
-                if(d1>targetDistance-error&&d2>targetDistance-error) {
+                if(d1>targetDistance+error&&d2>targetDistance+error) {
                     telemetry.addLine("move forward, in alignment range");
                 }
-                else if (d1<=targetDistance-error&&d2>targetDistance-error) {
+                else if (d1<=targetDistance+error&&d2>targetDistance+error) {
                     telemetry.addLine("rotate/strafe left");
                 }
-                else if (d2<=targetDistance-error&&d1>targetDistance-error) {
+                else if (d2<=targetDistance+error&&d1>targetDistance+error) {
                     telemetry.addLine("rotate/strafe right");
                 }
-                else if (d2<=targetDistance-error&&d1<=targetDistance-error) {
+                else if (d2<=targetDistance+error&&d1<=targetDistance+error) {
                     telemetry.addLine("ON TARGET");
                 }
                 else {
