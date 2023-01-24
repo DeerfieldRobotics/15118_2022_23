@@ -32,7 +32,7 @@ public class teleop_main extends LinearOpMode {
         //start timer
 
         while(opModeIsActive()) {
-            speedMult = .8+0.3 * gamepad1.right_trigger-0.5*gamepad1.left_trigger;
+            speedMult = 1+0.3 * gamepad1.right_trigger-0.5*gamepad1.left_trigger;
 
             //movement
             if(gamepad1.right_stick_x != 0 || gamepad1.left_stick_y != 0||gamepad1.left_stick_x!=0) {

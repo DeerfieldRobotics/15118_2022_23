@@ -18,10 +18,17 @@ public class PathVisualizer {
                 //.setStartPose(new Pose2d(50, 50))
                 .setConstraints(30, 30, Math.toRadians(180), Math.toRadians(180), 13.5)
                 .followTrajectorySequence(drive ->
-                    drive.trajectorySequenceBuilder(new Pose2d(-23,-12, Math.toRadians(180)))
-                            .lineToSplineHeading(new Pose2d(-62,-12,Math.toRadians(180)))
+                    drive.trajectorySequenceBuilder(new Pose2d(-36,-63, Math.toRadians(0)))
+                            .strafeLeft(2)
+                            .setTangent(0)
+//                            .lineToSplineHeading(new Pose2d(-62,-12,Math.toRadians(180)))
+//
+//                            .splineToSplineHeading(new Pose2d(-28.5,-7.5,Math.toRadians(80)),Math.toRadians(30))
 
-                            .splineToSplineHeading(new Pose2d(-28.5,-7.5,Math.toRadians(80)),Math.toRadians(30))
+                            .splineTo(new Vector2d(-17, -48), Math.toRadians(50))
+                            .splineToSplineHeading(new Pose2d(-8, -15, Math.toRadians(-40)), Math.toRadians(0))
+                            //.setTangent(90)
+                            //.splineToSplineHeading(new Pose2d(-7, -24, Math.toRadians(-30)), Math.toRadians(-30))
 
 
 

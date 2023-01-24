@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.utils.AprilTags;
 import org.firstinspires.ftc.teamcode.utils.RubberBandIntake;
 import org.firstinspires.ftc.teamcode.utils.Slide;
 
-@Autonomous(name = "RIGHT_AUTO_ASYNC")
+@Autonomous(name = "poppa pig")
 public class rightAutoAsync extends OpMode {
     private SampleMecanumDrive drive;
     private AprilTags aprilTags;

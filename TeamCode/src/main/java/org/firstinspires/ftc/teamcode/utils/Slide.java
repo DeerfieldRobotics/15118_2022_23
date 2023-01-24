@@ -16,7 +16,7 @@ public class Slide {
     //TODO: tune these values
     public final static int LOW = 1234;
     public final static int MEDIUM = 2252;
-    public final static int HIGH = 3480;
+    public final static int HIGH = 3200;
 
     public final int[] heights= {0,1234,2252,3480};
 
