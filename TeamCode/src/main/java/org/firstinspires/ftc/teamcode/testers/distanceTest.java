@@ -13,10 +13,10 @@ public class distanceTest extends LinearOpMode {
     private Rev2mDistanceSensor dist1; //left
     private Rev2mDistanceSensor dist2; //right
 
-    private static final double sensorWidth = 130.36; //distance between sensors
+    private static final double sensorOffset = 130.36/2; //distance between sensors
     private static final double sensorAngle = 42.6; //angle of sensor away from midline of robot in degrees
-    private static final double targetRadius = 41.1385; //radius of target circle
-    private static final double targetDistance = (sensorWidth/2-targetRadius)/Math.cos(Math.toRadians(sensorAngle)); //target distance for each distance sensor to be in optimal position
+    private static final double targetRadius = 102; //41.1385; //radius of target circle
+    private static final double targetDistance = (sensorOffset-targetRadius)/Math.cos(Math.toRadians(sensorAngle)); //target distance for each distance sensor to be in optimal position
 
     private static final double powerMult = 0.3;
 
@@ -56,6 +56,25 @@ public class distanceTest extends LinearOpMode {
                 // to target based on the radius of the target and the location and orientation of the
                 // distance sensors
 
+                double x1 = -sensorOffset+d1*Math.sin(Math.toRadians(sensorAngle));
+                double x2 = sensorOffset-d2*Math.sin(Math.toRadians(sensorAngle));
+
+                double y1 = d1*Math.cos(Math.toRadians(sensorAngle));
+                double y2 = d2*Math.cos(Math.toRadians(sensorAngle));
+
+                double d = Math.sqrt(Math.pow((y2-y1),2)+Math.pow((x2-x1),2));
+
+                double theta1 = Math.atan((y2 - y1) / (x2 - x1));
+                double theta2 = Math.acos(d/(2*targetRadius));
+
+                double targetX = x1+targetRadius*Math.cos(theta1 + theta2);
+                double targetY = y1+targetRadius*Math.sin(theta1 + theta2);
+
+                telemetry.addData("Cone X", targetX);
+                telemetry.addData("Cone Y", targetY);
+
+                /*
+
                 if(d1>targetDistance+error&&d2>targetDistance+error) {
                     telemetry.addLine("move forward, in alignment range");
                 }
@@ -71,6 +90,8 @@ public class distanceTest extends LinearOpMode {
                 else {
                     telemetry.addLine("bruh wtf boy");
                 }
+                */
+
             }
 
             telemetry.update();
