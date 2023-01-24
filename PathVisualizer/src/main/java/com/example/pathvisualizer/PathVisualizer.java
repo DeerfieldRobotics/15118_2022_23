@@ -20,7 +20,7 @@ public class PathVisualizer {
                 .followTrajectorySequence(drive ->
                     drive.trajectorySequenceBuilder(new Pose2d(-23,-12, Math.toRadians(180)))
                             .lineToSplineHeading(new Pose2d(-62,-12,Math.toRadians(180)))
-                            .
+
                             .splineToSplineHeading(new Pose2d(-28.5,-7.5,Math.toRadians(80)),Math.toRadians(30))
 
 

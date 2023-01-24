@@ -21,11 +21,12 @@ public class PathVisualizer2 {
                                 drive.trajectorySequenceBuilder(new Pose2d(60,-12, Math.toRadians(0)))
                                         // RIGHT
                                         .lineToConstantHeading(new Vector2d(43,-12))
-                                        .splineToSplineHeading(new Pose2d(32,-9, Math.toRadians(90)), Math.toRadians(180))
-                                        .splineToConstantHeading(new Vector2d(24,-9), Math.toRadians(180))
+//                                        .splineToSplineHeading(new Pose2d(32,-9, Math.toRadians(135)), Math.toRadians(135))
+                                        .splineToSplineHeading(new Pose2d(28.5,-7, Math.toRadians(125)), Math.toRadians(125))
 
-                                        .strafeRight(0.1)
-                                        .splineToConstantHeading(new Vector2d(32,-9), Math.toRadians(0))
+                                        .waitSeconds(0.1)
+                                        .back(3)
+//                                        .splineToConstantHeading(new Vector2d(32,-9), Math.toRadians(0))
                                         .splineToSplineHeading(new Pose2d(43,-12, Math.toRadians(0)), Math.toRadians(0))
                                         .lineToConstantHeading(new Vector2d(60,-12))
 
