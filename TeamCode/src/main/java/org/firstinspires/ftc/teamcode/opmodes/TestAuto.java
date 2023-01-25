@@ -49,7 +49,7 @@ public class TestAuto extends OpMode {
 
         TrajectorySequence coneCycle = drive.trajectorySequenceBuilder(strafeLeft.end())
                 .splineTo(new Vector2d(-17, -48), Math.toRadians(90))
-                .splineTo(new Vector2d(-9, -29), Math.toRadians(50))
+                .splineTo(new Vector2d(-8, -28), Math.toRadians(46))
 
                 //RAISE SLIDE
                 .addTemporalMarker(0.5, () -> {
@@ -70,12 +70,21 @@ public class TestAuto extends OpMode {
                     slide.setPower(1);
                     slide.setTarget(1000);
                 })
-
+                /*
                 .setReversed(true)
                 .splineTo(new Vector2d(-17, -35), Math.toRadians(270))
                 .setReversed(false)
 
-                .splineTo(new Vector2d(-23, -12), Math.toRadians(180))
+                 */
+
+
+
+                .back(7)
+                .setReversed(true)
+                .setTangent(20)
+                .splineTo(new Vector2d(-13,-17),Math.toRadians(150))
+
+
                 //.waitSeconds(4)
                 .lineToSplineHeading(new Pose2d(-66,-14,Math.toRadians(180)))
 
@@ -107,7 +116,7 @@ public class TestAuto extends OpMode {
                     rubberBandIntake.updatePower(0);
                 })
 
-                .back(4)
+                .back(6)
                 .addTemporalMarker(() -> {
                     slide.setTarget(500);
                     slide.setPower(1);
