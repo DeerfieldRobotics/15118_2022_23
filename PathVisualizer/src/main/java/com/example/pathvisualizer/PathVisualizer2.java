@@ -19,7 +19,6 @@ public class PathVisualizer2 {
                 .setConstraints(35, 30, Math.toRadians(180), Math.toRadians(180), 14.55)
                 .followTrajectorySequence(drive ->
                                 drive.trajectorySequenceBuilder(new Pose2d(36,-60, Math.toRadians(180)))
-
                                         .strafeRight(2)
                                         .forward(4)
                                         .splineTo(new Vector2d(19.5,-7.5),Math.toRadians(60))
