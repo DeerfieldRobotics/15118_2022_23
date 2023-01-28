@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.roadrunner.drive.StandardTrackingWheelLocalizer;
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.utils.AprilTags;
 import org.firstinspires.ftc.teamcode.utils.RubberBandIntake;
@@ -35,7 +36,7 @@ public class newAuto extends OpMode {
         drive.setPoseEstimate(startPose);
     }
     @Override
-    public void init_loop(){
+    public void init_loop() {
         detectedTag = aprilTags.getID();
 
         telemetry.addData("DETECTED TAG: ", detectedTag);
@@ -43,37 +44,40 @@ public class newAuto extends OpMode {
     }
 
     @Override
-    public void start(){
+    public void start() {
         autoSequence = drive.trajectorySequenceBuilder(startPose)
                 .strafeRight(2)
                 .forward(4)
 
-
-                .addTemporalMarker(1,()->{
+                //Going to first high
+                .addTemporalMarker(1, ()-> {
                     slide.setPower(1);
                     slide.setTarget(Slide.HIGH);
                 })
 
                 .splineTo(new Vector2d(26,-8), Math.toRadians(55))
+
+                //Drops first high
                 .addTemporalMarker(3.4, () -> {
                     intake.updatePower(-1);
                 })
 
-                .addTemporalMarker(5,()->{
+                .addTemporalMarker(5,() -> {
                     intake.updatePower(0);
                 })
 
-                .lineToLinearHeading(new Pose2d(14,-13,Math.toRadians(-10)))
-                .lineToLinearHeading(new Pose2d(67,-13,Math.toRadians(-10)))
+                //Goes to cone stack
+                .lineToLinearHeading(new Pose2d(14,-14.25, Math.toRadians(0)))
+                .lineToSplineHeading(new Pose2d(67,-14.25, Math.toRadians(0)))
 
-                // start cycling cone stack
+
                 .addTemporalMarker(5, () -> {
                     slide.setPower(1);
-                    slide.setTarget(525);
+                    slide.setTarget(500);
                 })
 //
-//                //cycle
-                .addTemporalMarker(5.5,()->{
+//               //cycle
+                .addTemporalMarker(6.5,()->{
                     intake.updatePower(1);
                 })
 
@@ -82,29 +86,32 @@ public class newAuto extends OpMode {
                     slide.setTarget(Slide.HIGH);
                 })
 
-                .addTemporalMarker(8,()->{
+                .addTemporalMarker(8.5,()->{
                     intake.updatePower(0);
                 })
-                // CYCLE 1
-                .lineToLinearHeading(new Pose2d(43,-14,Math.toRadians(0)))
+
+                //CYCLE 1
+
+                .lineToSplineHeading(new Pose2d(43,-14.25, Math.toRadians(0)))
                 .splineToSplineHeading(new Pose2d(32,-7, Math.toRadians(125)), Math.toRadians(125))
                 .waitSeconds(0.01)
                 .addTemporalMarker(() -> {
                     intake.updatePower(-1);
                 })
-                .waitSeconds(0.2)
+                .waitSeconds(1)
                 .back(2)
-//
-                .splineToSplineHeading(new Pose2d(46,-13, Math.toRadians(0)), Math.toRadians(0))
 
-                .addTemporalMarker(12,()->{
+//
+                .splineToSplineHeading(new Pose2d(46,-15, Math.toRadians(0)), Math.toRadians(0))
+
+                .addTemporalMarker(13,()->{
                     slide.setPower(1);
                     intake.updatePower(0);
                     slide.setTarget(420);
                 })
-
+               /*
                 //PICK UP CONE 2
-                .lineToLinearHeading(new Pose2d(66,-12.5, Math.toRadians(0)))
+                .lineToSplineHeading(new Pose2d(67,-15, Math.toRadians(0)))
                 .addTemporalMarker(13,()->{
                     intake.updatePower(1);
                 })
@@ -115,8 +122,8 @@ public class newAuto extends OpMode {
 
                 //CAP 2
 
-                .lineToSplineHeading(new Pose2d(43,-14,Math.toRadians(0)))
-                .splineToSplineHeading(new Pose2d(33.5,-7, Math.toRadians(125)), Math.toRadians(125))
+                .lineToSplineHeading(new Pose2d(43,-15,Math.toRadians(0)))
+                .splineToSplineHeading(new Pose2d(33.5,-6, Math.toRadians(125)), Math.toRadians(125))
                 .waitSeconds(0.01)
                 .addTemporalMarker(() -> {
                     intake.updatePower(-1);
@@ -124,27 +131,31 @@ public class newAuto extends OpMode {
                 .waitSeconds(0.2)
                 .back(2)
 
-                .addTemporalMarker(18,()->{
+
+
+                //PICK UP 3
+                .addTemporalMarker(17, ()->{
                     slide.setPower(1);
                     intake.updatePower(0);
                     slide.setTarget(350);
                 })
 
-                //PICK UP 3
+                .splineToSplineHeading(new Pose2d(46,-15, Math.toRadians(0)), Math.toRadians(0))
+                .lineToLinearHeading(new Pose2d(6,-15, Math.toRadians(0)))
 
-                .splineToSplineHeading(new Pose2d(46,-12.5, Math.toRadians(0)), Math.toRadians(0))
-                .lineToConstantHeading(new Vector2d(66,-12.5))
-
-                .addTemporalMarker(20, ()->{
+                .addTemporalMarker(18, ()->{
                     intake.updatePower(1);
                 })
-                .addTemporalMarker(21.25, ()->{
+                .addTemporalMarker(21.5, ()->{
                     slide.setPower(1);
                     slide.setTarget(Slide.HIGH);
+                })
+
+                .addTemporalMarker(22.75, ()->{
                     intake.updatePower(0);
                 })
 
-                .lineToSplineHeading(new Pose2d(43,-14,Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(43,-15,Math.toRadians(0)))
                 .splineToSplineHeading(new Pose2d(33.5,-7, Math.toRadians(125)), Math.toRadians(125))
                 .waitSeconds(0.01)
                 .addTemporalMarker(()->{
@@ -158,18 +169,18 @@ public class newAuto extends OpMode {
                     intake.updatePower(0);
 
                 })
-                .splineToSplineHeading(new Pose2d(46,-12.5, Math.toRadians(0)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(46,-15, Math.toRadians(0)), Math.toRadians(0))
                 .addTemporalMarker(()->{
                     intake.updatePower(1);
                 })
-                .lineToConstantHeading(new Vector2d(66,-12.5))
+                .lineToLinearHeading(new Pose2d(66,-15, Math.toRadians(0)))
 
                 .addTemporalMarker(27, ()->{
                     slide.setPower(1);
                     slide.setTarget(Slide.HIGH);
                     intake.updatePower(0);
                 })
-                .lineToSplineHeading(new Pose2d(43,-14,Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(43,-15,Math.toRadians(0)))
                 .splineToSplineHeading(new Pose2d(33.5,-7, Math.toRadians(125)), Math.toRadians(125))
                 .waitSeconds(0.01)
                 .addTemporalMarker(() -> {
@@ -178,6 +189,8 @@ public class newAuto extends OpMode {
                 .addTemporalMarker(29, ()->{
                     intake.updatePower(0);
                 })
+
+                 */
                 .build();
 
         cycle = drive.trajectorySequenceBuilder(autoSequence.end())
